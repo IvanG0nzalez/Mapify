@@ -37,17 +37,20 @@ class Bloque(models.Model):
     altitud = models.FloatField(verbose_name='Altitud')
     is_auxiliar = models.BooleanField(default=False, verbose_name='Auxiliar')
     facultad = models.ForeignKey('Facultad', on_delete=models.CASCADE, related_name='Bloques')
+    conexiones = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='Conexiones')
 
     def save(self, *args, **kwargs):
         primer_digito_zona = self.zona[0]
         self.codigo = f"{primer_digito_zona}{self.numero}"
         super().save(*args, **kwargs)
 
-        documento_existente = db.nodos.find_one({'_id': self.numero})
+        nro_conexiones = self.conexiones.values_list('id', flat=True)
+        print(self.conexiones.values_list('id', flat=True))
+        documento_existente = db.nodos.find_one({'_id': self.id})
         if documento_existente:
             db.nodos.update_one(
                 {'_id': self.id},
-                {'$set': {'numero': self.numero, 'latitud': self.latitud, 'altitud': self.altitud}}
+                {'$set': {'numero': self.numero, 'latitud': self.latitud, 'altitud': self.altitud, 'conexiones': list(nro_conexiones)}}
             )
         else:
             db.nodos.insert_one(
@@ -56,6 +59,7 @@ class Bloque(models.Model):
                     'numero': self.numero,
                     'latitud': self.latitud,
                     'altitud': self.altitud,
+                    'conexiones': list(nro_conexiones),
                 }
             )
 
