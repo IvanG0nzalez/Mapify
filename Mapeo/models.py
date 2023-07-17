@@ -1,5 +1,6 @@
 import math
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -12,6 +13,12 @@ db = client['ProyectoIntegrador']
 
 class Facultad(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
+
+    def delete(self, *args, **kwargs):
+        bloques = self.bloques.all()
+        for bloque in bloques:
+            db.get_collection('nodos').delete_one({'_id': bloque.id})
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return self.nombre
@@ -36,21 +43,24 @@ class Bloque(models.Model):
     latitud = models.FloatField(verbose_name='Latitud')
     altitud = models.FloatField(verbose_name='Altitud')
     is_auxiliar = models.BooleanField(default=False, verbose_name='Auxiliar')
-    facultad = models.ForeignKey('Facultad', on_delete=models.CASCADE, related_name='Bloques')
-    conexiones = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='Conexiones')
+    facultad = models.ForeignKey('Facultad', on_delete=models.CASCADE, related_name='bloques')
+    #conexiones = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='Conexiones')
 
     def save(self, *args, **kwargs):
-        primer_digito_zona = self.zona[0]
-        self.codigo = f"{primer_digito_zona}{self.numero}"
+        if self.is_auxiliar:
+            self.codigo = f"N{self.numero}" #se debe enumerar a partir de 200
+        else:
+            primer_digito_zona = self.zona[0]
+            self.codigo = f"{primer_digito_zona}{self.numero}"
         super().save(*args, **kwargs)
 
-        nro_conexiones = self.conexiones.values_list('id', flat=True)
-        print(self.conexiones.values_list('id', flat=True))
+        #nro_conexiones = self.conexiones.values_list('id', flat=True)
+        #print(self.conexiones.values_list('id', flat=True))
         documento_existente = db.nodos.find_one({'_id': self.id})
         if documento_existente:
             db.nodos.update_one(
                 {'_id': self.id},
-                {'$set': {'numero': self.numero, 'latitud': self.latitud, 'altitud': self.altitud, 'conexiones': list(nro_conexiones)}}
+                {'$set': {'numero': self.numero, 'latitud': self.latitud, 'altitud': self.altitud}}
             )
         else:
             db.nodos.insert_one(
@@ -59,7 +69,7 @@ class Bloque(models.Model):
                     'numero': self.numero,
                     'latitud': self.latitud,
                     'altitud': self.altitud,
-                    'conexiones': list(nro_conexiones),
+                    'conexiones': list(),
                 }
             )
 
@@ -118,6 +128,10 @@ class Ruta(models.Model):
         tiempo = distancia/velocidad
         return round(tiempo, 2)
 
+    def clean(self):
+        if self.bloque_inicio.id == self.bloque_destino.id:
+            raise ValidationError("No se puede seleccionar el bloque de inicio como destino")
+
     def save(self, *args, **kwargs):
         punto_inicio = (self.bloque_inicio.latitud, self.bloque_inicio.altitud)
         punto_destino = (self.bloque_destino.latitud, self.bloque_destino.altitud)
@@ -125,6 +139,14 @@ class Ruta(models.Model):
         self.distancia = distancia
         self.tiempo = self.calcular_tiempo(distancia)
         super().save(*args, **kwargs)
+
+        documento_existente = db.nodos.find_one({'_id': self.bloque_inicio.id})
+        if documento_existente:
+            documento_existente['conexiones'].append(self.bloque_destino.id)
+            db.nodos.update_one(
+                {'_id': self.bloque_inicio.id},
+                {'$set': {'conexiones': documento_existente['conexiones']}}
+            )
 
     def __str__(self):
         return f"[{self.bloque_inicio} - {self.bloque_destino}]"
