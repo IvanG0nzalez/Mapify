@@ -1,10 +1,11 @@
 from django.contrib import admin
+from django import forms
 
 from Mapeo.models import Facultad, Bloque, Ruta, Nodo
 
 
 class BloqueAmdin(admin.ModelAdmin):
-    list_display = ('id', 'numero', 'zona', 'codigo', 'latitud', 'altitud', 'is_auxiliar', 'facultad')
+    list_display = ('id', 'numero', 'zona', 'codigo', 'latitud', 'altitud', 'is_auxiliar', 'numero_auxiliar', 'facultad')
 
 
 class FacultadAdmin(admin.ModelAdmin):
@@ -12,11 +13,12 @@ class FacultadAdmin(admin.ModelAdmin):
 
 
 class RutaAdmin(admin.ModelAdmin):
-    list_display = ('id', '__str__', 'bloque_inicio', 'bloque_destino', 'distancia', 'tiempo')
+    list_display = ('id', '__str__', 'nodo_inicio', 'nodo_destino', 'distancia', 'tiempo')
 
 
 class NodoAdmin(admin.ModelAdmin):
     list_display = ('id', 'numero', 'codigo', 'latitud', 'altitud')
+    add_view = None
 
 
 admin.site.register(Facultad, FacultadAdmin)
