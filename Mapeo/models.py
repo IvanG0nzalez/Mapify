@@ -2,7 +2,7 @@ import math
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from pymongo import MongoClient
 
@@ -43,15 +43,15 @@ class Bloque(models.Model):
     latitud = models.FloatField(verbose_name='Latitud')
     altitud = models.FloatField(verbose_name='Altitud')
     is_auxiliar = models.BooleanField(default=False, verbose_name='Auxiliar')
-    facultad = models.ForeignKey('Facultad', on_delete=models.CASCADE, related_name='bloques')
+    facultad = models.ForeignKey('Facultad', on_delete=models.CASCADE, default=None, related_name='bloques')
     #conexiones = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='Conexiones')
 
     def save(self, *args, **kwargs):
-        if self.is_auxiliar:
-            self.codigo = f"N{self.numero}" #se debe enumerar a partir de 200
-        else:
-            primer_digito_zona = self.zona[0]
-            self.codigo = f"{primer_digito_zona}{self.numero}"
+        #if self.is_auxiliar:
+        #    self.codigo = f"N{self.numero}" #se debe enumerar a partir de 200
+        #else:
+        primer_digito_zona = self.zona[0]
+        self.codigo = f"{primer_digito_zona}{self.numero}"
         super().save(*args, **kwargs)
 
         #nro_conexiones = self.conexiones.values_list('id', flat=True)
@@ -97,6 +97,12 @@ def actualizar_codigo(sender, instance, created, **kwargs):
         primer_digito_zona = instance.zona[0]
         instance.codigo = f"{primer_digito_zona}{instance.numero}"
         instance.save()
+
+
+@receiver(pre_delete, sender=Bloque)
+def eliminar_nodo(sender, instance, **kwargs):
+    numero_bloque = instance.numero
+    Nodo.objects.filter(numero=numero_bloque).delete()
 
 
 class Ruta(models.Model):
@@ -156,3 +162,33 @@ class Ruta(models.Model):
         verbose_name_plural = 'Rutas'
         db_table = 'rutas'
         ordering = ['distancia', '-distancia']
+
+
+class Nodo(models.Model):
+    numero = models.PositiveIntegerField(null=False, blank=False, unique=True, verbose_name='Numero')
+    codigo = models.CharField(null=True, blank=True, editable=False, max_length=15, verbose_name='Codigo')
+    latitud = models.FloatField(null=True, blank=True, editable=False, verbose_name='Latitud')
+    altitud = models.FloatField(null=True, blank=True, editable=False, verbose_name='Altitud')
+
+    def save(self, *args, **kwargs):
+        if self.numero:
+            bloque = Bloque.objects.filter(numero=self.numero).first()
+            if bloque:
+                if bloque.is_auxiliar:
+                    self.codigo = f"N{self.numero}"
+                else:
+                    self.codigo = bloque.codigo
+                self.latitud = bloque.latitud
+                self.altitud = bloque.altitud
+            else:
+                raise ValueError("No existe un bloque con ese número.")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.codigo
+
+    class Meta:
+        verbose_name = 'Nodo'
+        verbose_name_plural = 'Nodos'
+        db_table = 'nodos'
+        ordering = ['numero', '-numero']
