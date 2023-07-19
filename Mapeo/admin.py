@@ -17,8 +17,7 @@ class RutaAdmin(admin.ModelAdmin):
 
 
 class NodoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'numero', 'codigo', 'latitud', 'altitud')
-    add_view = None
+    list_display = ('id', 'bloque', 'codigo', 'latitud', 'altitud')
 
 
 admin.site.register(Facultad, FacultadAdmin)
