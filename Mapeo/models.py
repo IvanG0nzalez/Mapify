@@ -183,6 +183,7 @@ def eliminar_conexion_nodo_destino(sender, instance, **kwargs):
             )
 """
 
+
 class Nodo(models.Model):
     bloque = models.OneToOneField('Bloque', on_delete=models.CASCADE, primary_key=False, related_name='nodo')
     codigo = models.CharField(null=True, blank=True, editable=False, max_length=15, verbose_name='Codigo')
