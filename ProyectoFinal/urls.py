@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from Mapeo import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Mapeo.urls'))
+    path('', include('Mapeo.urls')),
+    path('administracion/iniciar-sesion', views.iniciar_sesion, name='login'),
 ]
