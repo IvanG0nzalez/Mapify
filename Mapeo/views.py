@@ -8,10 +8,13 @@ def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
 
 def pantallaBase(request):
-    return render(request, 'pantallas/pantallaBase.html', {})
+    return render(request, 'pantallas/base.html', {})
 
 def administracion_inicio(request):
-    return render(request, 'pantallas/base_admin.html', {})
+    return render(request, 'pantallas/inicio_admin.html', {})
+
+def busqueda_rutas_user(request):
+    return render(request, 'pantallas/busqueda.html', {})
 
 
 def iniciar_sesion(request):

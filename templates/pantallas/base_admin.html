@@ -23,47 +23,45 @@
     </div>
 
     <div class="div_principal">
-        <nav class="nav">
-        <ul class="list">
+        <div class="div_navdrawer">
+            <nav class="nav">
+                <ul class="list">
 
-            <li class="list__item list__item--inside">
-                <div class="list__button">
-                    <a href="{% url 'inicio' %}" class="nav__link">Buscar</a>
-                </div>
-            </li>
+                    <li class="list__item list__item--inside">
+                        <div class="list__button">
+                            <a href="{% url 'administracion-inicio' %}" class="nav__link">Inicio</a>
+                        </div>
+                    </li>
 
-            <li class="list__item list__item--inside">
-                <div class="list__button">
-                    <a href="#" class="nav__link">Inicio</a>
-                </div>
-            </li>
+                    <li class="list__item list__item--inside">
+                        <div class="list__button">
+                            <a href="#" class="nav__link">Bloques</a>
+                        </div>
+                    </li>
 
-            <li class="list__item list__item--inside">
-                <div class="list__button">
-                    <a href="#" class="nav__link">Bloques</a>
-                </div>
-            </li>
+                    <li class="list__item list__item--inside">
+                        <div class="list__button">
+                            <a href="#" class="nav__link">Nodos</a>
+                        </div>
+                    </li>
 
-            <li class="list__item list__item--inside">
-                <div class="list__button">
-                    <a href="#" class="nav__link">Nodos</a>
-                </div>
-            </li>
+                {% if user.is_superuser != False %}
+                    <li class="list__item list__item--inside">
+                        <div class="list__button">
+                            <a href="#" class="nav__link">Cuentas</a>
+                        </div>
+                    </li>
+                {% endif %}
 
-            {% if user.is_superuser != False %}
-                <li class="list__item list__item--inside">
-                <div class="list__button">
-                    <a href="#" class="nav__link">Cuentas</a>
-                </div>
-            </li>
-            {% endif %}
+                </ul>
+            </nav>
+        </div>
 
+        <div class="contenido">
+            {% block contenido %}
 
-        </ul>
-    </nav>
-        {% block contenido %}
-
-        {% endblock %}
+            {% endblock %}
+        </div>
     </div>
 
   </body>

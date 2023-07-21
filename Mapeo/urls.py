@@ -3,7 +3,7 @@ from Mapeo import views
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
-    path('pantallaBase', views.pantallaBase, name='pantallaBase'),
+    path('busqueda', views.busqueda_rutas_user, name='busqueda_user'),
     path('administracion/inicio', views.administracion_inicio, name='administracion-inicio'),
     path('administracion/cerrar-sesion', views.cerrar_sesion, name='cerrar_sesion'),
 ]
