@@ -96,6 +96,9 @@ class ControladorGrafo:
                     heapq.heappush(cola, (distancia, vecino))
         return rutas
 
+    def obtener_grafo(self):
+        return self.graph
+
 
 class NodoNoExisteException(Exception):
     def __init__(self, mensaje):
