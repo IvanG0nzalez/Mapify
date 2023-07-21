@@ -8,6 +8,12 @@ body, html {
     color: aliceblue;
 }
 
+#mapa {
+    justify-content: center;
+    width: 80%;
+    height: 600px;
+}
+
 .div_principal{
     display: flex;
     height: 100%;

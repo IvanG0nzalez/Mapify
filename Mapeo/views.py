@@ -16,6 +16,9 @@ def administracion_inicio(request):
 def busqueda_rutas_user(request):
     return render(request, 'pantallas/busqueda.html', {})
 
+def grafo_admin(request):
+    return render(request, 'pantallas/grafo_admin.html', {})
+
 
 def iniciar_sesion(request):
     if request.method == "POST":

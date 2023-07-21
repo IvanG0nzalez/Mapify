@@ -45,6 +45,12 @@
                         </div>
                     </li>
 
+                    <li class="list__item list__item--inside">
+                        <div class="list__button">
+                            <a href="{% url 'grafo' %}" class="nav__link">Grafo</a>
+                        </div>
+                    </li>
+
                 {% if user.is_superuser != False %}
                     <li class="list__item list__item--inside">
                         <div class="list__button">
