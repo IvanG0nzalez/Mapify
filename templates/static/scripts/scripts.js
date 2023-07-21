@@ -5,7 +5,7 @@ function initMap() {
         // Configurar las opciones del mapa
             var mapOptions = {
             center: center,
-            zoom: 15 // Nivel de zoom del mapa
+            zoom: 50 // Nivel de zoom del mapa
         };
 
         // Crear el mapa en el <div> con id "mapa"
