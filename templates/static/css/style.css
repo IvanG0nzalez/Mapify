@@ -99,17 +99,22 @@ body, html {
 }
 
 table {
-    width: 50% !important;
+    width: 100%;
     margin: 20px 20px 20px 0;
 }
 
 .thead_bloque {
-    font-family: "Times New Roman" !important;
+    font-family: Helvetica, serif;
     font-size: 1em;
 }
 
 .tbody_bloque {
-    font-family: "Times New Roman" !important;
+    font-family: Helvetica, serif;
     font-size: 1em;
     cursor: pointer;
+}
+
+table a {
+    color: black;
+    text-decoration: none;
 }
