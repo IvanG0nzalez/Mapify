@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django import forms
 
-from Mapeo.models import Facultad, Bloque, Ruta, Nodo, Usuario
+from Mapeo.models import Facultad, Bloque, Ruta, Nodo
 
 
-class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'email', 'nombres', 'apellidos', 'cedula', 'is_activo', 'is_administrador', 'is_superuser', 'password')
+#class UsuarioAdmin(admin.ModelAdmin):
+#    list_display = ('id', 'username', 'email', 'nombres', 'apellidos', 'cedula', 'is_activo', 'is_administrador', 'is_superuser', 'password')
 
 
 class FacultadAdmin(admin.ModelAdmin):
@@ -24,7 +24,7 @@ class NodoAdmin(admin.ModelAdmin):
     list_display = ('id', 'bloque', 'codigo', 'latitud', 'altitud')
 
 
-admin.site.register(Usuario, UsuarioAdmin)
+#admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Facultad, FacultadAdmin)
 admin.site.register(Bloque, BloqueAmdin)
 admin.site.register(Ruta, RutaAdmin)

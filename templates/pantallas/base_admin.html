@@ -54,7 +54,7 @@
                     </div>
                 </li>
 
-                {% if user.is_superuser != False %}
+                {% if request.user.is_superuser %}
                     <li class="list__item list__item--inside">
                         <div class="list__button">
                             <a href="{% url 'listar_admins' %}" class="nav__link">Administradores</a>

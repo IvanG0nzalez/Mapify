@@ -9,7 +9,7 @@ cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
 client = MongoClient(cadenaConexion)
 db = client['ProyectoIntegrador']
 
-
+"""
 class UsuarioManager(BaseUserManager):
     def create_user(self, username, email, nombres, apellidos, cedula, password=None):
         if not email:
@@ -68,7 +68,7 @@ class Usuario(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_administrador
-
+"""
 
 class Facultad(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
