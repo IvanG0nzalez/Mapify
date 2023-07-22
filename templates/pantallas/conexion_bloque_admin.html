@@ -1,0 +1,64 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block titulo %}
+            Conexion Bloque
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario"
+          style="padding-bottom: 35px; margin-top: 30px" width=20%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+{% block contenido %}
+    <h1 class="container">Conectar Bloque</h1>
+
+    <div class="container mt-5">
+        <form>
+            <div>
+                <label for="bloque">Selecciona un bloque:</label>
+                <select id="bloque">
+                    <option value="Bloque1">Bloque1</option>
+                    <option value="Bloque2">Bloque2</option>
+                    <option value="Bloque3">Bloque3</option>
+                    <option value="Bloque4">Bloque4</option>
+                </select>
+
+            <a href="{% url 'conexion-bloque' %}" class="btn btn-dark mx-2">Agregar Conexion</a>
+
+            </div>
+
+            <div>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="thead_conexion">
+                    <tr class="table-dark">
+                        <th>Destino</th>
+                        <th>Tiempo</th>
+                        <th>Distancia</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Bloque 2</td>
+                        <td>4.36</td>
+                        <td>230m</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static "scripts/scripts.js" %}"></script>
+{% endblock %}
+
+</html>

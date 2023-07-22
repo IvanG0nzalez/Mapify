@@ -17,4 +17,8 @@ urlpatterns = [
     path('administracion/grafo', login_required(views.grafo_admin, login_url='/administracion/iniciar-sesion'), name='grafo'),
     #path('administracion/listado-administradores', login_required(ListadoUsuario.as_view(), login_url='/administracion/iniciar-sesion'), name='listar_admins'),
     #path('administracion/crear-administrador', login_required(CrearUsuario.as_view(), login_url='/administracion/iniciar-sesion'), name='crear_admin'),
+    path('administracion/nodo', login_required(views.administracion_nodo, login_url='/administracion/iniciar-sesion'), name='nodo'),
+    path('administracion/detalle-nodo', login_required(views.administracion_detalle_nodo, login_url='/administracion/iniciar-sesion'), name='detalle-nodo'),
+    path('administracion/conexion-bloque', login_required(views.administracion_conexion_bloque, login_url='/administracion/iniciar-sesion'),name='conexion-bloque'),
+
 ]

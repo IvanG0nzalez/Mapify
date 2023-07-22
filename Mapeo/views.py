@@ -45,6 +45,14 @@ def administracion_modificar_bloque(request):
 def busqueda_rutas_user(request):
     return render(request, 'pantallas/busqueda.html', {})
 
+def administracion_nodo(request):
+        return render(request, 'pantallas/nodo_admin.html', {})
+
+def administracion_detalle_nodo(request):
+    return render(request, 'pantallas/detalle_nodo_admin.html', {})
+
+def administracion_conexion_bloque(request):
+    return render(request, 'pantallas/conexion_bloque_admin.html', {} )
 
 def grafo_admin(request):
     controlador_grafo = ControladorGrafo()

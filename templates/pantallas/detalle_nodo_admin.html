@@ -1,0 +1,51 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block titulo %}
+            Informacion del Nodo
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario"
+          style="padding-bottom: 35px; margin-top: 30px" width=20%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+{% block contenido %}
+        <h1 class="container">Detalle Nodo</h1>
+    <div  id="infNodo">
+
+        <form>
+            <div class="mb-4">
+                <label for="codigoNodo" class="form-label">Código Nodo:</label>
+                <input type="text" id="codigoNodo" value="Nodo 1" readonly>
+            </div>
+            <div class="mb-4">
+                <label for="altitudNodo" class="form-label">Altitud:</label>
+                <input type="text" id="altitudNodo" value="-4.454545" readonly>
+            </div>
+            <div class="mb-4">
+                <label for="latitudNodo" class="form-label">Latitud:</label>
+                <input type="text" id="latitudNodo" value="40.7128" readonly>
+            </div>
+            <div class="mb-4">
+                <label for="conexionesNodo" class="form-label">Conexiones:</label>
+                <textarea id="conexionesNodo" rows="4" readonly>
+N2
+N3
+N4
+                </textarea>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static "scripts/scripts.js" %}"></script>
+{% endblock %}
+
+</html>

@@ -1,0 +1,61 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block titulo %}
+            Nodos
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario"
+          style="padding-bottom: 35px; margin-top: 30px" width=20%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+{% block contenido %}
+
+    <div class="d-flex justify-content-between">
+        <h1 class="container">Nodos</h1>
+    </div>
+
+
+
+    <div class="container">
+        <div class="contenedor">
+            <input type="text" class="input_buscar" placeholder="Ingrese Codigo de Nodo">
+            <a href="{% url 'detalle-nodo' %}" class="btn btn-dark mx-2">Buscar Nodo</a>
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="thead_bloque">
+            <tr class="table-dark">
+                <th>Codigo</th>
+                <th>Latitud</th>
+                <th>Altitud</th>
+                <th>Conexiones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>N2</td>
+                <td>-4,4574</td>
+                <td>-2.474554</td>
+                <td>A45, A46</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="{% static "scripts/scripts.js" %}"></script>
+
+
+
+{% endblock %}
+
+</html>
