@@ -8,8 +8,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView
 
+from Mapeo.forms import FormularioCrearUsuario
 from Mapeo.graph_controller import ControladorGrafo
+from Mapeo.models import Usuario
 
 
 def inicio(request):
@@ -90,3 +94,18 @@ def cerrar_sesion(request):
     logout(request)
     messages.info(request, "Saliste de la sesión")
     return redirect("login")
+
+
+class ListadoUsuario(ListView):
+    model = Usuario
+    template_name = 'pantallas/listado_admins.html'
+
+    def get_queryset(self):
+        return self.model.objects.filter(is_activo=True)
+
+
+class CrearUsuario(CreateView):
+    model = Usuario
+    form_class = FormularioCrearUsuario
+    template_name = 'pantallas/crear_admin.html'
+    success_url = reverse_lazy('administracion-inicio')

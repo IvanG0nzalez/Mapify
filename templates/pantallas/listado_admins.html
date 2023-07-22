@@ -1,0 +1,42 @@
+{% extends 'pantallas/base_admin.html' %}
+
+{% block titulo %}Listado Usuarios{% endblock %}
+
+{% block contenido %}
+{% if object_list %}
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-tittle">Listado de Administradores</strong>
+        </div>
+        <div class="table-stats order-table ov-h">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in object_list %}
+                        <tr>
+                            <td>{{ usuario.id }}</td>
+                            <td>{{ usuario.username }}</td>
+                            <td>{{ usuario.nombres }}</td>
+                            <td>{{ usuario.apellidos }}</td>
+                            <td>
+                                <a href="" class="btn btn-danger">Eliminar</a>
+                                <a href="" class="btn btn-primary">Editar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <h1>No existen usuarios registrados</h1>
+{% endif %}
+{% endblock %}
