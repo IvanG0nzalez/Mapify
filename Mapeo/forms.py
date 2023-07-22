@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
-from Mapeo.models import Usuario
+#from Mapeo.models import Usuario
 
-
+"""
 class FormularioLogin(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(FormularioLogin, self).__init__(*args, **kwargs)
@@ -71,3 +71,4 @@ class FormularioCrearUsuario(forms.ModelForm):
                 }
             )
         }
+"""

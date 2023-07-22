@@ -1,7 +1,17 @@
 {% extends 'pantallas/base_admin.html' %}
 
-{% block titulo %}Crear usuario{% endblock %}
+{% block titulo %}Crear admin{% endblock %}
 
 {% block contenido %}
-    <H1>Aquí se crea un usuario dx</H1>
+    <!--<div class="card">
+        <div class="card-header">
+            <strong class="card-tittle">Registro de admins</strong>
+        </div>
+        <div class="table-stats order-table ov-h">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </form>
+        </div>
+    </div>-->
 {% endblock %}

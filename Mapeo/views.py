@@ -10,11 +10,15 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import CreateView, ListView
-
-from Mapeo.forms import FormularioCrearUsuario
+from django.views.generic.edit import FormView
+from django.http import HttpResponseRedirect
+#from Mapeo.forms import FormularioCrearUsuario, FormularioLogin
 from Mapeo.graph_controller import ControladorGrafo
-from Mapeo.models import Usuario
+#from Mapeo.models import Usuario
 
 
 def inicio(request):
@@ -91,11 +95,41 @@ def iniciar_sesion(request):
     return render(request, 'pantallas/inicio_sesion.html', {"form": form})
 
 
+"""
+class InicioSesion(FormView):
+    template_name = 'pantallas/inicio_sesion.html'
+    form_class = FormularioLogin
+    success_url = reverse_lazy('administracion-inicio')
+
+    @method_decorator(csrf_protect)
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return super(InicioSesion, self).dispatch(request, *args, **kwargs)
+    
+    def form_valid(self, form):
+        print("Entró a form valid")
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            print("Entró al if")
+            login(self.request, user)
+            return super(InicioSesion, self).form_valid(form)
+        else:
+            form.add_error(None, 'Credenciales inválidas')
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        return super(InicioSesion, self).form_invalid(form)
+"""
 def cerrar_sesion(request):
     logout(request)
     return redirect("login")
 
-
+"""
 class ListadoUsuario(ListView):
     model = Usuario
     template_name = 'pantallas/listado_admins.html'
@@ -109,3 +143,4 @@ class CrearUsuario(CreateView):
     form_class = FormularioCrearUsuario
     template_name = 'pantallas/crear_admin.html'
     success_url = reverse_lazy('administracion-inicio')
+"""
