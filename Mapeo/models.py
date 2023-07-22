@@ -1,9 +1,8 @@
 import math
 
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
 from pymongo import MongoClient
 
 cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
@@ -11,17 +10,86 @@ client = MongoClient(cadenaConexion)
 db = client['ProyectoIntegrador']
 
 
+class UsuarioManager(BaseUserManager):
+    def create_user(self, username, email, nombres, apellidos, cedula, password=None):
+        if not email:
+            raise ValueError('El usuario debe poseer un correo electrónico')
+
+        usuario = self.model(
+            username=username,
+            email=self.normalize_email(email),
+            nombres=nombres,
+            apellidos=apellidos,
+            cedula=cedula
+        )
+
+        usuario.set_password(password)
+        usuario.save()
+        return usuario
+
+    def create_superuser(self, username, email, nombres, apellidos, cedula, password):
+        usuario = self.create_user(
+            username=username,
+            email=email,
+            nombres=nombres,
+            apellidos=apellidos,
+            cedula=cedula,
+            password=password
+        )
+        usuario.is_superuser = True
+        usuario.is_administrador = True
+        usuario.save()
+        return usuario
+
+
+class Usuario(AbstractBaseUser):
+    username = models.CharField('Nombre de usuario', unique=True, max_length=50)
+    email = models.EmailField('Correo Electrónico', unique=True, max_length=200)
+    nombres = models.CharField('Nombres', null=True, blank=True, max_length=200)
+    apellidos = models.CharField('Apellidos', blank=True, null=True, max_length=200)
+    cedula = models.CharField('Cédula', unique=True, max_length=10)
+    is_activo = models.BooleanField(default=True)
+    is_administrador = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    objects = UsuarioManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'nombres', 'apellidos', 'cedula']
+
+    def __str__(self):
+        return f"{self.username}: {self.nombres} {self.apellidos}"
+
+    def has_perm(self, perm,obj = None):
+        return True
+
+    def has_module_perms(self,app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        return self.is_administrador
+
+
 class Facultad(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
+
+    def __str__(self):
+        return self.nombre
+
+    def obtener_facultades(self):
+        return Facultad.objects.all()
+
+    def obtener_facultades_por_nombre(self, nombre=None):
+        if nombre is None:
+            return self.obtener_facultades()
+        else:
+            return Facultad.objects.filter(nombre__icontains=nombre)
 
     def delete(self, *args, **kwargs):
         bloques = self.bloques.all()
         for bloque in bloques:
             db.get_collection('nodos').delete_one({'_id': bloque.id})
         super().delete(*args, **kwargs)
-
-    def __str__(self):
-        return self.nombre
 
     class Meta:
         verbose_name = 'Facultad'
@@ -46,6 +114,27 @@ class Bloque(models.Model):
     is_auxiliar = models.BooleanField(default=False, verbose_name='Auxiliar')
     numero_auxiliar = models.PositiveIntegerField(null=True, blank=True, editable=False, unique=True, verbose_name='Numero Auxiliar')
     facultad = models.ForeignKey('Facultad', on_delete=models.CASCADE, default=None, related_name='bloques')
+
+    def __str__(self):
+        return self.codigo
+
+    def obtener_bloques(self):
+        return Bloque.objects.all()
+
+    def obtener_bloques_por_descripcion(self, descripcion=None):
+        if descripcion is None:
+            return self.obtener_bloques()
+        else:
+            return Bloque.objects.filter(descripcion__icontains=descripcion)
+
+    def obtener_bloques_por_codigo(self, codigo=None):
+        if codigo is None:
+            return self.obtener_bloques()
+        else:
+            return Bloque.objects.filter(codigo__icontains=codigo)
+
+    def obtener_bloques_por_facultad(self, facultad):
+        return Bloque.objects.filter(facultad__nombre__contains=facultad)
 
     def save(self, *args, **kwargs):
         if self.is_auxiliar:
@@ -90,9 +179,6 @@ class Bloque(models.Model):
         else:
             return 1
 
-    def __str__(self):
-        return self.codigo
-
     class Meta:
         verbose_name = 'Bloque'
         verbose_name_plural = 'Bloques'
@@ -105,6 +191,36 @@ class Ruta(models.Model):
     nodo_destino = models.ForeignKey('Nodo', on_delete=models.CASCADE, related_name='Rutas_Destino')
     distancia = models.FloatField(null=True, blank=True, editable=False, verbose_name='Distancia')
     tiempo = models.FloatField(null=True, blank=True, editable=False, verbose_name='Tiempo en segundos')
+
+    def __str__(self):
+        return f"[{self.nodo_inicio} - {self.nodo_destino}]"
+
+    def obtener_rutas(self):
+        return Ruta.objects.all()
+
+    def obtener_ruta_por_codigo_inicio(self, nodo_inicio=None):
+        if nodo_inicio is None:
+            return self.obtener_rutas()
+        else:
+            return Ruta.objects.filter(nodo_inicio__bloque__codigo__icontains=nodo_inicio)
+
+    def obtener_ruta_por_desc_inicio(self, nodo_inicio=None):
+        if nodo_inicio is None:
+            return self.obtener_rutas()
+        else:
+            return Ruta.objects.filter(nodo_inicio__bloque__descripcion__icontains=nodo_inicio)
+
+    def obtener_ruta_por_codigo_destino(self, nodo_destino=None):
+        if nodo_destino is None:
+            return self.obtener_rutas()
+        else:
+            return Ruta.objects.filter(nodo_destino__bloque__codigo__icontains=nodo_destino)
+
+    def obtener_ruta_por_desc_destino(self, nodo_destino=None):
+        if nodo_destino is None:
+            return self.obtener_rutas()
+        else:
+            return Ruta.objects.filter(nodo_inicio__bloque__descripcion__icontains=nodo_destino)
 
     def calcular_distancia(self, punto1, punto2):
         R = 6371.0
@@ -159,9 +275,6 @@ class Ruta(models.Model):
             )
         super().delete(*args, **kwargs)
 
-    def __str__(self):
-        return f"[{self.nodo_inicio} - {self.nodo_destino}]"
-
     class Meta:
         verbose_name = 'Ruta'
         verbose_name_plural = 'Rutas'
@@ -190,6 +303,24 @@ class Nodo(models.Model):
     codigo = models.CharField(null=True, blank=True, editable=False, max_length=15, verbose_name='Codigo')
     latitud = models.FloatField(null=True, blank=True, editable=False, verbose_name='Latitud')
     altitud = models.FloatField(null=True, blank=True, editable=False, verbose_name='Altitud')
+
+    def __str__(self):
+        return self.codigo
+
+    def obtener_nodos(self):
+        return Nodo.objects.all()
+
+    def obtener_nodo_por_codigo(self, codigo=None):
+        if codigo is None:
+            return self.obtener_nodos()
+        else:
+            return Nodo.objects.filter(codigo__contains=codigo)
+
+    def obtener_nodo_por_descripcion_bloque(self, bloque):
+        return Nodo.objects.filter(bloque__descripcion__icontains=bloque)
+
+    def obtener_nodo_por_codigo_bloque(self, bloque):
+        return Nodo.objects.filter(bloque__codigo__contains=bloque)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -228,8 +359,6 @@ class Nodo(models.Model):
         else:
             return 1
     """
-    def __str__(self):
-        return self.codigo
 
     class Meta:
         verbose_name = 'Nodo'
