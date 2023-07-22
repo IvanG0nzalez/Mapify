@@ -10,6 +10,7 @@
     </title>
         <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario" style="padding-bottom: 35px; margin-top: 30px" width=20%>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyNlsouulVQvCw11OT4WUyHh_GJ5fcKes&libraries=places"></script>
   </head>
 
@@ -19,26 +20,60 @@
         <h1 align="center" id="texto_barra"></h1>
     </div>
 
-    <div class="div_principal">
-        <div class="div_navdrawer">
-            <nav class="nav">
-                <ul class="list">
+    <nav class="sidebar close">
+        <header>
+            <div class="text logo">
+                <span class="name">Divcode</span>
+                <span class="profe">Desarrollador</span>
+            </div>
+            <i class="bx bx-menu toggle"></i>
+        </header>
 
-                    <li class="list__item list__item--inside">
-                        <div class="list__button">
-                            <a href="{% url 'inicio' %}" class="nav__link">Inicio</a>
-                        </div>
+        <div class="menu-bar">
+            <div class="menu">
+{#                <li class="search-box">#}
+{#                    <i class="bx bx-searh icon"></i>#}
+{#                    <input type="text" placeholder="Buscar...">#}
+{#                </li>#}
+
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="{% url 'inicio' %}" class="nav__link">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
                     </li>
 
-                    <li class="list__item list__item--inside">
-                        <div class="list__button">
-                            <a href="{% url 'busqueda_user' %}" class="nav__link">Buscar</a>
-                        </div>
+                    <li class="nav-link">
+                        <a href="{% url 'busqueda_user' %}" class="nav__link">
+                            <i class="bx bx-search-alt icon"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
                     </li>
-
                 </ul>
-            </nav>
+            </div>
         </div>
+    </nav>
+{#    <div class="div_principal">#}
+{#        <div class="div_navdrawer">#}
+{#            <nav class="nav">#}
+{#                <ul class="list">#}
+{##}
+{#                    <li class="list__item list__item--inside">#}
+{#                        <div class="list__button">#}
+{#                            <a href="{% url 'inicio' %}" class="nav__link">Inicio</a>#}
+{#                        </div>#}
+{#                    </li>#}
+{##}
+{#                    <li class="list__item list__item--inside">#}
+{#                        <div class="list__button">#}
+{#                            <a href="{% url 'busqueda_user' %}" class="nav__link">Buscar</a>#}
+{#                        </div>#}
+{#                    </li>#}
+{##}
+{#                </ul>#}
+{#            </nav>#}
+{#        </div>#}
 
         <div class="contenido">
             {% block contenido %}
@@ -48,6 +83,6 @@
     </div>
 
 
-
+    <script src="{% static "scripts/scripts.js" %}"></script>
   </body>
 </html>
