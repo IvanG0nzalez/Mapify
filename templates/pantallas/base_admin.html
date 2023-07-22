@@ -1,55 +1,57 @@
 {% load static %}
 <!doctype html>
 <html lang="es">
-  <head>
-
+<head>
 
     <title>
-      {% block titulo %}
-      {% endblock %}
+        {% block titulo %}
+        {% endblock %}
     </title>
-        <link rel="stylesheet" href="{% static "css/style.css" %}" >
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <div class="barraPrincipal" style="height: 60px">
-        <h1 align="center" id="texto_barra">Administración
-                <a href="{% url 'login' %}" class="btn btn-danger" tabindex="-1" role="button" aria-disabled="true">Cerrar sesión</a>
-        </h1>
 
+<div class="d-block justify-content-between">
+    <div class="barraPrincipal mr-5" style="height: 60px; display: flex; align-items: center;">
+        <h1 align="center" id="texto_barra" style="flex: 1;">Administración</h1>
+        <a href="{% url 'login' %}" class="btn btn-danger mx-2" tabindex="-1" role="button" aria-disabled="true">Cerrar sesión</a>
     </div>
+</div>
 
-    <div class="div_principal">
-        <div class="div_navdrawer">
-            <nav class="nav">
-                <ul class="list">
 
-                    <li class="list__item list__item--inside">
-                        <div class="list__button">
-                            <a href="{% url 'administracion-inicio' %}" class="nav__link">Inicio</a>
-                        </div>
-                    </li>
+<div class="div_principal">
+    <div class="div_navdrawer">
+        <nav class="nav">
+            <ul class="list">
 
-                    <li class="list__item list__item--inside">
-                        <div class="list__button">
-                            <a href="{% url 'bloque' %}" class="nav__link">Bloques</a>
-                        </div>
-                    </li>
+                <li class="list__item list__item--inside">
+                    <div class="list__button">
+                        <a href="{% url 'administracion-inicio' %}" class="nav__link">Inicio</a>
+                    </div>
+                </li>
 
-                    <li class="list__item list__item--inside">
-                        <div class="list__button">
-                            <a href="#" class="nav__link">Nodos</a>
-                        </div>
-                    </li>
+                <li class="list__item list__item--inside">
+                    <div class="list__button">
+                        <a href="{% url 'bloque' %}" class="nav__link">Bloques</a>
+                    </div>
+                </li>
 
-                    <li class="list__item list__item--inside">
-                        <div class="list__button">
-                            <a href="{% url 'grafo' %}" class="nav__link">Grafo</a>
-                        </div>
-                    </li>
+                <li class="list__item list__item--inside">
+                    <div class="list__button">
+                        <a href="#" class="nav__link">Nodos</a>
+                    </div>
+                </li>
+
+                <li class="list__item list__item--inside">
+                    <div class="list__button">
+                        <a href="{% url 'grafo' %}" class="nav__link">Grafo</a>
+                    </div>
+                </li>
 
                 {% if user.is_superuser != False %}
                     <li class="list__item list__item--inside">
@@ -59,16 +61,16 @@
                     </li>
                 {% endif %}
 
-                </ul>
-            </nav>
-        </div>
-
-        <div class="contenido">
-            {% block contenido %}
-
-            {% endblock %}
-        </div>
+            </ul>
+        </nav>
     </div>
 
-  </body>
+    <div class="contenido">
+        {% block contenido %}
+
+        {% endblock %}
+    </div>
+</div>
+
+</body>
 </html>
