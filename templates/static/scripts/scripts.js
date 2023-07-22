@@ -22,7 +22,4 @@ function initMap() {
 
 initMap()
 
-function irAPagina(pagina) {
-    window.location.href = pagina;
-}
 
