@@ -5,6 +5,10 @@ urlpatterns = [
     path('', views.inicio, name='inicio'),
     path('busqueda', views.busqueda_rutas_user, name='busqueda_user'),
     path('administracion/inicio', views.administracion_inicio, name='administracion-inicio'),
+    path('administracion/bloque', views.administracion_bloque, name='bloque'),
+    path('administracion/detalle-bloque', views.administracion_detalle_bloque, name='detalle-bloque'),
+    path('administracion/anadir-bloque', views.administracion_anadir_bloque, name='anadir-bloque'),
+    path('administracion/modificar-bloque', views.administracion_modificar_bloque, name='modificar-bloque'),
     path('administracion/cerrar-sesion', views.cerrar_sesion, name='cerrar_sesion'),
     path('administracion/grafo', views.grafo_admin, name='grafo'),
 ]
