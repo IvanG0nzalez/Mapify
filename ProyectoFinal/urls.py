@@ -21,5 +21,4 @@ from Mapeo import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Mapeo.urls')),
-    path('administracion/iniciar-sesion', views.iniciar_sesion, name='login'),
 ]

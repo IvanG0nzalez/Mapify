@@ -3,6 +3,7 @@ import io
 
 import matplotlib.pyplot as plt
 import networkx as nx
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -92,7 +93,6 @@ def iniciar_sesion(request):
 
 def cerrar_sesion(request):
     logout(request)
-    messages.info(request, "Saliste de la sesión")
     return redirect("login")
 
 
