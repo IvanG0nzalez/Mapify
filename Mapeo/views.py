@@ -21,6 +21,18 @@ def pantallaBase(request):
 def administracion_inicio(request):
     return render(request, 'pantallas/inicio_admin.html', {})
 
+def administracion_bloque(request):
+    return render(request, 'pantallas/bloque_admin.html', {})
+
+def administracion_detalle_bloque(request):
+    return render(request, 'pantallas/detalle_bloque_admin.html', {})
+
+def administracion_anadir_bloque(request):
+    return render(request, 'pantallas/anadir_bloque_admin.html', {})
+
+def administracion_modificar_bloque(request):
+    return render(request, 'pantallas/modificar_bloque_admin.html', {})
+
 def busqueda_rutas_user(request):
     return render(request, 'pantallas/busqueda.html', {})
 

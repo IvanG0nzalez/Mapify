@@ -1,10 +1,10 @@
 body, html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-#texto_barra{
+#texto_barra {
     color: aliceblue;
 }
 
@@ -17,7 +17,7 @@ body, html {
     height: 600px;
 }
 
-.div_principal{
+.div_principal {
     display: flex;
     height: 100%;
     min-height: 100%;
@@ -26,7 +26,7 @@ body, html {
     background-color: #f4eade;
 }
 
-.div_navdrawer{
+.div_navdrawer {
     width: 200px;
     height: 100%;
     min-height: 100%;
@@ -35,12 +35,12 @@ body, html {
     overflow: auto;
 }
 
-.barraPrincipal{
+.barraPrincipal {
     background-color: #4d648d;
     overflow: hidden;
 }
 
-.div_inicio_sesion{
+.div_inicio_sesion {
     width: auto;
     height: 100%;
     min-height: 100%;
@@ -56,24 +56,24 @@ body, html {
     flex: 1;
 }
 
-.nav{
+.nav {
     width: auto;
     display: inline-block;
 }
 
-.nav__link{
+.nav__link {
     color: #303440;
     display: block;
     padding: 15px 0;
     text-decoration: none;
 }
 
-.list__item--inside:hover{
+.list__item--inside:hover {
     cursor: pointer;
     background: #f6f8fa;
 }
 
-.list{
+.list {
     width: 100%;
     height: 100vh;
     justify-content: center;
@@ -82,17 +82,34 @@ body, html {
     background: white;
 }
 
-.list__item{
+.list__item {
     list-style-type: none;
     width: 100%;
     margin-left: 0;
     text-align: center;
 
 }
-.list__button{
+
+.list__button {
     display: flex;
     align-items: center;
     gap: 1em;
     width: 70%;
     margin: 0 auto;
+}
+
+table {
+    width: 50%;
+    margin: 20px 20px 20px 0;
+}
+
+.thead_bloque {
+    font-family: Helvetica, serif;
+    font-size: 1em;
+}
+
+.tbody_bloque {
+    font-family: Helvetica, serif;
+    font-size: 1em;
+    cursor: pointer;
 }
