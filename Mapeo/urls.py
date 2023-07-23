@@ -2,12 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from Mapeo import views
 #from Mapeo.views import ListadoUsuario, CrearUsuario, InicioSesion
+from Mapeo.views import InicioSesion
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
     path('busqueda', views.busqueda_rutas_user, name='busqueda_user'),
     #path('administracion/iniciar-sesion', InicioSesion.as_view(), name='login'),
-    path('administracion/iniciar-sesion', views.iniciar_sesion, name='login'),
+    path('administracion/iniciar-sesion', InicioSesion.as_view(), name='login'),
     path('administracion/inicio', login_required(views.administracion_inicio, login_url='/administracion/iniciar-sesion'), name='administracion-inicio'),
     path('administracion/bloque', login_required(views.administracion_bloque, login_url='/administracion/iniciar-sesion'), name='bloque'),
     path('administracion/detalle-bloque', login_required(views.administracion_detalle_bloque, login_url='/administracion/iniciar-sesion'), name='detalle-bloque'),
@@ -20,5 +21,6 @@ urlpatterns = [
     path('administracion/nodo', login_required(views.administracion_nodo, login_url='/administracion/iniciar-sesion'), name='nodo'),
     path('administracion/detalle-nodo', login_required(views.administracion_detalle_nodo, login_url='/administracion/iniciar-sesion'), name='detalle-nodo'),
     path('administracion/conexion-bloque', login_required(views.administracion_conexion_bloque, login_url='/administracion/iniciar-sesion'),name='conexion-bloque'),
-
+    path('administracion/listado-administradores', login_required(views.listado_admins, login_url='/administracion/iniciar-sesion'), name='listar-admins'),
+    path('administracion/crear-administrador', login_required(views.crear_admin, login_url='/administracion/iniciar-sesion'), name='crear-admin')
 ]

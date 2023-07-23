@@ -4,6 +4,8 @@ import io
 import matplotlib.pyplot as plt
 import networkx as nx
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -17,6 +19,7 @@ from django.views.generic import CreateView, ListView
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 #from Mapeo.forms import FormularioCrearUsuario, FormularioLogin
+from Mapeo.forms import RegistroAdminForm
 from Mapeo.graph_controller import ControladorGrafo
 #from Mapeo.models import Usuario
 
@@ -84,23 +87,62 @@ def grafo_admin(request):
     #return render(request, 'pantallas/grafo_admin.html', {})
 
 
+def listado_admins(request):
+    admins = User.objects.all()
+    return render(request, 'pantallas/listado_admins.html', {'admins': admins})
+
+
+def crear_admin(request):
+    if request.method == 'POST':
+        form = RegistroAdminForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.is_staff = True
+            user.save()
+            return redirect('listar-admins')
+    else:
+        form = RegistroAdminForm()
+    return render(request, 'pantallas/crear_admin.html', {'form': form})
+
+"""
 def iniciar_sesion(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             usuario = form.cleaned_data.get('username')
             contrasenia = form.cleaned_data.get('password')
-            user = authenticate(username=usuario, password=contrasenia)
+            user = authenticate(request, username=usuario, password=contrasenia)
             if user is not None:
                 login(request, user)
                 return redirect("administracion-inicio")
             else:
                 messages.error(request, 'Usuario o contraseña equivocada')
-        else:
-            messages.error(request, 'Usuario o contraseña equivocada')
-
-    form = AuthenticationForm()
+    else:
+        form = AuthenticationForm()
     return render(request, 'pantallas/inicio_sesion.html', {"form": form})
+"""
+
+
+class InicioSesion(LoginView):
+    template_name = 'pantallas/inicio_sesion.html'
+    redirect_authenticated_user = True
+
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        usuario = form.get_user()
+        if usuario.is_active and usuario.is_staff:
+            login(self.request, usuario)
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.form_invalid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('administracion-inicio')
 
 
 """
