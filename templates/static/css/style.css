@@ -7,6 +7,15 @@
     overflow: hidden;
 }
 
+.imagen_fondo{
+    width:100%;
+    min-height: 100%;
+    background-image: url(templates/static/imagenes/FondoUNL.jpg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+}
 
 #mapa {
     display: flex;
@@ -23,7 +32,6 @@
     min-height: 100%;
     margin: 0 auto;
     opacity: 95%;
-    background-color: #f4eade;
 }
 
 .div_inicio_sesion {
@@ -34,6 +42,26 @@
     opacity: 95%;
     overflow: hidden;
     background-color: var(--primary-color-light);
+    position: relative;
+    background-image: url(FondoUNL.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.div_formulario_inicio_sesion{
+    background-color: white;
+    width: 60vh;
+    height: 60vh;
+    border-width: 2px;
+    position: absolute;
+    top: 20%;
+    left: 10px;
+    right: 10px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(2.5, 2.5, 2.5, 2.5);
+    z-index: 1;
 }
 
 table {
