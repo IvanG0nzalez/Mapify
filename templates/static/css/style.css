@@ -2,6 +2,12 @@
     color: aliceblue;
 }
 
+.barraPrincipal {
+    background-color: #DBE6EC;
+    overflow: hidden;
+}
+
+
 #mapa {
     display: flex;
     justify-content: center;
@@ -20,76 +26,14 @@
     background-color: #f4eade;
 }
 
-.div_navdrawer {
-    width: 200px;
-    height: 100%;
-    min-height: 100%;
-    margin: 0 auto;
-    opacity: 95%;
-    overflow: auto;
-}
-
-.barraPrincipal {
-    background-color: #4d648d;
-    overflow: hidden;
-}
-
 .div_inicio_sesion {
     width: auto;
-    height: 100%;
+    height: 100vh;
     min-height: 100%;
     margin: 0 auto;
     opacity: 95%;
     overflow: hidden;
-    background-color: #f4eade;
-}
-
-.contenido {
-    margin-left: 20px;
-    margin-top: 20px;
-    flex: 1;
-}
-
-.nav {
-    width: auto;
-    display: inline-block;
-}
-
-.nav__link {
-    color: #303440;
-    display: block;
-    padding: 15px 0;
-    text-decoration: none;
-}
-
-.list__item--inside:hover {
-    cursor: pointer;
-    background: #f6f8fa;
-}
-
-.list {
-    width: 100%;
-    height: 100vh;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 0 16px 16px 0;
-    background: white;
-}
-
-.list__item {
-    list-style-type: none;
-    width: 100%;
-    margin-left: 0;
-    text-align: center;
-
-}
-
-.list__button {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    width: 70%;
-    margin: 0 auto;
+    background-color: var(--primary-color-light);
 }
 
 table {
@@ -168,7 +112,7 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    width: 200px;
+    width: 250px;
     padding: 10px 14px;
     background: var(--sidebar-color);
     transition: var(--tran-05);
@@ -325,9 +269,8 @@ body {
 }
 
 .home .text {
-    font-size: 30px;
     font-weight: 500;
     color: var(--text-color);
-    padding: 12px 60px;
+    padding: 12px 70px;
 }
 
