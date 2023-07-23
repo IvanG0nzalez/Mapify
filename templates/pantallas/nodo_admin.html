@@ -28,7 +28,7 @@
     <div class="container">
         <div class="contenedor">
             <input type="text" id="campoTexto" class="input_buscar" placeholder="Ingrese Codigo de Nodo">
-            <a href="{% url 'detalle-nodo' %}" class="btn btn-dark mx-2">Buscar Nodo</a>
+            <a href="{% url 'mapeo:detalle-nodo' %}" class="btn btn-dark mx-2">Buscar Nodo</a>
         </div>
         <table class="table table-striped table-hover table-bordered">
             <thead class="thead_bloque">
@@ -40,7 +40,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr onclick=seleccionarFila(this, )>
+            <tr onclick=seleccionarFila(this)>
                 <td>N2</td>
                 <td>-4,4574</td>
                 <td>-2.474554</td>

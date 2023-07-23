@@ -20,7 +20,7 @@
 <div class="d-block justify-content-between">
     <div class="barraPrincipal mr-5" style="height: 60px; display: flex; align-items: center;">
         <h1 align="center" id="texto_barra" style="flex: 1;">Administración</h1>
-        <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger mx-2" tabindex="-1" role="button" aria-disabled="true">Cerrar sesión</a>
+        <a href="{% url 'mapeo:cerrar_sesion' %}" class="btn btn-danger mx-2" tabindex="-1" role="button" aria-disabled="true">Cerrar sesión</a>
     </div>
 </div>
 
@@ -38,32 +38,32 @@
                 <br>
                 <li class="list__item list__item--inside">
                     <div class="list__button">
-                        <a href="{% url 'administracion-inicio' %}" class="nav__link">Inicio</a>
+                        <a href="{% url 'mapeo:administracion-inicio' %}" class="nav__link">Inicio</a>
                     </div>
                 </li>
 
                 <li class="list__item list__item--inside">
                     <div class="list__button">
-                        <a href="{% url 'bloque' %}" class="nav__link">Bloques</a>
+                        <a href="{% url 'mapeo:bloque' %}" class="nav__link">Bloques</a>
                     </div>
                 </li>
 
                 <li class="list__item list__item--inside">
                     <div class="list__button">
-                        <a href="{% url 'nodo' %}" class="nav__link">Nodos</a>
+                        <a href="{% url 'mapeo:nodo' %}" class="nav__link">Nodos</a>
                     </div>
                 </li>
 
                 <li class="list__item list__item--inside">
                     <div class="list__button">
-                        <a href="{% url 'grafo' %}" class="nav__link">Grafo</a>
+                        <a href="{% url 'mapeo:grafo' %}" class="nav__link">Grafo</a>
                     </div>
                 </li>
 
                 {% if request.user.is_superuser %}
                     <li class="list__item list__item--inside">
                         <div class="list__button">
-                            <a href="{% url 'listar-admins' %}" class="nav__link">Administradores</a>
+                            <a href="{% url 'mapeo:listar-admins' %}" class="nav__link">Administradores</a>
                         </div>
                     </li>
                 {% endif %}
