@@ -76,12 +76,14 @@ class Facultad(models.Model):
     def __str__(self):
         return self.nombre
 
-    def obtener_facultades(self):
-        return Facultad.objects.all()
+    @classmethod
+    def obtener_facultades(cls):
+        return cls.objects.all()
 
-    def obtener_facultades_por_nombre(self, nombre=None):
+    @classmethod
+    def obtener_facultades_por_nombre(cls, nombre=None):
         if nombre is None:
-            return self.obtener_facultades()
+            return cls.obtener_facultades()
         else:
             return Facultad.objects.filter(nombre__icontains=nombre)
 
@@ -118,23 +120,27 @@ class Bloque(models.Model):
     def __str__(self):
         return self.codigo
 
-    def obtener_bloques(self):
-        return Bloque.objects.all()
+    @classmethod
+    def obtener_bloques(cls):
+        return cls.objects.all()
 
-    def obtener_bloques_por_descripcion(self, descripcion=None):
+    @classmethod
+    def obtener_bloques_por_descripcion(cls, descripcion=None):
         if descripcion is None:
-            return self.obtener_bloques()
+            return cls.obtener_bloques()
         else:
-            return Bloque.objects.filter(descripcion__icontains=descripcion)
+            return cls.objects.filter(descripcion__icontains=descripcion)
 
-    def obtener_bloques_por_codigo(self, codigo=None):
+    @classmethod
+    def obtener_bloques_por_codigo(cls, codigo=None):
         if codigo is None:
-            return self.obtener_bloques()
+            return cls.obtener_bloques()
         else:
-            return Bloque.objects.filter(codigo__icontains=codigo)
+            return cls.objects.filter(codigo__icontains=codigo)
 
-    def obtener_bloques_por_facultad(self, facultad):
-        return Bloque.objects.filter(facultad__nombre__contains=facultad)
+    @classmethod
+    def obtener_bloques_por_facultad(cls, facultad):
+        return cls.objects.filter(facultad__nombre__contains=facultad)
 
     def save(self, *args, **kwargs):
         if self.is_auxiliar:
@@ -195,32 +201,37 @@ class Ruta(models.Model):
     def __str__(self):
         return f"[{self.nodo_inicio} - {self.nodo_destino}]"
 
-    def obtener_rutas(self):
-        return Ruta.objects.all()
+    @classmethod
+    def obtener_rutas(cls):
+        return cls.objects.all()
 
-    def obtener_ruta_por_codigo_inicio(self, nodo_inicio=None):
+    @classmethod
+    def obtener_ruta_por_codigo_inicio(cls, nodo_inicio=None):
         if nodo_inicio is None:
-            return self.obtener_rutas()
+            return cls.obtener_rutas()
         else:
-            return Ruta.objects.filter(nodo_inicio__bloque__codigo__icontains=nodo_inicio)
+            return cls.objects.filter(nodo_inicio__bloque__codigo__icontains=nodo_inicio)
 
-    def obtener_ruta_por_desc_inicio(self, nodo_inicio=None):
+    @classmethod
+    def obtener_ruta_por_desc_inicio(cls, nodo_inicio=None):
         if nodo_inicio is None:
-            return self.obtener_rutas()
+            return cls.obtener_rutas()
         else:
-            return Ruta.objects.filter(nodo_inicio__bloque__descripcion__icontains=nodo_inicio)
+            return cls.objects.filter(nodo_inicio__bloque__descripcion__icontains=nodo_inicio)
 
-    def obtener_ruta_por_codigo_destino(self, nodo_destino=None):
+    @classmethod
+    def obtener_ruta_por_codigo_destino(cls, nodo_destino=None):
         if nodo_destino is None:
-            return self.obtener_rutas()
+            return cls.obtener_rutas()
         else:
-            return Ruta.objects.filter(nodo_destino__bloque__codigo__icontains=nodo_destino)
+            return cls.objects.filter(nodo_destino__bloque__codigo__icontains=nodo_destino)
 
-    def obtener_ruta_por_desc_destino(self, nodo_destino=None):
+    @classmethod
+    def obtener_ruta_por_desc_destino(cls, nodo_destino=None):
         if nodo_destino is None:
-            return self.obtener_rutas()
+            return cls.obtener_rutas()
         else:
-            return Ruta.objects.filter(nodo_inicio__bloque__descripcion__icontains=nodo_destino)
+            return cls.objects.filter(nodo_inicio__bloque__descripcion__icontains=nodo_destino)
 
     def calcular_distancia(self, punto1, punto2):
         R = 6371.0
@@ -307,20 +318,24 @@ class Nodo(models.Model):
     def __str__(self):
         return self.codigo
 
-    def obtener_nodos(self):
-        return Nodo.objects.all()
+    @classmethod
+    def obtener_nodos(cls):
+        return cls.objects.all()
 
-    def obtener_nodo_por_codigo(self, codigo=None):
+    @classmethod
+    def obtener_nodo_por_codigo(cls, codigo=None):
         if codigo is None:
-            return self.obtener_nodos()
+            return cls.obtener_nodos()
         else:
-            return Nodo.objects.filter(codigo__contains=codigo)
+            return cls.objects.filter(codigo__contains=codigo)
 
-    def obtener_nodo_por_descripcion_bloque(self, bloque):
-        return Nodo.objects.filter(bloque__descripcion__icontains=bloque)
+    @classmethod
+    def obtener_nodo_por_descripcion_bloque(cls, bloque):
+        return cls.objects.filter(bloque__descripcion__icontains=bloque)
 
-    def obtener_nodo_por_codigo_bloque(self, bloque):
-        return Nodo.objects.filter(bloque__codigo__contains=bloque)
+    @classmethod
+    def obtener_nodo_por_codigo_bloque(cls, bloque):
+        return cls.objects.filter(bloque__codigo__contains=bloque)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

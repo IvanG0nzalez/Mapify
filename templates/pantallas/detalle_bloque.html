@@ -1,0 +1,100 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block titulo %}
+            Detalle Bloque
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario"
+          style="padding-bottom: 35px; margin-top: 30px" width=20%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+{% block contenido %}
+    <h1 class="container">Detalle Bloque</h1>
+
+    <div class="container mt-5">
+        <form>
+            <div class="mb-3">
+                <li>
+                    <label for="numero" class="form-label">
+                        <strong>Número:</strong>
+                        {% if bloque.is_auxiliar %}
+                            El bloque es auxiliar
+                        {% else %}
+                            {{ bloque.numero }}
+                        {% endif %}
+                    </label>
+                </li>
+            </div>
+            <div class="mb-3">
+                <li><label for="zona" class="form-label"><strong>Zona:</strong> {{ bloque.zona }}</label></li>
+            </div>
+            <div class="mb-3">
+                <li><label for="codigo" class="form-label"><strong>Código:</strong> {{ bloque.codigo }}</label></li>
+            </div>
+            <div class="mb-3">
+                <li><label for="descripcion" class="form-label"><strong>Descripción:</strong> {{ bloque.descripcion }}
+                </label></li>
+            </div>
+            <div class="mb-3">
+                <li><label for="latitud" class="form-label"><strong>Latitud:</strong> {{ bloque.latitud }}</label></li>
+            </div>
+            <div class="mb-3">
+                <li><label for="altitud" class="form-label"><strong>Altitud:</strong> {{ bloque.altitud }}</label></li>
+            </div>
+            <div class="mb-3">
+                <li>
+                    <label for="is_auxiliar" class="form-label">
+                        <strong>Auxiliar:</strong>
+                        {% if bloque.is_auxiliar %}
+                            Sí
+                        {% else %}
+                            No
+                        {% endif %}
+                    </label>
+                </li>
+            </div>
+            <div class="mb-3">
+                <li>
+                    <label for="numero_auxiliar" class="form-label">
+                        <strong>Número Auxiliar:</strong>
+                        {% if bloque.is_auxiliar %}
+                            {{ bloque.numero_auxiliar }}
+                        {% else %}
+                            El bloque no es auxiliar
+                        {% endif %}
+                    </label>
+                </li>
+            </div>
+            <div class="mb-3">
+                <li><label for="facultad" class="form-label"><strong>Facultad:</strong> {{ bloque.facultad }}</label>
+                </li>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'mapeo:conexion-bloque' %}" class="btn btn-primary">Conexión</a>
+
+                <div>
+
+                    <a href="{% url 'mapeo:modificar-bloque' bloque.id %}" class="btn btn-warning mx-2">Modificar</a>
+                    <a href="{% url 'mapeo:bloque' %}" class="btn btn-danger mx-2">Cancelar</a>
+
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+    <script src="{% static "scripts/scripts.js" %}"></script>
+{% endblock %}
+
+</html>

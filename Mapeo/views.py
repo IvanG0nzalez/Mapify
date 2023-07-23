@@ -19,9 +19,10 @@ from django.views.generic import CreateView, ListView
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 #from Mapeo.forms import FormularioCrearUsuario, FormularioLogin
-from Mapeo.forms import RegistroAdminForm
+from Mapeo.forms import RegistroAdminForm, BloqueForm
 from Mapeo.graph_controller import ControladorGrafo
 #from Mapeo.models import Usuario
+from Mapeo.models import Bloque
 
 
 def inicio(request):
@@ -33,17 +34,41 @@ def pantallaBase(request):
 def administracion_inicio(request):
     return render(request, 'pantallas/inicio_admin.html', {})
 
-def administracion_bloque(request):
-    return render(request, 'pantallas/bloque_admin.html', {})
+
+def listado_bloque(request):
+    bloques = Bloque.obtener_bloques()
+    context={
+        'bloques': bloques,
+    }
+    return render(request, 'pantallas/listado_bloque.html', context)
+
+
+def bloque_info(request, bloque_id):
+    bloque = get_object_or_404(Bloque, pk=bloque_id)
+    context={
+        'bloque': bloque,
+    }
+    return render(request, 'pantallas/detalle_bloque.html', context)
 
 def administracion_detalle_bloque(request):
-    return render(request, 'pantallas/detalle_bloque_admin.html', {})
+    return render(request, 'pantallas/detalle_bloque.html', {})
 
 def administracion_anadir_bloque(request):
     return render(request, 'pantallas/anadir_bloque_admin.html', {})
 
-def administracion_modificar_bloque(request):
-    return render(request, 'pantallas/modificar_bloque_admin.html', {})
+
+def modificar_bloque(request, id):
+    bloque = get_object_or_404(Bloque, id=id)
+    data = {
+        'form': BloqueForm(instance=bloque)
+    }
+    if request.method == 'POST':
+        formulario = BloqueForm(data=request.POST, instance=bloque)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('mapeo:bloque')
+        data["form"] = formulario
+    return render(request, 'pantallas/modificar_bloque.html', data)
 
 def busqueda_rutas_user(request):
     return render(request, 'pantallas/busqueda.html', {})
