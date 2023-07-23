@@ -29,7 +29,13 @@
     <div class="div_navdrawer">
         <nav class="nav">
             <ul class="list">
-
+                <br>
+                <li class="list__item list__item--inside">
+                    <div>
+                        <a style="border: 1px solid gray; background-color: lightgray" class="nav-link active" aria-current="page"><strong>Usuario: {{ user.username }}</strong></a>
+                    </div>
+                </li>
+                <br>
                 <li class="list__item list__item--inside">
                     <div class="list__button">
                         <a href="{% url 'administracion-inicio' %}" class="nav__link">Inicio</a>
@@ -57,11 +63,10 @@
                 {% if request.user.is_superuser %}
                     <li class="list__item list__item--inside">
                         <div class="list__button">
-                            <a href="" class="nav__link">Administradores</a>
+                            <a href="{% url 'listar-admins' %}" class="nav__link">Administradores</a>
                         </div>
                     </li>
                 {% endif %}
-
             </ul>
         </nav>
     </div>

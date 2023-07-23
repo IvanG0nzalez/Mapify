@@ -24,7 +24,7 @@
         <div class="div_inicio_sesion">
             <div align="center" style="margin-top: 50px">
                 <img src="{% static 'imagenes/user.png' %}" alt="usuario" style="padding-bottom: 35px; margin-top: 30px" width=20%>
-                <form method="POST">
+                <form method="POST" action="{% url 'login' %}">
                 {% csrf_token %}
                 <div class="form-group" style="width: 25%">
                     <label>Nombre de usuario</label>
@@ -51,6 +51,5 @@
             </form>
         </div>
     </div>
-
   </body>
 </html>

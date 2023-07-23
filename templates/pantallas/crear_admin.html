@@ -1,17 +1,18 @@
 {% extends 'pantallas/base_admin.html' %}
 
-{% block titulo %}Crear admin{% endblock %}
+{% block titulo %}Crear administrador{% endblock %}
 
 {% block contenido %}
-    <!--<div class="card">
+    <div class="card">
         <div class="card-header">
-            <strong class="card-tittle">Registro de admins</strong>
+            <strong class="card-tittle">Registro de administrador</strong>
         </div>
         <div class="table-stats order-table ov-h">
             <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
+                <button type="submit">Agregar</button>
             </form>
         </div>
-    </div>-->
+    </div>
 {% endblock %}
