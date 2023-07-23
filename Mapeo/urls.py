@@ -14,12 +14,16 @@ urlpatterns = [
     path('administracion/bloque/<int:bloque_id>', login_required(views.detalle_bloque, login_url='/administracion/iniciar-sesion'), name='bloque_id'),
     path('administracion/anadir-bloque', login_required(views.anadir_bloque, login_url='/administracion/iniciar-sesion'), name='anadir-bloque'),
     path('administracion/modificar-bloque/<id>/', login_required(views.modificar_bloque, login_url='/administracion/iniciar-sesion'), name='modificar-bloque'),
-    path('administracion/eliminar-bloque/<id>', login_required(views.eliminar_bloque, login_url='/administracion/iniciar-sesion'), name='eliminar-bloque'),
+    path('administracion/eliminar-bloque/<id>/', login_required(views.eliminar_bloque, login_url='/administracion/iniciar-sesion'), name='eliminar-bloque'),
+    path('administracion/nodo', login_required(views.listado_nodo, login_url='/administracion/iniciar-sesion'), name='nodo'),
+    path('administracion/nodo/<int:nodo_id>', login_required(views.detalle_nodo, login_url='/administracion/iniciar-sesion'), name='nodo_id'),
+    path('administracion/conexion-nodo/<int:nodo_id>/', login_required(views.conexiones_nodo, login_url='/administracion/iniciar-sesion'), name='conexion-nodo'),
     path('administracion/cerrar-sesion', views.cerrar_sesion, name='cerrar_sesion'),
     path('administracion/grafo', login_required(views.grafo_admin, login_url='/administracion/iniciar-sesion'), name='grafo'),
-    path('administracion/nodo', login_required(views.listado_nodo, login_url='/administracion/iniciar-sesion'), name='nodo'),
     path('administracion/detalle-nodo', login_required(views.detalle_nodo, login_url='/administracion/iniciar-sesion'), name='detalle-nodo'),
-    path('administracion/conexion-bloque', login_required(views.conexiones_bloque, login_url='/administracion/iniciar-sesion'), name='conexion-bloque'),
     path('administracion/listado-administradores', login_required(views.listado_admins, login_url='/administracion/iniciar-sesion'), name='listar-admins'),
-    path('administracion/crear-administrador', login_required(views.crear_admin, login_url='/administracion/iniciar-sesion'), name='crear-admin')
+    path('administracion/crear-administrador', login_required(views.crear_admin, login_url='/administracion/iniciar-sesion'), name='crear-admin'),
+    path('administracion/modificar-administrador/<id>', login_required(views.modificar_admin, login_url='/administracion/iniciar-sesion'), name='modificar-admin'),
+    path('administracion/eliminar-administrador/<id>/', login_required(views.eliminar_admin, login_url='/administracion/iniciar-sesion'), name='eliminar-admin'),
+
 ]

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>
         {% block titulo %}
-            Conexion Bloque
+            Conexion Nodo
         {% endblock %}
     </title>
     <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario"
@@ -18,39 +18,38 @@
 </head>
 
 {% block contenido %}
-    <h1 class="container">Conectar Bloque</h1>
+    <h1 class="container">Conectar Nodo - {{ nodo.codigo }}</h1>
 
     <div class="container mt-5">
-        <form>
+        <form method="post">
+            {% csrf_token %}
             <div>
-                <label for="bloque">Selecciona un bloque:</label>
-                <select id="bloque">
-                    <option value="Bloque1">Bloque1</option>
-                    <option value="Bloque2">Bloque2</option>
-                    <option value="Bloque3">Bloque3</option>
-                    <option value="Bloque4">Bloque4</option>
+                <label for="nodo">Selecciona un nodo:</label>
+                <select id="nodo" name="nodo_destino">
+                    {% for n in nodos %}
+                        <option value="{{ n.id }}">{{ n.codigo }}</option>
+                    {% endfor %}
                 </select>
-
-            <a href="{% url 'mapeo:conexion-bloque' %}" class="btn btn-dark mx-2">Agregar Conexion</a>
-
+            <button type="submit" class="btn btn-dark mx-2">Agregar Conexion</button>
             </div>
 
             <div>
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="thead_conexion">
                     <tr class="table-dark">
-                        <th>Destino</th>
-                        <th>Tiempo</th>
-                        <th>Distancia</th>
+                        <th class="text-center">Destino</th>
+                        <th class="text-center">Tiempo</th>
+                        <th class="text-center">Distancia</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Bloque 2</td>
-                        <td>4.36</td>
-                        <td>230m</td>
-                    </tr>
-
+                    {% for ruta in rutas %}
+                        <tr>
+                            <td class="text-center">{{ ruta.nodo_destino.codigo }}</td>
+                            <td class="text-center">{{ ruta.tiempo }}</td>
+                            <td class="text-center">{{ ruta.distancia }}</td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
 

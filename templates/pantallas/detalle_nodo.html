@@ -18,30 +18,34 @@
 </head>
 
 {% block contenido %}
-        <h1 class="container">Detalle Nodo</h1>
+    <h1 class="container">Detalle Nodo</h1>
     <div  id="infNodo">
-
         <form>
             <div class="mb-4">
-                <label for="codigoNodo" class="form-label">Código Nodo:</label>
-                <input type="text" id="codigoNodo" value="Nodo 1" readonly>
+                <li>
+                    <label for="bloque" class="form-label"><strong>Bloque:</strong> {{ nodo.bloque }}</label>
+                </li>
             </div>
             <div class="mb-4">
-                <label for="altitudNodo" class="form-label">Altitud:</label>
-                <input type="text" id="altitudNodo" value="-4.454545" readonly>
+                <li>
+                    <label for="codigo" class="form-label"><strong>Código:</strong> {{ nodo.codigo }}</label>
+                </li>
             </div>
             <div class="mb-4">
-                <label for="latitudNodo" class="form-label">Latitud:</label>
-                <input type="text" id="latitudNodo" value="40.7128" readonly>
+                <li>
+                    <label for="latitud" class="form-label"><strong>Latitud:</strong> {{ nodo.latitud }}</label>
+                </li>
             </div>
             <div class="mb-4">
-                <label for="conexionesNodo" class="form-label">Conexiones:</label>
-                <textarea id="conexionesNodo" rows="4" readonly>
-N2
-N3
-N4
-                </textarea>
+                <li>
+                    <label for="altitud" class="form-label"><strong>Altitud:</strong> {{ nodo.altitud }}</label>
+                </li>
             </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'mapeo:conexion-nodo' nodo_id=nodo.id %}" class="btn btn-primary">Conexión</a>
+            </div>
+
         </form>
     </div>
 

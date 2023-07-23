@@ -36,6 +36,7 @@
         <table class="table table-striped table-hover table-bordered">
             <thead class="thead_bloque">
             <tr class="table-dark">
+                <th class="text-center">ID</th>
                 <th class="text-center">Número</th>
                 <th class="text-center">Zona</th>
                 <th class="text-center">Código</th>
@@ -50,6 +51,7 @@
             <tbody class="tbody_bloque">
             {% for bloque in bloques %}
                 <tr>
+                    <td class="text-center"><a href="{% url 'mapeo:bloque_id' bloque_id=bloque.id %}">{{ bloque.id }}</a></td>
                     {% if bloque.numero is None %}
                         <td class="text-center"><a href="{% url 'mapeo:bloque_id' bloque_id=bloque.id %}"> - </a></td>
                     {% else %}

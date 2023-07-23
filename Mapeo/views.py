@@ -11,9 +11,9 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
-from Mapeo.forms import RegistroAdminForm, BloqueForm
+from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm
 from Mapeo.graph_controller import ControladorGrafo
-from Mapeo.models import Bloque
+from Mapeo.models import Bloque, Ruta, Nodo
 
 
 def inicio(request):
@@ -64,23 +64,56 @@ def eliminar_bloque(request, id):
 
 
 def anadir_bloque(request):
-    return render(request, 'pantallas/anadir_bloque.html', {})
+    data={
+        'form': BloqueForm()
+    }
+    if request.method == 'POST':
+        formulario = BloqueForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('mapeo:bloque')
+        else:
+            data["form"] = formulario
+    return render(request, 'pantallas/anadir_bloque.html', data)
+
+
+def listado_nodo(request):
+    nodos = Nodo.obtener_nodos()
+    context = {
+        'nodos': nodos,
+    }
+    return render(request, 'pantallas/listado_nodo.html', context)
+
+
+def detalle_nodo(request, nodo_id):
+    nodo = get_object_or_404(Nodo, pk=nodo_id)
+    context = {
+        'nodo': nodo,
+    }
+    return render(request, 'pantallas/detalle_nodo.html', context)
+
+
+def conexiones_nodo(request, nodo_id):
+    nodo = get_object_or_404(Nodo, pk=nodo_id)
+    nodos = Bloque.objects.exclude(id=nodo_id)
+    rutas = Ruta.objects.filter(nodo_inicio=nodo)
+
+    if request.method == 'POST':
+        nodo_destino_id = request.POST.get('nodo_destino')
+        nodo_destino = get_object_or_404(Nodo, id=nodo_destino_id)
+
+        nueva_ruta = Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
+        return redirect('mapeo:conexion-nodo', nodo_id=nodo_id)
+    context = {
+        'nodos': nodos,
+        'nodo': nodo,
+        'rutas': rutas,
+    }
+    return render(request, 'pantallas/conexiones_nodo.html', context)
 
 
 def busqueda_rutas_user(request):
     return render(request, 'pantallas/busqueda.html', {})
-
-
-def listado_nodo(request):
-        return render(request, 'pantallas/nodo.html', {})
-
-
-def detalle_nodo(request):
-    return render(request, 'pantallas/detalle_nodo.html', {})
-
-
-def conexiones_bloque(request):
-    return render(request, 'pantallas/conexiones_bloque.html', {})
 
 
 def grafo_admin(request):
@@ -130,6 +163,25 @@ def crear_admin(request):
     else:
         form = RegistroAdminForm()
     return render(request, 'pantallas/crear_admin.html', {'form': form})
+
+
+def modificar_admin(request, id):
+    admin = get_object_or_404(User, id=id)
+
+    if request.method == 'POST':
+        form = ModificarAdminForm(request.POST, instance=admin)
+        if form.is_valid():
+            form.save()
+            return redirect('mapeo:listar-admins')
+    else:
+        form = ModificarAdminForm(instance=admin)
+    return render(request, 'pantallas/modificar_admin.html', {'form': form})
+
+
+def eliminar_admin(request, id):
+    admin = get_object_or_404(User, id=id)
+    admin.delete()
+    return redirect('mapeo:listar-admins')
 
 
 class InicioSesion(LoginView):
