@@ -8,83 +8,58 @@
         {% block titulo %}
         {% endblock %}
     </title>
-    <link rel="stylesheet" href="{% static "css/style2.css" %}" alt="usuario">
+    <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyNlsouulVQvCw11OT4WUyHh_GJ5fcKes&libraries=places"></script>
+    <script src="{% static "scripts/scripts.js" %}"></script>
 </head>
 
 <body>
+    <div>
+        <nav class="sidebar close">
+        <div class="menu-bar">
+            <div class="menu">
 
+                <ul class="menu-links">
 
-<nav class="sidebar close">
-    <header>
-        <div class="text logo">
-            <span class="name">Divcode</span>
-            <span class="profe">Desarrollador</span>
-        </div>
-        <i class="bx bx-menu toggle"></i>
-    </header>
+                    <li class="nav-link">
+                        <a href="{% url 'inicio' %}" class="nav__link">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
+                    </li>
 
-    <div class="menu-bar">
-        <div class="menu">
-            <li class="search-box">
-                <i class="bx bx-search icon"></i>
-                <input type="text" placeholder="Buscar">
-            </li>
-            <ul class="menu-links">
-
-                <li class="nav-link">
-                    <a href="{% url 'inicio' %}" class="nav__link">
-                        <i class="bx bx-home-alt icon"></i>
-                        <span class="text nav-text">Inicio</span>
+                    <li class="nav-link">
+                        <a href="{% url 'busqueda_user' %}" class="nav__link">
+                            <i class="bx bx-search-alt icon"></i>
+                            <span class="text nav-text">Busqueda</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="bottom-content">
+                <li class="">
+                    <a href="#">
+                        <i class="bx bx-log-out icon"></i>
+                        <span class="text nav-text">Salir</span>
                     </a>
                 </li>
-
-                <li class="nav-link">
-                    <a href="{% url 'busqueda_user' %}" class="nav__link">
-                        <i class="bx bx-search-alt icon"></i>
-                        <span class="text nav-text">Busqueda</span>
-                    </a>
-                </li>
-            </ul>
+            </div>
         </div>
-        <div class="bottom-content">
-            <li class="">
-                <a href="#">
-                    <i class="bx bx-log-out icon"></i>
-                    <span class="text nav-text">Salir</span>
-                </a>
-            </li>
+    </nav>
+    </div>
 
-            <li class="mode">
-                <div class="sun-moon">
-                    <i class="bx bx-moon icon moon"></i>
-                    <i class="bx bx-sun icon sun"></i>
-                </div>
-                <span class="mode-text text">Modo Oscuro</span>
-                <div class="toggle-switch">
-                    <span class="switch"></span>
-                </div>
-            </li>
+
+
+
+    <section class="home">
+        <div class="text">
+            {% block contenido %}
+
+            {% endblock %}
         </div>
-    </div>
-</nav>
+    </section>
 
 
-<section class="home">
-    <div class="text">
-        DashBoard
-    </div>
-</section>
-
-<div class="contenido">
-    {% block contenido %}
-
-    {% endblock %}
-</div>
-</div>
-
-
-<script src="{% static "scripts/scripts.js" %}"></script>
 </body>
 </html>
