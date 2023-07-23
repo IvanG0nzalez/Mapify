@@ -1,6 +1,6 @@
 import math
 
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from pymongo import MongoClient
@@ -9,66 +9,6 @@ cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
 client = MongoClient(cadenaConexion)
 db = client['ProyectoIntegrador']
 
-"""
-class UsuarioManager(BaseUserManager):
-    def create_user(self, username, email, nombres, apellidos, cedula, password=None):
-        if not email:
-            raise ValueError('El usuario debe poseer un correo electrónico')
-
-        usuario = self.model(
-            username=username,
-            email=self.normalize_email(email),
-            nombres=nombres,
-            apellidos=apellidos,
-            cedula=cedula
-        )
-
-        usuario.set_password(password)
-        usuario.save()
-        return usuario
-
-    def create_superuser(self, username, email, nombres, apellidos, cedula, password):
-        usuario = self.create_user(
-            username=username,
-            email=email,
-            nombres=nombres,
-            apellidos=apellidos,
-            cedula=cedula,
-            password=password
-        )
-        usuario.is_superuser = True
-        usuario.is_administrador = True
-        usuario.save()
-        return usuario
-
-
-class Usuario(AbstractBaseUser):
-    username = models.CharField('Nombre de usuario', unique=True, max_length=50)
-    email = models.EmailField('Correo Electrónico', unique=True, max_length=200)
-    nombres = models.CharField('Nombres', null=True, blank=True, max_length=200)
-    apellidos = models.CharField('Apellidos', blank=True, null=True, max_length=200)
-    cedula = models.CharField('Cédula', unique=True, max_length=10)
-    is_activo = models.BooleanField(default=True)
-    is_administrador = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    objects = UsuarioManager()
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'nombres', 'apellidos', 'cedula']
-
-    def __str__(self):
-        return f"{self.username}: {self.nombres} {self.apellidos}"
-
-    def has_perm(self, perm,obj = None):
-        return True
-
-    def has_module_perms(self,app_label):
-        return True
-
-    @property
-    def is_staff(self):
-        return self.is_administrador
-"""
 
 class Facultad(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
@@ -364,16 +304,6 @@ class Nodo(models.Model):
             }
         )
         super().delete(*args, **kwargs)
-    """
-    @classmethod
-    def get_next_numero_nodo(cls):
-        last_nodo = cls.objects.exclude(numero=None).order_by('-numero').first()
-        print(last_nodo)
-        if last_nodo and last_nodo.numero is not None:
-            return last_nodo.numero + 1
-        else:
-            return 1
-    """
 
     class Meta:
         verbose_name = 'Nodo'

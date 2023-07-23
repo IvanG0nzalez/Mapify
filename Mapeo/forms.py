@@ -6,18 +6,6 @@ from Mapeo.models import Bloque
 
 
 class RegistroAdminForm(forms.ModelForm):
-    cedula = forms.CharField(
-        label='Cédula',
-        max_length=10,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Ingrese su número de cédula',
-                'id': 'cedula',
-                'required': 'required',
-            }
-        )
-    )
     password = forms.CharField(
         label='Contraseña',
         widget=forms.PasswordInput(
@@ -43,7 +31,7 @@ class RegistroAdminForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'password_confir', 'first_name', 'last_name', 'cedula')
+        fields = ('username', 'email', 'password', 'password_confir', 'first_name', 'last_name')
 
     def clean_password_confir(self):
         password = self.cleaned_data.get('password')

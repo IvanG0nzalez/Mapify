@@ -3,25 +3,16 @@ import io
 
 import matplotlib.pyplot as plt
 import networkx as nx
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
-from django.views.generic import CreateView, ListView
-from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
-#from Mapeo.forms import FormularioCrearUsuario, FormularioLogin
 from Mapeo.forms import RegistroAdminForm, BloqueForm
 from Mapeo.graph_controller import ControladorGrafo
-#from Mapeo.models import Usuario
 from Mapeo.models import Bloque
 
 
@@ -43,18 +34,12 @@ def listado_bloque(request):
     return render(request, 'pantallas/listado_bloque.html', context)
 
 
-def bloque_info(request, bloque_id):
+def detalle_bloque(request, bloque_id):
     bloque = get_object_or_404(Bloque, pk=bloque_id)
     context={
         'bloque': bloque,
     }
     return render(request, 'pantallas/detalle_bloque.html', context)
-
-def administracion_detalle_bloque(request):
-    return render(request, 'pantallas/detalle_bloque.html', {})
-
-def administracion_anadir_bloque(request):
-    return render(request, 'pantallas/anadir_bloque_admin.html', {})
 
 
 def modificar_bloque(request, id):
@@ -71,17 +56,32 @@ def modificar_bloque(request, id):
         data["form"] = formulario
     return render(request, 'pantallas/modificar_bloque.html', data)
 
+
+def eliminar_bloque(request, id):
+    bloque = get_object_or_404(Bloque, id=id)
+    bloque.delete()
+    return redirect('mapeo:bloque')
+
+
+def anadir_bloque(request):
+    return render(request, 'pantallas/anadir_bloque.html', {})
+
+
 def busqueda_rutas_user(request):
     return render(request, 'pantallas/busqueda.html', {})
 
-def administracion_nodo(request):
-        return render(request, 'pantallas/nodo_admin.html', {})
 
-def administracion_detalle_nodo(request):
-    return render(request, 'pantallas/detalle_nodo_admin.html', {})
+def listado_nodo(request):
+        return render(request, 'pantallas/nodo.html', {})
 
-def administracion_conexion_bloque(request):
-    return render(request, 'pantallas/conexion_bloque_admin.html', {} )
+
+def detalle_nodo(request):
+    return render(request, 'pantallas/detalle_nodo.html', {})
+
+
+def conexiones_bloque(request):
+    return render(request, 'pantallas/conexiones_bloque.html', {})
+
 
 def grafo_admin(request):
     controlador_grafo = ControladorGrafo()
@@ -110,7 +110,6 @@ def grafo_admin(request):
     imagen_base64 = base64.b64encode(buf.read()).decode('utf-8')
 
     return render(request, 'pantallas/grafo_admin.html', {'imagen': imagen_base64})
-    #return render(request, 'pantallas/grafo_admin.html', {})
 
 
 def listado_admins(request):
@@ -131,24 +130,6 @@ def crear_admin(request):
     else:
         form = RegistroAdminForm()
     return render(request, 'pantallas/crear_admin.html', {'form': form})
-
-"""
-def iniciar_sesion(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            usuario = form.cleaned_data.get('username')
-            contrasenia = form.cleaned_data.get('password')
-            user = authenticate(request, username=usuario, password=contrasenia)
-            if user is not None:
-                login(request, user)
-                return redirect("administracion-inicio")
-            else:
-                messages.error(request, 'Usuario o contraseña equivocada')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'pantallas/inicio_sesion.html', {"form": form})
-"""
 
 
 class InicioSesion(LoginView):
@@ -171,52 +152,6 @@ class InicioSesion(LoginView):
         return reverse_lazy('mapeo:administracion-inicio')
 
 
-"""
-class InicioSesion(FormView):
-    template_name = 'pantallas/inicio_sesion.html'
-    form_class = FormularioLogin
-    success_url = reverse_lazy('administracion-inicio')
-
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return super(InicioSesion, self).dispatch(request, *args, **kwargs)
-    
-    def form_valid(self, form):
-        print("Entró a form valid")
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            print("Entró al if")
-            login(self.request, user)
-            return super(InicioSesion, self).form_valid(form)
-        else:
-            form.add_error(None, 'Credenciales inválidas')
-            return self.form_invalid(form)
-
-    def form_invalid(self, form):
-        return super(InicioSesion, self).form_invalid(form)
-"""
 def cerrar_sesion(request):
     logout(request)
     return redirect("mapeo:login")
-
-"""
-class ListadoUsuario(ListView):
-    model = Usuario
-    template_name = 'pantallas/listado_admins.html'
-
-    def get_queryset(self):
-        return self.model.objects.filter(is_activo=True)
-
-
-class CrearUsuario(CreateView):
-    model = Usuario
-    form_class = FormularioCrearUsuario
-    template_name = 'pantallas/crear_admin.html'
-    success_url = reverse_lazy('administracion-inicio')
-"""
