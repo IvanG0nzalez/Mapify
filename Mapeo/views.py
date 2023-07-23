@@ -64,9 +64,10 @@ def modificar_bloque(request, id):
     }
     if request.method == 'POST':
         formulario = BloqueForm(data=request.POST, instance=bloque)
+
         if formulario.is_valid():
             formulario.save()
-            return redirect('mapeo:bloque')
+            return redirect("mapeo:bloque")
         data["form"] = formulario
     return render(request, 'pantallas/modificar_bloque.html', data)
 
@@ -167,7 +168,7 @@ class InicioSesion(LoginView):
             return self.form_invalid(form)
 
     def get_success_url(self):
-        return reverse_lazy('administracion-inicio')
+        return reverse_lazy('mapeo:administracion-inicio')
 
 
 """
@@ -202,7 +203,7 @@ class InicioSesion(FormView):
 """
 def cerrar_sesion(request):
     logout(request)
-    return redirect("login")
+    return redirect("mapeo:login")
 
 """
 class ListadoUsuario(ListView):
