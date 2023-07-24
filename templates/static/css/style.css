@@ -384,6 +384,16 @@ body {
 
 }
 
+#anadirAdmin {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
 #detalleAdmin {
     background-color: #f2f2f2;
     padding: 20px;
