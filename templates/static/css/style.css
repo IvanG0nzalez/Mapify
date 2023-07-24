@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
-
 #texto_barra {
     color: aliceblue;
 }
@@ -9,8 +7,8 @@
     overflow: hidden;
 }
 
-.imagen_fondo {
-    width: 100%;
+.imagen_fondo{
+    width:100%;
     min-height: 100%;
     background-image: url(FondoUNL.jpg);
     background-size: cover;
@@ -71,7 +69,7 @@
 
 }
 
-.div_formulario_inicio_sesion {
+.div_formulario_inicio_sesion{
     background-color: white;
     width: 60vh;
     height: 60vh;
@@ -135,7 +133,7 @@ table a {
 :root {
     --body-color: #DBE6EC;
     --sidebar-color: #FFFFFF;
-    --primary-color: rgb(18, 86, 128);
+    --primary-color: rgb(18,86,128);
     --primary-color-light: #DBE6EC;
     --text-color: black;
 
@@ -145,7 +143,7 @@ table a {
 }
 
 body {
-    font-family: 'Poppins';
+    font-family: Helvetica;
     min-height: 100vh;
     background-color: var(--body-color);
     transition: var(--tran-05);
@@ -308,7 +306,7 @@ body {
 
 .home {
     position: absolute;
-    margin-top: 0px;
+    margin-top: 0;
     top: 0;
     left: 200px;
     height: 100vh;
@@ -354,62 +352,3 @@ body {
 
 }
 
-#anadirBloque {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#detalleFacultad {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#modificarFacultad {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#anadirAdmin {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#detalleAdmin {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#modificarAdmin {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
