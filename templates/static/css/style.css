@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
 #texto_barra {
     color: aliceblue;
 }
@@ -143,7 +145,7 @@ table a {
 }
 
 body {
-    font-family: Helvetica;
+    font-family: 'Poppins';
     min-height: 100vh;
     background-color: var(--body-color);
     transition: var(--tran-05);
@@ -306,7 +308,7 @@ body {
 
 .home {
     position: absolute;
-    margin-top: 20px;
+    margin-top: 0px;
     top: 0;
     left: 200px;
     height: 100vh;
@@ -352,3 +354,12 @@ body {
 
 }
 
+#anadirBloque {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
