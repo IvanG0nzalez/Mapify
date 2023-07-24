@@ -10,7 +10,7 @@
 .imagen_fondo{
     width:100%;
     min-height: 100%;
-    background-image: url(templates/static/imagenes/FondoUNL.jpg);
+    background-image: url(FondoUNL.jpg);
     background-size: cover;
     background-position: center;
     display: flex;
@@ -47,6 +47,25 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+}
+
+.div_inicio_user {
+    width: auto;
+    height: 100vh;
+    min-height: 100%;
+    margin: 0 auto;
+    opacity: 80%;
+    overflow: hidden;
+    background-color: var(--primary-color-light);
+    position: relative;
+    background-image: url(FondoMapify.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 12px 70px;
 
 }
 
@@ -301,3 +320,35 @@ body {
     color: var(--text-color);
     padding: 12px 70px;
 }
+
+#detalleBloque {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.form-label {
+    display: inline-block;
+    width: 150px; /* Adjust this width as needed to align the labels */
+    text-align: left;
+}
+
+.form-value {
+    display: inline-block;
+    text-align: right;
+}
+
+#modificarBloque {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+

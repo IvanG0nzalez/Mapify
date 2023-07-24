@@ -20,66 +20,91 @@
 {% block contenido %}
     <h1 class="container">Detalle Bloque</h1>
 
-    <div class="container mt-5">
+    <div class="container mt-5" id="detalleBloque">
         <form>
-            <div class="mb-3">
+            <div class="mb-4">
                 <li>
                     <label for="numero" class="form-label">
                         <strong>Número:</strong>
-                        {% if bloque.is_auxiliar %}
-                            El bloque es auxiliar
-                        {% else %}
-                            {{ bloque.numero }}
-                        {% endif %}
                     </label>
+                    <span class="form-value">
+                            {% if bloque.is_auxiliar %}
+                                El bloque es auxiliar
+                            {% else %}
+                                {{ bloque.numero }}
+                            {% endif %}
+                        </span>
                 </li>
             </div>
-            <div class="mb-3">
-                <li><label for="zona" class="form-label"><strong>Zona:</strong> {{ bloque.zona }}</label></li>
+            <div class="mb-4">
+                <li>
+                    <label for="zona" class="form-label"><strong>Zona:</strong></label>
+                    <span class="form-value">{{ bloque.zona }}</span>
+                </li>
             </div>
-            <div class="mb-3">
-                <li><label for="codigo" class="form-label"><strong>Código:</strong> {{ bloque.codigo }}</label></li>
+            <div class="mb-4">
+                <li>
+                    <label for="codigo" class="form-label"><strong>Código:</strong></label>
+                    <span class="form-value">{{ bloque.codigo }}</span>
+                </li>
             </div>
-            <div class="mb-3">
-                <li><label for="descripcion" class="form-label"><strong>Descripción:</strong> {{ bloque.descripcion }}
-                </label></li>
+            <div class="mb-4">
+                <li>
+                    <label for="descripcion" class="form-label"><strong>Descripción:</strong></label>
+                    <span class="form-value">{{ bloque.descripcion }}</span>
+                </li>
             </div>
-            <div class="mb-3">
-                <li><label for="latitud" class="form-label"><strong>Latitud:</strong> {{ bloque.latitud }}</label></li>
+            <div class="mb-4">
+                <li>
+                    <label for="latitud" class="form-label"><strong>Latitud:</strong></label>
+                    <span class="form-value">{{ bloque.latitud }}</span>
+                </li>
             </div>
-            <div class="mb-3">
-                <li><label for="altitud" class="form-label"><strong>Altitud:</strong> {{ bloque.altitud }}</label></li>
+            <div class="mb-4">
+                <li>
+                    <label for="altitud" class="form-label"><strong>Altitud:</strong></label>
+                    <span class="form-value">{{ bloque.altitud }}</span>
+                </li>
             </div>
-            <div class="mb-3">
+
+            <div class="mb-4">
                 <li>
                     <label for="is_auxiliar" class="form-label">
                         <strong>Auxiliar:</strong>
+
+                    </label>
+                    <span class="form-value">
                         {% if bloque.is_auxiliar %}
                             Sí
                         {% else %}
                             No
                         {% endif %}
-                    </label>
+                    </span>
                 </li>
             </div>
-            <div class="mb-3">
+            <div class="mb-4">
                 <li>
                     <label for="numero_auxiliar" class="form-label">
                         <strong>Número Auxiliar:</strong>
+
+                    </label>
+                    <span class="form-value">
                         {% if bloque.is_auxiliar %}
                             {{ bloque.numero_auxiliar }}
                         {% else %}
                             El bloque no es auxiliar
                         {% endif %}
-                    </label>
+                    </span>
                 </li>
             </div>
-            <div class="mb-3">
-                <li><label for="facultad" class="form-label"><strong>Facultad:</strong> {{ bloque.facultad }}</label>
+            <div class="mb-4">
+                <li>
+                    <label for="facultad" class="form-label"><strong>Facultad:</strong></label>
+                    <span class="form-value"> {{ bloque.facultad }}</span>
                 </li>
             </div>
 
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-end">
                 <div>
 
                     <a href="{% url 'mapeo:modificar-bloque' bloque.id %}" class="btn btn-warning mx-2">Modificar</a>
