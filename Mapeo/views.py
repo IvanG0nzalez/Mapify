@@ -11,9 +11,9 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
-from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm
+from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm
 from Mapeo.graph_controller import ControladorGrafo
-from Mapeo.models import Bloque, Ruta, Nodo
+from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 
 
 def inicio(request):
@@ -24,6 +24,46 @@ def pantallaBase(request):
 
 def administracion_inicio(request):
     return render(request, 'pantallas/inicio_admin.html', {})
+
+
+def listado_facultad(request):
+    facultades = Facultad.obtener_facultades()
+    context={
+        'facultades': facultades,
+    }
+    return render(request, 'pantallas/listado_facultad.html', context)
+
+
+def detalle_facultad(request, facultad_id):
+    facultad = get_object_or_404(Facultad, pk=facultad_id)
+    bloques = facultad.bloques.all()
+    context = {
+        'facultad': facultad,
+        'bloques': bloques
+    }
+    return render(request, 'pantallas/detalle_facultad.html', context)
+
+
+def modificar_facultad(request, id):
+    facultad = get_object_or_404(Facultad, id=id)
+    data = {
+        'form': FacultadForm(instance=facultad),
+        'facultad_id': id
+    }
+    if request.method == 'POST':
+        formulario = FacultadForm(data=request.POST, instance=facultad)
+
+        if formulario.is_valid():
+            formulario.save()
+            return redirect("mapeo:facultad")
+        data["form"] = formulario
+    return render(request, 'pantallas/modificar_facultad.html', data)
+
+
+def eliminar_facultad(request, id):
+    facultad = get_object_or_404(Facultad, id=id)
+    facultad.delete()
+    return redirect('mapeo:facultad')
 
 
 def listado_bloque(request):
@@ -45,7 +85,8 @@ def detalle_bloque(request, bloque_id):
 def modificar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     data = {
-        'form': BloqueForm(instance=bloque)
+        'form': BloqueForm(instance=bloque),
+        'bloque_id': id
     }
     if request.method == 'POST':
         formulario = BloqueForm(data=request.POST, instance=bloque)
@@ -150,7 +191,15 @@ def listado_admins(request):
     return render(request, 'pantallas/listado_admins.html', {'admins': admins})
 
 
-def crear_admin(request):
+def detalle_admin(request, admin_id):
+    admin = get_object_or_404(User, pk=admin_id)
+    context={
+        'admin': admin,
+    }
+    return render(request, 'pantallas/detalle_admin.html', context)
+
+
+def anadir_admin(request):
     if request.method == 'POST':
         form = RegistroAdminForm(request.POST)
         if form.is_valid():
@@ -159,10 +208,10 @@ def crear_admin(request):
             user.set_password(password)
             user.is_staff = True
             user.save()
-            return redirect('listar-admins')
+            return redirect('mapeo:admin')
     else:
         form = RegistroAdminForm()
-    return render(request, 'pantallas/crear_admin.html', {'form': form})
+    return render(request, 'pantallas/anadir_admin.html', {'form': form})
 
 
 def modificar_admin(request, id):
@@ -172,16 +221,16 @@ def modificar_admin(request, id):
         form = ModificarAdminForm(request.POST, instance=admin)
         if form.is_valid():
             form.save()
-            return redirect('mapeo:listar-admins')
+            return redirect('admin')
     else:
         form = ModificarAdminForm(instance=admin)
-    return render(request, 'pantallas/modificar_admin.html', {'form': form})
+    return render(request, 'pantallas/modificar_admin.html', {'form': form, 'admin_id': id})
 
 
 def eliminar_admin(request, id):
     admin = get_object_or_404(User, id=id)
     admin.delete()
-    return redirect('mapeo:listar-admins')
+    return redirect('admin')
 
 
 class InicioSesion(LoginView):

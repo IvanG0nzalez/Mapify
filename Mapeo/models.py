@@ -12,6 +12,8 @@ db = client['ProyectoIntegrador']
 
 class Facultad(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
+    descripcion = models.TextField(max_length=300, null=True, blank=True, verbose_name='Descripción')
+    imagen = models.ImageField(upload_to="facultades", null=True, blank=True, verbose_name='Imagen de la Facultad')
 
     def __str__(self):
         return self.nombre

@@ -1,0 +1,55 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block titulo %}
+            Facultades
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}" alt="usuario"
+          style="padding-bottom: 35px; margin-top: 30px" width=20%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+<body>
+{% block contenido %}
+
+    <div class="d-flex justify-content-between">
+
+        <h1 class="container">Facultades</h1>
+    </div>
+
+    <div class="container d-flex flex-warp">
+    {% for facultad in facultades %}
+        <div class="card mx-4 mb-4" style="width: 18rem;">
+            {% if facultad.imagen %}
+                <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}" title="Click para ir al detalle de la facultad">
+                    <img src="{{ facultad.imagen.url }}" class="card-img-top" alt="Imágen de {{ facultad.nombre }}">
+                </a>
+            {% else %}
+                <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}" title="Click para ir al detalle de la facultad">
+                    <p>No existe una imágen disponible</p>
+                </a>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ facultad.nombre }}</h5>
+                <p class="card-text">{{ facultad.descripcion }}</p>
+                <a href="{% url 'mapeo:modificar-facultad' facultad.id %}" class="btn btn-warning mx-2">Modificar</a>
+                <a href="{% url 'mapeo:eliminar-facultad' facultad.id %}" class="btn btn-danger mx-2">Eliminar</a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <script src="{% static "scripts/scripts.js" %}"></script>
+
+{% endblock %}
+</body>
+
+</html>

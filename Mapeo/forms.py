@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
-from Mapeo.models import Bloque, Ruta
+from Mapeo.models import Bloque, Ruta, Facultad
 
 
 class RegistroAdminForm(forms.ModelForm):
@@ -47,7 +47,7 @@ class ModificarAdminForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese su nueva contraseña',
+                'placeholder': 'Ingrese la nueva contraseña del administrador',
                 'id': 'password',
                 'required': 'required',
             }
@@ -89,4 +89,10 @@ class BloqueForm(forms.ModelForm):
 class BloqueRuta(forms.ModelForm):
     class Meta:
         model = Ruta
+        fields = '__all__'
+
+
+class FacultadForm(forms.ModelForm):
+    class Meta:
+        model = Facultad
         fields = '__all__'
