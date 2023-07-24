@@ -9,8 +9,8 @@
     overflow: hidden;
 }
 
-.imagen_fondo{
-    width:100%;
+.imagen_fondo {
+    width: 100%;
     min-height: 100%;
     background-image: url(FondoUNL.jpg);
     background-size: cover;
@@ -71,7 +71,7 @@
 
 }
 
-.div_formulario_inicio_sesion{
+.div_formulario_inicio_sesion {
     background-color: white;
     width: 60vh;
     height: 60vh;
@@ -135,7 +135,7 @@ table a {
 :root {
     --body-color: #DBE6EC;
     --sidebar-color: #FFFFFF;
-    --primary-color: rgb(18,86,128);
+    --primary-color: rgb(18, 86, 128);
     --primary-color-light: #DBE6EC;
     --text-color: black;
 
@@ -355,6 +355,46 @@ body {
 }
 
 #anadirBloque {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#detalleFacultad {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#modificarFacultad {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#detalleAdmin {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#modificarAdmin {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
