@@ -7,46 +7,47 @@
 
 {% block contenido %}
     <h1 class="container">Añadir Bloque</h1>
+    <div id="div_center">
+        <div class="container mt-5" id="anadirBloque">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="numero" class="form-label">Número:</label>
+                    {{ form.numero }}
+                </div>
+                <div class="mb-3">
+                    <label for="zona" class="form-label">Zona:</label>
+                    {{ form.zona }}
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    {{ form.descripcion }}
+                </div>
+                <div class="mb-3">
+                    <label for="latitud" class="form-label">Latitud:</label>
+                    {{ form.latitud }}
+                </div>
+                <div class="mb-3">
+                    <label for="altitud" class="form-label">Altitud:</label>
+                    {{ form.altitud }}
+                </div>
+                <div class="mb-3">
+                    <label for="is_auxiliar" class="form-label">Auxiliar:</label>
+                    {{ form.is_auxiliar }}
+                </div>
+                <div class="mb-3">
+                    <label for="facultad" class="form-label">Facultad:</label>
+                    {{ form.facultad }}
+                </div>
 
-    <div class="container mt-5" id="anadirBloque">
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="numero" class="form-label">Número:</label>
-                {{ form.numero }}
-            </div>
-            <div class="mb-3">
-                <label for="zona" class="form-label">Zona:</label>
-                {{ form.zona }}
-            </div>
-            <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción:</label>
-                {{ form.descripcion }}
-            </div>
-            <div class="mb-3">
-                <label for="latitud" class="form-label">Latitud:</label>
-                {{ form.latitud }}
-            </div>
-            <div class="mb-3">
-                <label for="altitud" class="form-label">Altitud:</label>
-                {{ form.altitud }}
-            </div>
-            <div class="mb-3">
-                <label for="is_auxiliar" class="form-label">Auxiliar:</label>
-                {{ form.is_auxiliar }}
-            </div>
-            <div class="mb-3">
-                <label for="facultad" class="form-label">Facultad:</label>
-                {{ form.facultad }}
-            </div>
-
-            <div class="d-flex justify-content-end">
-                <input type="submit" value="Guardar" class="btn btn-dark mx-2">
-                <a href="{% url 'mapeo:bloque' %}" class="btn btn-danger mx-2">Cancelar</a>
-            </div>
-
-
-        </form>
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'mapeo:bloque' %}" class="btn btn-danger mx-2">Cancelar</a>
+                    <input type="submit" value="Guardar" class="btn btn-dark mx-2">
+                </div>
+            </form>
+        </div>
     </div>
 
+
+    <script src="{% static "scripts/scripts.js" %}"></script>
 {% endblock %}

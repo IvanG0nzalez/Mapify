@@ -69,7 +69,7 @@
 
 }
 
-.div_formulario_inicio_sesion{
+.div_formulario_inicio_sesion {
     background-color: white;
     width: 60vh;
     height: 60vh;
@@ -321,28 +321,26 @@ body {
     padding: 12px 70px;
 }
 
-#detalleBloque {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
 .form-label {
     display: inline-block;
-    width: 150px; /* Adjust this width as needed to align the labels */
+    width: 150px;
     text-align: left;
 }
 
 .form-value {
-    display: inline-block;
+    display: inline;
     text-align: right;
 }
 
-#modificarBloque {
+#div_center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#detalleBloque {
+    display: inline-block;
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
@@ -352,3 +350,76 @@ body {
 
 }
 
+#modificarBloque {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#anadirBloque {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#detalleFacultad {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+#modificarFacultad {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#anadirAdmin {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#detalleAdmin {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#modificarAdmin {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+
+}

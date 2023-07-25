@@ -9,46 +9,49 @@
 {% block contenido %}
     <h1 class="container">Detalle Administrador</h1>
 
-    <div class="container mt-5" id="detalleAdmin">
-        <form>
-            <div class="mb-3">
-                <li>
-                    <label for="id" class="form-label"><strong>ID:</strong> </label>
-                    <span class="form-value"> {{ admin.id }}</span>
-                </li>
-            </div>
-            <div class="mb-3">
-                <li>
-                    <label for="nombres" class="form-label"><strong>Nombres:</strong></label>
-                    <span class="form-value"> {{ admin.first_name }}</span>
-                </li>
-            </div>
-            <div class="mb-3">
-                <li>
-                    <label for="apellidos" class="form-label"><strong>Apellidos:</strong></label>
-                    <span class="form-value"> {{ admin.last_name }}</span>
-                </li>
-            </div>
-            <div class="mb-3">
-                <li>
-                    <label for="email" class="form-label"><strong>Email:</strong></label>
-                    <span class="form-value"> {{ admin.email }}</span>
-                </li>
-            </div>
-            <div class="mb-3">
-                <li>
-                    <label for="last_login" class="form-label"><strong>Última conexión:</strong></label>
-                    <span class="form-value"> {{ admin.last_login }}</span>
-                </li>
-            </div>
-            <div class="d-flex justify-content-between">
-                <a href="{% url 'mapeo:admin' %}" class="btn btn-primary mx-2">Volver</a>
-                <div class="d-flex justify-content-end">
-                    <a href="{% url 'mapeo:eliminar-admin' admin.id %}" class="btn btn-danger mx-2">Eliminar</a>
-                    <a href="{% url 'mapeo:modificar-admin' admin.id %}" class="btn btn-warning mx-2">Modificar</a>
-
+    <div id="div_center">
+        <div class="container mt-5" id="detalleAdmin">
+            <form>
+                <div class="mb-3">
+                    <li>
+                        <label for="id" class="form-label"><strong>ID:</strong> </label>
+                        <span class="form-value"> {{ admin.id }}</span>
+                    </li>
                 </div>
-            </div>
-        </form>
+                <div class="mb-3">
+                    <li>
+                        <label for="nombres" class="form-label"><strong>Nombres:</strong></label>
+                        <span class="form-value"> {{ admin.first_name }}</span>
+                    </li>
+                </div>
+                <div class="mb-3">
+                    <li>
+                        <label for="apellidos" class="form-label"><strong>Apellidos:</strong></label>
+                        <span class="form-value"> {{ admin.last_name }}</span>
+                    </li>
+                </div>
+                <div class="mb-3">
+                    <li>
+                        <label for="email" class="form-label"><strong>Email:</strong></label>
+                        <span class="form-value"> {{ admin.email }}</span>
+                    </li>
+                </div>
+                <div class="mb-3">
+                    <li>
+                        <label for="last_login" class="form-label"><strong>Última conexión:</strong></label>
+                        <span class="form-value"> {{ admin.last_login }}</span>
+                    </li>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'mapeo:admin' %}" class="btn btn-primary mx-2">Volver</a>
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'mapeo:eliminar-admin' admin.id %}" class="btn btn-danger mx-2">Eliminar</a>
+                        <a href="{% url 'mapeo:modificar-admin' admin.id %}" class="btn btn-warning mx-2">Modificar</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+
 {% endblock %}
