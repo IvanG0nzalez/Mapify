@@ -38,6 +38,15 @@
                         </a>
                     </li>
 
+                    {% if request.user.is_superuser %}
+                        <li class="nav-link">
+                            <a href="{% url 'mapeo:facultad' %}" class="nav__link">
+                                <i class="bx bx-building icon"></i>
+                                <span class="text nav-text">Facultades</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
                     <li class="nav-link">
                         <a href="{% url 'mapeo:bloque' %}" class="nav__link">
                             <i class="bx bx-buildings icon"></i>
