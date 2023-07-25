@@ -1,5 +1,6 @@
 import base64
 import io
+import os.path
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -19,11 +20,17 @@ from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
 
+
 def pantallaBase(request):
     return render(request, 'pantallas/base.html', {})
 
+
 def administracion_inicio(request):
     return render(request, 'pantallas/inicio_admin.html', {})
+
+
+def busqueda_rutas_user(request):
+    return render(request, 'pantallas/busqueda.html', {})
 
 
 def listado_facultad(request):
@@ -51,7 +58,7 @@ def modificar_facultad(request, id):
         'facultad_id': id
     }
     if request.method == 'POST':
-        formulario = FacultadForm(data=request.POST, instance=facultad)
+        formulario = FacultadForm(data=request.POST, files=request.FILES, instance=facultad)
 
         if formulario.is_valid():
             formulario.save()
@@ -62,8 +69,29 @@ def modificar_facultad(request, id):
 
 def eliminar_facultad(request, id):
     facultad = get_object_or_404(Facultad, id=id)
+    #Obtener la ruta del archivo de la imagen
+    if facultad.imagen:
+        ruta_imagen = facultad.imagen.path
+        #Eliminar la imagen del sistema de archivos
+        if os.path.exists(ruta_imagen):
+            os.remove(ruta_imagen)
     facultad.delete()
     return redirect('mapeo:facultad')
+
+
+def anadir_facultad(request):
+    if request.method == 'POST':
+        formulario = FacultadForm(request.POST, request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('mapeo:facultad')
+    else:
+        formulario = FacultadForm()
+
+    data = {
+        'form': formulario
+    }
+    return render(request, 'pantallas/anadir_facultad.html', data)
 
 
 def listado_bloque(request):
@@ -134,27 +162,33 @@ def detalle_nodo(request, nodo_id):
     return render(request, 'pantallas/detalle_nodo.html', context)
 
 
+def eliminar_conexion(request, id):
+    ruta = get_object_or_404(Ruta, id=id)
+    nodo_id = ruta.nodo_inicio.id
+    ruta.delete()
+    return redirect('mapeo:conexion-nodo', nodo_id=nodo_id)
+
+
 def conexiones_nodo(request, nodo_id):
     nodo = get_object_or_404(Nodo, pk=nodo_id)
-    nodos = Bloque.objects.exclude(id=nodo_id)
     rutas = Ruta.objects.filter(nodo_inicio=nodo)
 
     if request.method == 'POST':
         nodo_destino_id = request.POST.get('nodo_destino')
         nodo_destino = get_object_or_404(Nodo, id=nodo_destino_id)
-
         nueva_ruta = Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
         return redirect('mapeo:conexion-nodo', nodo_id=nodo_id)
+    #Obtiene los nodos ya conectados al nodo actual
+    nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
+    #Excluir los nodos conectados del conjunto de nodos disponibles para conectar
+    nodos = Nodo.objects.exclude(id=nodo_id).exclude(id__in=nodos_conectados)
+
     context = {
         'nodos': nodos,
         'nodo': nodo,
         'rutas': rutas,
     }
     return render(request, 'pantallas/conexiones_nodo.html', context)
-
-
-def busqueda_rutas_user(request):
-    return render(request, 'pantallas/busqueda.html', {})
 
 
 def grafo_admin(request):

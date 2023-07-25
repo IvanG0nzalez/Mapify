@@ -1,14 +1,14 @@
 {% extends 'pantallas/base_admin.html' %}
 {% load static %}
 
-        {% block titulo %}
-            Informacion del Nodo
-        {% endblock %}
+{% block titulo %}
+    Detalle de Nodo
+{% endblock %}
 
 
 {% block contenido %}
-    <h1 class="container">Detalle Nodo</h1>
-    <div  id="infNodo">
+    <h1 class="container">Detalle de Nodo</h1>
+    <div id="infNodo">
         <form>
             <div class="mb-4">
                 <li>
@@ -32,11 +32,11 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a href="{% url 'mapeo:conexion-nodo' nodo_id=nodo.id %}" class="btn btn-primary">Conexión</a>
+                <a href="{% url 'mapeo:nodo' %}" class="btn btn-primary mx-2">Volver</a>
+                <a href="{% url 'mapeo:conexion-nodo' nodo_id=nodo.id %}" class="btn btn-dark">Conexiones</a>
             </div>
 
         </form>
     </div>
 
-    <script src="{% static "scripts/scripts.js" %}"></script>
 {% endblock %}

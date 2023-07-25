@@ -2,9 +2,9 @@
 {% load static %}
 
 
-        {% block titulo %}
-            Nodos
-        {% endblock %}
+{% block titulo %}
+    Nodos
+{% endblock %}
 
 {% block contenido %}
 
@@ -20,25 +20,27 @@
                 <th class="text-center">Codigo</th>
                 <th class="text-center">Latitud</th>
                 <th class="text-center">Altitud</th>
-                <!--<th class="text-center">Conexiones</th>-->
+                <th class="text-center">Conexiones</th>
             </tr>
             </thead>
             <tbody>
             {% for nodo in nodos %}
                 <tr>
                     <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.id }}</a></td>
-                    <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.codigo }}</a></td>
-                    <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.latitud }}</a></td>
-                    <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.altitud }}</a></td>
+                    <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.codigo }}</a>
+                    </td>
+                    <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.latitud }}</a>
+                    </td>
+                    <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.altitud }}</a>
+                    </td>
+                    <td class="d-flex justify-content-center">
+                        <a href="{% url 'mapeo:conexion-nodo' nodo_id=nodo.id %}" class="btn btn-primary mx-1">Agregar
+                            conexiones</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <script src="{% static "scripts/scripts.js" %}"></script>
-
 {% endblock %}
-
-
-</html>

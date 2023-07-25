@@ -1,9 +1,9 @@
 {% extends 'pantallas/base_admin.html' %}
 {% load static %}
 
-        {% block titulo %}
-            Bloques
-        {% endblock %}
+{% block titulo %}
+    Bloques
+{% endblock %}
 
 
 {% block contenido %}
@@ -35,7 +35,8 @@
             <tbody class="tbody_bloque">
             {% for bloque in bloques %}
                 <tr>
-                    <td class="text-center"><a href="{% url 'mapeo:bloque_id' bloque_id=bloque.id %}">{{ bloque.id }}</a></td>
+                    <td class="text-center"><a
+                            href="{% url 'mapeo:bloque_id' bloque_id=bloque.id %}">{{ bloque.id }}</a></td>
                     {% if bloque.numero is None %}
                         <td class="text-center"><a href="{% url 'mapeo:bloque_id' bloque_id=bloque.id %}"> - </a></td>
                     {% else %}
@@ -66,7 +67,5 @@
 
         </table>
     </div>
-
-    <script src="{% static "scripts/scripts.js" %}"></script>
 
 {% endblock %}

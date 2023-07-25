@@ -14,12 +14,11 @@
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
 
-
 </head>
 
 <body>
-    <div style="padding: 0">
-        <nav class="sidebar close">
+<div style="padding: 0">
+    <nav class="sidebar close">
         <div class="menu-bar">
             <div class="menu">
 
@@ -43,20 +42,18 @@
 
         </div>
     </nav>
+</div>
+
+
+<section class="home">
+    <div class="div_inicio_user">
+        {% block contenido %}
+
+        {% endblock %}
     </div>
+</section>
 
-
-
-
-    <section class="home">
-        <div class="div_inicio_user">
-            {% block contenido %}
-
-            {% endblock %}
-        </div>
-    </section>
-
-    <script src="{% static "scripts/scripts.js" %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyNlsouulVQvCw11OT4WUyHh_GJ5fcKes&libraries=places"></script>
+<script src="{% static "scripts/scripts.js" %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyNlsouulVQvCw11OT4WUyHh_GJ5fcKes&libraries=places"></script>
 </body>
 </html>

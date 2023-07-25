@@ -1,39 +1,42 @@
 {% extends 'pantallas/base_admin.html' %}
 {% load static %}
 
-        {% block titulo %}
-            Facultades
-        {% endblock %}
+{% block titulo %}
+    Facultades
+{% endblock %}
 
 {% block contenido %}
 
     <div class="d-flex justify-content-between">
-
         <h1 class="container">Facultades</h1>
+        <a href="{% url 'mapeo:anadir-facultad' %}">
+            <button type="button" class="btn btn-dark">Añadir</button>
+        </a>
     </div>
 
     <div class="container d-flex flex-warp">
-    {% for facultad in facultades %}
-        <div class="card mx-4 mb-4" style="width: 18rem;">
-            {% if facultad.imagen %}
-                <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}" title="Click para ir al detalle de la facultad">
-                    <img src="{{ facultad.imagen.url }}" class="card-img-top" alt="Imágen de {{ facultad.nombre }}">
-                </a>
-            {% else %}
-                <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}" title="Click para ir al detalle de la facultad">
-                    <p>No existe una imágen disponible</p>
-                </a>
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ facultad.nombre }}</h5>
-                <p class="card-text">{{ facultad.descripcion }}</p>
-                <a href="{% url 'mapeo:modificar-facultad' facultad.id %}" class="btn btn-warning mx-2">Modificar</a>
-                <a href="{% url 'mapeo:eliminar-facultad' facultad.id %}" class="btn btn-danger mx-2">Eliminar</a>
+        {% for facultad in facultades %}
+            <div class="card mx-4 mb-4" style="width: 18rem;">
+                {% if facultad.imagen %}
+                    <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}"
+                       title="Click para ir al detalle de la facultad">
+                        <img src="{{ facultad.imagen.url }}" class="card-img-top" alt="Imágen de {{ facultad.nombre }}">
+                    </a>
+                {% else %}
+                    <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}"
+                       title="Click para ir al detalle de la facultad">
+                        <p>No existe una imágen disponible</p>
+                    </a>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ facultad.nombre }}</h5>
+                    <p class="card-text">{{ facultad.descripcion }}</p>
+                    <a href="{% url 'mapeo:modificar-facultad' facultad.id %}"
+                       class="btn btn-warning mx-2">Modificar</a>
+                    <a href="{% url 'mapeo:eliminar-facultad' facultad.id %}" class="btn btn-danger mx-2">Eliminar</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
-
-    <script src="{% static "scripts/scripts.js" %}"></script>
 
 {% endblock %}

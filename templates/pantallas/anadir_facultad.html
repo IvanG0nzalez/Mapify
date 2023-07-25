@@ -1,0 +1,36 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+{% block titulo %}
+    Añadir Facultad
+{% endblock %}
+
+{% block contenido %}
+    <h1 class="container">Añadir Facultad</h1>
+    <div id="div_center">
+        <div class="container mt-5" id="anadirFacultad">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    {{ form.nombre }}
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    {{ form.descripcion }}
+                </div>
+                <div class="mb-3">
+                    <label for="imagen" class="form-label">Imagen:</label>
+                    {{ form.imagen }}
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'mapeo:facultad' %}" class="btn btn-danger mx-2">Cancelar</a>
+                    <input type="submit" value="Guardar" class="btn btn-dark mx-2">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

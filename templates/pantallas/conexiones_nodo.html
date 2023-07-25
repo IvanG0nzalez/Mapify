@@ -2,9 +2,9 @@
 {% load static %}
 
 
-        {% block titulo %}
-            Conexion Nodo
-        {% endblock %}
+{% block titulo %}
+    Conexiones Nodo
+{% endblock %}
 
 {% block contenido %}
     <h1 class="container">Conectar Nodo - {{ nodo.codigo }}</h1>
@@ -15,11 +15,17 @@
             <div>
                 <label for="nodo">Selecciona un nodo:</label>
                 <select id="nodo" name="nodo_destino">
-                    {% for n in nodos %}
-                        <option value="{{ n.id }}">{{ n.codigo }}</option>
-                    {% endfor %}
+                    {% if nodos %}
+                        {% for n in nodos %}
+                            <option value="{{ n.id }}">{{ n.codigo }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="" disabled>No hay nodos disponibles para conectar.</option>
+
+                    {% endif %}
                 </select>
-            <button type="submit" class="btn btn-dark mx-2">Agregar Conexion</button>
+                <button type="submit" class="btn btn-dark mx-2">Agregar Conexion</button>
+                <a href="{% url 'mapeo:nodo' %}" class="btn btn-primary mx-2">Volver</a>
             </div>
 
             <div>
@@ -29,6 +35,7 @@
                         <th class="text-center">Destino</th>
                         <th class="text-center">Tiempo</th>
                         <th class="text-center">Distancia</th>
+                        <th class="text-center">Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,6 +44,9 @@
                             <td class="text-center">{{ ruta.nodo_destino.codigo }}</td>
                             <td class="text-center">{{ ruta.tiempo }}</td>
                             <td class="text-center">{{ ruta.distancia }}</td>
+                            <td class="d-flex justify-content-center">
+                                <a href="{% url 'mapeo:eliminar-conexion' ruta.id %}" class="btn btn-danger mx-1">Eliminar</a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -45,7 +55,4 @@
             </div>
         </form>
     </div>
-
-    <script src="{% static "scripts/scripts.js" %}"></script>
 {% endblock %}
-
