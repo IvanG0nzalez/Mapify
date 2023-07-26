@@ -32,6 +32,7 @@ class ControladorGrafo:
         tiempo = distancia / velocidad
         return round(tiempo, 2)
 
+    #Accede a la base de datos y obtiene todos los registros de nodos existentes
     def obtener_nodos_db(self):
         cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
         client = MongoClient(cadenaConexion)
@@ -44,32 +45,39 @@ class ControladorGrafo:
         return data
 
     def crear_grafo(self):
+        #Asigna todos los nodos obtenidos a la variable
         data_db = self.obtener_nodos_db()
-
+        #Inicializa un grafo vacío
         self.graph = nx.Graph()
-
+        #Recorre la vairbale data_db y asigna los registros a un nuevo nodo del grafo
         for nodo in data_db:
             codigo = nodo['codigo']
             latitud = nodo['latitud']
             altitud = nodo['altitud']
             self.graph.add_node(codigo, latitud=latitud, altitud=altitud)
-
+        #Recorre la variable data_db y obtiene la lista de conexiones de cada nodo
         for nodo in data_db:
             codigo_origen = nodo['codigo']
             conexiones = nodo['conexiones']
             latitud_origen = nodo['latitud']
             altitud_origen = nodo['altitud']
-
+            #Para cada conexión crea una arista con la distancia y tiempo calculados
             for codigo_destino in conexiones:
-                nodo_destino = next(n for n in data_db if n['codigo'] == codigo_destino)
-                latitud_destino = nodo_destino['latitud']
-                altitud_destino = nodo_destino['altitud']
+                if self.graph.has_node(codigo_destino):
+                    nodo_destino = next((n for n in data_db if n['codigo'] == codigo_destino), None)
+                    if nodo_destino:
+                        latitud_destino = nodo_destino['latitud']
+                        altitud_destino = nodo_destino['altitud']
 
-                distancia = self.calcular_distancia((latitud_origen, altitud_origen), (latitud_destino, altitud_destino))
+                        distancia = self.calcular_distancia((latitud_origen, altitud_origen), (latitud_destino, altitud_destino))
 
-                tiempo = self.calcular_tiempo(distancia)
+                        tiempo = self.calcular_tiempo(distancia)
 
-                self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
+                        self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
+                    else:
+                        print(f"La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
+                else:
+                    print(f"La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
 
     def minimo_dijkstra(self, origen):
         if origen not in self.graph.nodes():

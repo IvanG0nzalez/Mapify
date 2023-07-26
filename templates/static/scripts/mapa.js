@@ -30,6 +30,8 @@ function initMap() {
          var contenidoInfoWindowFin = 'Este es el punto de destino';
          var infoWindowInicio = new google.maps.InfoWindow({content: contenidoInfoWindowInicio});
          var infoWindowFin = new google.maps.InfoWindow({content: contenidoInfoWindowFin});
+         infoWindowInicio.open(mapa, marcadorInicio);
+         infoWindowFin.open(mapa, marcadorFin);
          marcadorInicio.addListener('click', function() {infoWindowInicio.open(mapa, marcadorInicio);});
          marcadorFin.addListener('click', function() {infoWindowFin.open(mapa, marcadorFin);});
 
