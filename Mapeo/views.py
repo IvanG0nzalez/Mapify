@@ -30,7 +30,25 @@ def administracion_inicio(request):
 
 
 def busqueda_rutas_user(request):
-    return render(request, 'pantallas/busqueda.html', {})
+
+    coordenadas_nodos = [
+        (-4.032785, -79.202424),
+        (-4.0327, -79.20017),
+        (-4.03245, -79.20011),
+        (-4.03226, -79.20005),
+        (-4.03196, -79.19996),
+        (-4.03138, -79.19976),
+        (-4.03098, -79.19963),
+        (-4.03074, -79.19956),
+        (-4.0304, -79.19942),
+        (-4.03018, -79.19937),
+        (-4.03006, -79.19958),
+
+    ]
+
+    # Convertir la lista de coordenadas a una lista de diccionarios
+    coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
+    return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict})
 
 
 def listado_facultad(request):
