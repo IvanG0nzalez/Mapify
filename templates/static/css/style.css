@@ -59,7 +59,7 @@
     overflow: hidden;
     background-color: var(--primary-color-light);
     position: relative;
-    background-image: url(FondoMapify.jpg);
+    /*background-image: url(FondoMapify.jpg);*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
