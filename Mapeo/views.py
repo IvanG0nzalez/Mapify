@@ -3,15 +3,19 @@ import io
 import os.path
 
 import matplotlib.pyplot as plt
+import mplleaflet
 import networkx as nx
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template import loader
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from pyvis.network import Network
+
 from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm
 from Mapeo.graph_controller import ControladorGrafo, NodoNoExisteException
 from Mapeo.models import Bloque, Ruta, Nodo, Facultad
@@ -38,9 +42,10 @@ def busqueda_rutas_user(request):
         print(nodo_destino_codigo)
 
         controlador_grafo = ControladorGrafo()
-        controlador_grafo.crear_grafo()
+        #controlador_grafo.crear_grafo()
 
         try:
+            rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
             rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
             camino_mas_corto = rutas.get(nodo_destino_codigo)
             if camino_mas_corto:
@@ -229,27 +234,55 @@ def grafo_admin(request):
 
     grafo = controlador_grafo.obtener_grafo()
     print(grafo)
-    pos = nx.spring_layout(grafo, seed=42)
-    plt.figure(figsize=(10, 6))
+    net = Network(height="500px", width="100%", notebook=True)
 
-    nx.draw(grafo, pos, with_labels=True, node_color='skyblue', node_size=2000, font_size=10, font_weight='bold')
-    etiquetas_aristas_distancia = nx.get_edge_attributes(grafo, 'distancia')
-    etiquetas_aristas_tiempo = nx.get_edge_attributes(grafo, 'tiempo')
+    for nodo in grafo.nodes():
+        net.add_node(nodo)
 
-    etiquetas_combinadas = {
-        arista: f"Dist: {etiquetas_aristas_distancia[arista]}, Tiempo: {etiquetas_aristas_tiempo[arista]}"
-        for arista in grafo.edges()
-    }
+    for arista in grafo.edges():
+        net.add_edge(arista[0], arista[1])
 
-    nx.draw_networkx_edge_labels(grafo, pos, edge_labels=etiquetas_combinadas, font_size=8)
+    grafo_data = net.get_network_data()
 
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
+    return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data})
+    #plot y network
+    #pos = nx.spring_layout(grafo, seed=42)
+    #plt.figure(figsize=(10, 6))
 
-    imagen_base64 = base64.b64encode(buf.read()).decode('utf-8')
+    #nx.draw(grafo, pos, with_labels=True, node_color='skyblue', node_size=2000, font_size=10, font_weight='bold')
+    #etiquetas_aristas_distancia = nx.get_edge_attributes(grafo, 'distancia')
+    #etiquetas_aristas_tiempo = nx.get_edge_attributes(grafo, 'tiempo')
 
-    return render(request, 'pantallas/grafo_admin.html', {'imagen': imagen_base64})
+    #etiquetas_combinadas = {
+    #    arista: f"Dist: {etiquetas_aristas_distancia[arista]}, Tiempo: {etiquetas_aristas_tiempo[arista]}"
+    #    for arista in grafo.edges()
+    #}
+
+    #nx.draw_networkx_edge_labels(grafo, pos, edge_labels=etiquetas_combinadas, font_size=8)
+
+    #buf = io.BytesIO()
+    #plt.savefig(buf, format='png')
+    #buf.seek(0)
+
+    #imagen_base64 = base64.b64encode(buf.read()).decode('utf-8')
+
+    # return render(request, 'pantallas/grafo_admin.html', {'imagen': imagen_base64})
+
+    #<img src="data:image/png;base64,{{ imagen }}" alt="Grafo">
+
+
+    #Wea con librería mplleaflet que no funca
+    #ax = plt.gca()
+    #ax.grid(False)
+
+    #mapa_interactivo = mplleaflet.fig_to_html(plt.gcf())
+
+    #template = loader.get_template('pantallas/grafo_admin.html')
+    #context = {
+    #    'mapa_interactivo': mapa_interactivo,
+    #}
+    #return HttpResponse(template.render(context, request))
+
 
 
 def listado_admins(request):
