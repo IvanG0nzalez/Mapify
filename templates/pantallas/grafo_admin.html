@@ -4,11 +4,36 @@
 
 {% block contenido %}
     <h1>Grafo</h1>
-    <div id="grafoContainer"></div>
-    <script src="https://cdn.jsdelivr.net/npm/vis-network@10.7.1/dist/vis-network.min.js"></script>
-    <script type="text/javascript">
-        var grafoData = {{ grafo_data | safe }};
-        var grafoContainer = document.getElementById("grafoContainer");
-        var network = new vis.Network(grafoContainer, grafoData);
-    </script>
+    <div id="grafoContainer">
+        <script src="https://unpkg.com/vis-network@9.0.3/dist/vis-network.min.js"></script>
+        <script>
+            var grafoData = {{ grafo_data|safe }};
+            var grafoOptions = {
+                layout: {
+                    improvedLayout: false
+                },
+                edges: {
+                    color: "#000000"
+                },
+                nodes: {
+                    shape: "dot",
+                    size: 20,
+                    font: {
+                        size: 12
+                    }
+                },
+                physic: {
+                    minVelocity: 0.75,
+                    stabilization: true
+                },
+                interaction: {
+                    zoomView: false
+                },
+                minZoom: 0.1,
+                maxZoom: 1.0
+            };
+            var grafoContainer = document.getElementById("grafoContainer");
+            var network = new vis.Network(grafoContainer, grafoData, grafoOptions);
+        </script>
+    </div>
 {% endblock %}
