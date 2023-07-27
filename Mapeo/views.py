@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
 from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm
-from Mapeo.graph_controller import ControladorGrafo
+from Mapeo.graph_controller import ControladorGrafo, NodoNoExisteException
 from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 
 
@@ -30,25 +30,39 @@ def administracion_inicio(request):
 
 
 def busqueda_rutas_user(request):
+    nodos = Nodo.obtener_nodos_no_auxiliares()
+    if request.method == 'POST':
+        nodo_origen_codigo = request.POST.get('nodo_origen')
+        print(nodo_origen_codigo)
+        nodo_destino_codigo = request.POST.get('nodo_destino')
+        print(nodo_destino_codigo)
 
-    coordenadas_nodos = [
-        (-4.032785, -79.202424),
-        (-4.0327, -79.20017),
-        (-4.03245, -79.20011),
-        (-4.03226, -79.20005),
-        (-4.03196, -79.19996),
-        (-4.03138, -79.19976),
-        (-4.03098, -79.19963),
-        (-4.03074, -79.19956),
-        (-4.0304, -79.19942),
-        (-4.03018, -79.19937),
-        (-4.03006, -79.19958),
+        controlador_grafo = ControladorGrafo()
+        controlador_grafo.crear_grafo()
 
-    ]
+        try:
+            rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
+            camino_mas_corto = rutas.get(nodo_destino_codigo)
+            if camino_mas_corto:
+                nodos_camino = camino_mas_corto['ruta']
+                coordenadas_nodos = []
 
-    # Convertir la lista de coordenadas a una lista de diccionarios
-    coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
-    return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict})
+                for codigo_nodo in nodos_camino:
+                    coordenadas = controlador_grafo.obtener_coordenadas_por_codigo(codigo_nodo)
+                    if coordenadas:
+                        coordenadas_nodos.append(coordenadas)
+                # Convertir la lista de coordenadas a una lista de diccionarios
+                print(coordenadas_nodos)
+                coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
+                return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos})
+            else:
+                print("chingaste")
+                pass
+        except NodoNoExisteException as e:
+            print("El nodo no existe xd")
+            pass
+    else:
+        return render(request, 'pantallas/busqueda.html', {'nodos': nodos})
 
 
 def listado_facultad(request):

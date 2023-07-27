@@ -39,5 +39,4 @@ urlpatterns = [
     path('administracion/añadir-administrador', login_required(views.anadir_admin, login_url='/administracion/iniciar-sesion'), name='anadir-admin'),
     path('administracion/modificar-administrador/<id>', login_required(views.modificar_admin, login_url='/administracion/iniciar-sesion'), name='modificar-admin'),
     path('administracion/eliminar-administrador/<id>/', login_required(views.eliminar_admin, login_url='/administracion/iniciar-sesion'), name='eliminar-admin'),
-
 ]

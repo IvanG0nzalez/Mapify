@@ -2,7 +2,7 @@ function initMap() {
 
     var mapa = new google.maps.Map(document.getElementById('mapa'), {
         center: {lat: -4.032785, lng: -79.202424},
-        zoom: 18
+        zoom: 17
     });
 
     var routeCoordinates = coordenadas_nodos;
@@ -25,15 +25,29 @@ function initMap() {
         position: routeCoordinates[routeCoordinates.length - 1],
         map: mapa,
         });
-
+        console.log(routeCoordinates)
          var contenidoInfoWindowInicio = 'Este es el punto de inicio';
          var contenidoInfoWindowFin = 'Este es el punto de destino';
          var infoWindowInicio = new google.maps.InfoWindow({content: contenidoInfoWindowInicio});
          var infoWindowFin = new google.maps.InfoWindow({content: contenidoInfoWindowFin});
          infoWindowInicio.open(mapa, marcadorInicio);
          infoWindowFin.open(mapa, marcadorFin);
-         marcadorInicio.addListener('click', function() {infoWindowInicio.open(mapa, marcadorInicio);});
-         marcadorFin.addListener('click', function() {infoWindowFin.open(mapa, marcadorFin);});
+         //marcadorInicio.addListener('click', function() {infoWindowInicio.open(mapa, marcadorInicio);});
+         //marcadorFin.addListener('click', function() {infoWindowFin.open(mapa, marcadorFin);});
+        marcadorInicio.addListener('click', function() {
+          if (infoWindowInicio.getMap()) {
+            infoWindowInicio.close();
+          } else {
+            infoWindowInicio.open(mapa, marcadorInicio);
+          }
+        });
+        marcadorFin.addListener('click', function() {
+          if (infoWindowFin.getMap()) {
+            infoWindowFin.close();
+          } else {
+            infoWindowFin.open(mapa, marcadorFin);
+          }
+        });
 
         rutaPolyline.setMap(mapa);
     }

@@ -6,9 +6,29 @@
 {% block contenido %}
     <h1>Aquí se presentan las búsquedas</h1>
 
+    <form method="post">
+        {% csrf_token %}
+        <label for="nodo_origen">Bloque de origen:</label>
+        <select name="nodo_origen" id="nodo_origen">
+            {% for nodo in nodos %}
+                <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="nodo_destino">Bloque de destino:</label>
+        <select name="nodo_destino" id="nodo_destino">
+            {% for nodo in nodos %}
+                <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Buscar Ruta">
+    </form>
+
     <div id="mapa">
-        <script src="{% static 'scripts/mapa.js'%}"></script>
+        <script src="{% static 'scripts/mapa.js' %}"></script>
         <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
     </div>
+
 
 {% endblock %}

@@ -279,6 +279,10 @@ class Nodo(models.Model):
     def obtener_nodo_por_codigo_bloque(cls, bloque):
         return cls.objects.filter(bloque__codigo__contains=bloque)
 
+    @classmethod
+    def obtener_nodos_no_auxiliares(cls):
+        return cls.objects.exclude(codigo__contains='N')
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 

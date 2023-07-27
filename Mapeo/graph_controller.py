@@ -75,9 +75,9 @@ class ControladorGrafo:
 
                         self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
                     else:
-                        print(f"La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
+                        print(f"Graph Controller: La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
                 else:
-                    print(f"La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
+                    print(f"Graph Controller: La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
 
     def minimo_dijkstra(self, origen):
         if origen not in self.graph.nodes():
@@ -106,6 +106,18 @@ class ControladorGrafo:
 
     def obtener_grafo(self):
         return self.graph
+
+    def obtener_coordenadas_por_codigo(self, codigo):
+        data_db = self.obtener_nodos_db()
+
+        for nodo in data_db:
+            codigo_nodo_db = nodo['codigo']
+            if codigo_nodo_db == codigo:
+                latitud = nodo['latitud']
+                altitud = nodo['altitud']
+                #coordenadas = {'latitud': latitud, 'altitud': altitud}
+                return latitud, altitud
+        return None
 
 
 class NodoNoExisteException(Exception):
