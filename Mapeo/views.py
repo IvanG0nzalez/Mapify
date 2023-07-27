@@ -3,7 +3,6 @@ import io
 import os.path
 
 import matplotlib.pyplot as plt
-import mplleaflet
 import networkx as nx
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -14,7 +13,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect, HttpResponse
-from pyvis.network import Network
+#from pyvis.network import Network
 
 from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm
 from Mapeo.graph_controller import ControladorGrafo, NodoNoExisteException

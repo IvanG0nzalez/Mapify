@@ -4,31 +4,40 @@
 {% block titulo %}Búsqueda{% endblock %}
 
 {% block contenido %}
-    <h1>Aquí se presentan las búsquedas</h1>
-
-    <form method="post">
+       <form method="post">
         {% csrf_token %}
-        <label for="nodo_origen">Bloque de origen:</label>
-        <select name="nodo_origen" id="nodo_origen">
-            {% for nodo in nodos %}
-                <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
-            {% endfor %}
-        </select>
+        <div class="input-container">
+            <label for="nodo_origen">Bloque de origen:</label>
+            <select name="nodo_origen" id="nodo_origen">
+                {% for nodo in nodos %}
+                    <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <label for="nodo_destino">Bloque de destino:</label>
-        <select name="nodo_destino" id="nodo_destino">
-            {% for nodo in nodos %}
-                <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
-            {% endfor %}
-        </select>
+        <div class="input-container">
+            <label for="nodo_destino">Bloque de destino:</label>
+            <select name="nodo_destino" id="nodo_destino">
+                {% for nodo in nodos %}
+                    <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <input type="submit" value="Buscar Ruta">
+        <input type="submit" value="Buscar Ruta" id="buscarRutaBtn">
     </form>
 
-    <div id="mapa">
-        <script src="{% static 'scripts/mapa.js' %}"></script>
-        <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
-    </div>
+    <div class="mapa_y_resultado">
+        <div id="mapa">
+            <script src="{% static 'scripts/mapa.js' %}"></script>
+            <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
+        </div>
 
+        <div class="div_resultado_busqueda">
+            <div class="div_informacion_resultado">
+                <H3>Información</H3>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
