@@ -440,7 +440,10 @@ body {
     width: 35%;
     margin-left: auto;
     margin-right: auto;
-
+}
+#grafoContainer {
+    height: 89vh;
+    border: 2px solid black;
 }
 
 .input-container {

@@ -1,20 +1,14 @@
-import base64
-import io
+import json
 import os.path
 
-import matplotlib.pyplot as plt
-import networkx as nx
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template import loader
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
-from django.http import HttpResponseRedirect, HttpResponse
-#from pyvis.network import Network
-
+from django.http import HttpResponseRedirect
 from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm
 from Mapeo.graph_controller import ControladorGrafo, NodoNoExisteException
 from Mapeo.models import Bloque, Ruta, Nodo, Facultad
@@ -22,10 +16,6 @@ from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 
 def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
-
-
-def pantallaBase(request):
-    return render(request, 'pantallas/base.html', {})
 
 
 def administracion_inicio(request):
@@ -41,10 +31,9 @@ def busqueda_rutas_user(request):
         print(nodo_destino_codigo)
 
         controlador_grafo = ControladorGrafo()
-        #controlador_grafo.crear_grafo()
+        controlador_grafo.crear_grafo()
 
         try:
-            rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
             rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
             camino_mas_corto = rutas.get(nodo_destino_codigo)
             if camino_mas_corto:
@@ -60,10 +49,10 @@ def busqueda_rutas_user(request):
                 coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
                 return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos})
             else:
-                print("chingaste")
+                print("El nodo no existe")
                 pass
         except NodoNoExisteException as e:
-            print("El nodo no existe xd")
+            print(f"El nodo no existe: {e}")
             pass
     else:
         return render(request, 'pantallas/busqueda.html', {'nodos': nodos})
@@ -212,7 +201,7 @@ def conexiones_nodo(request, nodo_id):
     if request.method == 'POST':
         nodo_destino_id = request.POST.get('nodo_destino')
         nodo_destino = get_object_or_404(Nodo, id=nodo_destino_id)
-        nueva_ruta = Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
+        Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
         return redirect('mapeo:conexion-nodo', nodo_id=nodo_id)
     #Obtiene los nodos ya conectados al nodo actual
     nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
@@ -233,17 +222,16 @@ def grafo_admin(request):
 
     grafo = controlador_grafo.obtener_grafo()
     print(grafo)
-    net = Network(height="500px", width="100%", notebook=True)
+    grafo_data = {
+        'nodes': [{'id': str(nodo), 'label': f'Bloque {nodo}', 'codigo': 'Codigo nodo: XYZ'} for nodo in grafo.nodes()],
+        'edges': [{'from': str(arista[0]), 'to': str(arista[1]),
+                   'label': f'Distancia: {grafo[arista[0]][arista[1]]["distancia"]} - Tiempo: {grafo[arista[0]][arista[1]]["tiempo"]}'}
+                  for arista in grafo.edges()]
+    }
 
-    for nodo in grafo.nodes():
-        net.add_node(nodo)
+    grafo_data_json = json.dumps(grafo_data)
 
-    for arista in grafo.edges():
-        net.add_edge(arista[0], arista[1])
-
-    grafo_data = net.get_network_data()
-
-    return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data})
+    return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
     #plot y network
     #pos = nx.spring_layout(grafo, seed=42)
     #plt.figure(figsize=(10, 6))
