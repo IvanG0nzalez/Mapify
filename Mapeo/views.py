@@ -91,9 +91,25 @@ def modificar_facultad(request, id):
 
         if formulario.is_valid():
             formulario.save()
-            return redirect("mapeo:facultad")
+            return redirect("mapeo:facultad_id", id)
         data["form"] = formulario
     return render(request, 'pantallas/modificar_facultad.html', data)
+
+
+def listado_modificar_facultad(request, id):
+    facultad = get_object_or_404(Facultad, id=id)
+    data = {
+        'form': FacultadForm(instance=facultad),
+        'facultad_id': id
+    }
+    if request.method == 'POST':
+        formulario = FacultadForm(data=request.POST, files=request.FILES, instance=facultad)
+
+        if formulario.is_valid():
+            formulario.save()
+            return redirect("mapeo:facultad")
+        data["form"] = formulario
+    return render(request, 'pantallas/listado_modificar_facultad.html', data)
 
 
 def eliminar_facultad(request, id):
@@ -150,9 +166,25 @@ def modificar_bloque(request, id):
 
         if formulario.is_valid():
             formulario.save()
-            return redirect("mapeo:bloque")
+            return redirect("mapeo:bloque_id", id)
         data["form"] = formulario
     return render(request, 'pantallas/modificar_bloque.html', data)
+
+
+def listado_modificar_bloque(request, id):
+    bloque = get_object_or_404(Bloque, id=id)
+    data = {
+        'form': BloqueForm(instance=bloque),
+        'bloque_id': id
+    }
+    if request.method == 'POST':
+        formulario = BloqueForm(data=request.POST, instance=bloque)
+
+        if formulario.is_valid():
+            formulario.save()
+            return redirect("mapeo:bloque")
+        data["form"] = formulario
+    return render(request, 'pantallas/listado_modificar_bloque.html', data)
 
 
 def eliminar_bloque(request, id):
@@ -218,6 +250,28 @@ def conexiones_nodo(request, nodo_id):
         'rutas': rutas,
     }
     return render(request, 'pantallas/conexiones_nodo.html', context)
+
+
+def listado_conexiones_nodo(request, nodo_id):
+    nodo = get_object_or_404(Nodo, pk=nodo_id)
+    rutas = Ruta.objects.filter(nodo_inicio=nodo)
+
+    if request.method == 'POST':
+        nodo_destino_id = request.POST.get('nodo_destino')
+        nodo_destino = get_object_or_404(Nodo, id=nodo_destino_id)
+        Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
+        return redirect('mapeo:listado-conexion-nodo', nodo_id=nodo_id)
+    #Obtiene los nodos ya conectados al nodo actual
+    nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
+    #Excluir los nodos conectados del conjunto de nodos disponibles para conectar
+    nodos = Nodo.objects.exclude(id=nodo_id).exclude(id__in=nodos_conectados)
+
+    context = {
+        'nodos': nodos,
+        'nodo': nodo,
+        'rutas': rutas,
+    }
+    return render(request, 'pantallas/listado_conexiones_nodo.html', context)
 
 
 def grafo_admin(request):
@@ -316,10 +370,23 @@ def modificar_admin(request, id):
         form = ModificarAdminForm(request.POST, instance=admin)
         if form.is_valid():
             form.save()
-            return redirect('admin')
+            return redirect('mapeo:admin_id', id)
     else:
         form = ModificarAdminForm(instance=admin)
     return render(request, 'pantallas/modificar_admin.html', {'form': form, 'admin_id': id})
+
+
+def listado_modificar_admin(request, id):
+    admin = get_object_or_404(User, id=id)
+
+    if request.method == 'POST':
+        form = ModificarAdminForm(request.POST, instance=admin)
+        if form.is_valid():
+            form.save()
+            return redirect('admin')
+    else:
+        form = ModificarAdminForm(instance=admin)
+    return render(request, 'pantallas/listado_modificar_admin.html', {'form': form, 'admin_id': id})
 
 
 def eliminar_admin(request, id):

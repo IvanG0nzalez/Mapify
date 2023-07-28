@@ -60,7 +60,7 @@
                     <td class="text-center"><a
                             href="{% url 'mapeo:bloque_id' bloque_id=bloque.id %}"> {{ bloque.facultad }}</a></td>
                     <td class="d-flex justify-content-center">
-                        <a href="{% url 'mapeo:modificar-bloque' bloque.id %}"
+                        <a href="{% url 'mapeo:listado-modificar-bloque' bloque.id %}"
                            class="btn btn-warning mx-1">Modificar</a>
                         <a href="{% url 'mapeo:eliminar-bloque' bloque.id %}" class="btn btn-danger mx-1">Eliminar</a>
                     </td>
