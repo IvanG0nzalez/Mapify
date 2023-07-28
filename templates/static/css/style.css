@@ -2,11 +2,6 @@
     color: aliceblue;
 }
 
-.barraPrincipal {
-    background-color: #DBE6EC;
-    overflow: hidden;
-}
-
 .imagen_fondo{
     width:100%;
     min-height: 100%;
@@ -37,12 +32,14 @@
 .div_resultado_busqueda{
     width: 25%;
     height: 70vh;
+    margin: 10px;
     background-color: white;
     border-radius: 15px;
 }
 
 .div_informacion_resultado{
     margin: 10px;
+    min-width: 100%;
 }
 
 .div_principal {
@@ -332,6 +329,12 @@ body {
     width: calc(100% - 200px);
     background-color: var(--body-color);
     transition: var(--tran-05);
+    flex: 1;
+    overflow: auto;
+}
+
+.container{
+
 }
 
 .home .text {
