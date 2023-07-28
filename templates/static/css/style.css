@@ -17,13 +17,32 @@
     justify-content: center;
 }
 
+.mapa_y_resultado{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 40px;
+}
+
 #mapa {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
-    width: 100%;
-    height: 800px;
+    width: 70%;
+    height: 70vh;
+    border-radius: 15px;
+}
+
+
+.div_resultado_busqueda{
+    width: 25%;
+    height: 70vh;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.div_informacion_resultado{
+    margin: 10px;
 }
 
 .div_principal {
@@ -421,5 +440,14 @@ body {
     width: 35%;
     margin-left: auto;
     margin-right: auto;
+}
+#grafoContainer {
+    height: 89vh;
+    border: 2px solid black;
+}
 
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
 }

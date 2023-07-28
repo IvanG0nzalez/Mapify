@@ -52,3 +52,17 @@ function initMap() {
         rutaPolyline.setMap(mapa);
     }
 }
+
+var nodoOrigenSelect = document.getElementById('nodo_origen');
+var nodoDestinoSelect = document.getElementById('nodo_destino');
+var buscarRutaBtn = document.getElementById('buscarRutaBtn');
+
+buscarRutaBtn.addEventListener('click', function(event){
+    var nodoOrigen = nodoOrigenSelect.value;
+    var nodoDestino = nodoDestinoSelect.value;
+
+    if(nodoOrigen == nodoDestino){
+        alert("Los bloques de origen y destino deben ser diferentes");
+        event.preventDefault();
+    }
+});

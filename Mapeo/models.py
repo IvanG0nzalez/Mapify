@@ -85,9 +85,12 @@ class Bloque(models.Model):
         return cls.objects.filter(facultad__nombre__contains=facultad)
 
     def save(self, *args, **kwargs):
+        #numero_auxiliar_inicial = self.numero_auxiliar
+        es_nuevo = self.pk is None
         if self.is_auxiliar:
             self.numero = None
-            self.numero_auxiliar = self.get_next_numero_auxiliar()
+            if es_nuevo:
+                self.numero_auxiliar = self.get_next_numero_auxiliar()
             self.codigo = f"N{self.numero_auxiliar}"
         else:
             if self.numero_auxiliar:
@@ -95,7 +98,6 @@ class Bloque(models.Model):
             primer_digito_zona = self.zona[0]
             self.codigo = f"{primer_digito_zona}{self.numero}"
 
-        es_nuevo = self.pk is None
         super().save(*args, **kwargs)
 
         if es_nuevo:

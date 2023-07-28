@@ -1,9 +1,6 @@
-import base64
-import io
+import json
 import os.path
 
-import matplotlib.pyplot as plt
-import networkx as nx
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
@@ -19,10 +16,6 @@ from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 
 def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
-
-
-def pantallaBase(request):
-    return render(request, 'pantallas/base.html', {})
 
 
 def administracion_inicio(request):
@@ -56,10 +49,10 @@ def busqueda_rutas_user(request):
                 coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
                 return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos})
             else:
-                print("chingaste")
+                print("El nodo no existe")
                 pass
         except NodoNoExisteException as e:
-            print("El nodo no existe xd")
+            print(f"El nodo no existe: {e}")
             pass
     else:
         return render(request, 'pantallas/busqueda.html', {'nodos': nodos})
@@ -208,7 +201,7 @@ def conexiones_nodo(request, nodo_id):
     if request.method == 'POST':
         nodo_destino_id = request.POST.get('nodo_destino')
         nodo_destino = get_object_or_404(Nodo, id=nodo_destino_id)
-        nueva_ruta = Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
+        Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
         return redirect('mapeo:conexion-nodo', nodo_id=nodo_id)
     #Obtiene los nodos ya conectados al nodo actual
     nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
@@ -229,27 +222,54 @@ def grafo_admin(request):
 
     grafo = controlador_grafo.obtener_grafo()
     print(grafo)
-    pos = nx.spring_layout(grafo, seed=42)
-    plt.figure(figsize=(10, 6))
-
-    nx.draw(grafo, pos, with_labels=True, node_color='skyblue', node_size=2000, font_size=10, font_weight='bold')
-    etiquetas_aristas_distancia = nx.get_edge_attributes(grafo, 'distancia')
-    etiquetas_aristas_tiempo = nx.get_edge_attributes(grafo, 'tiempo')
-
-    etiquetas_combinadas = {
-        arista: f"Dist: {etiquetas_aristas_distancia[arista]}, Tiempo: {etiquetas_aristas_tiempo[arista]}"
-        for arista in grafo.edges()
+    grafo_data = {
+        'nodes': [{'id': str(nodo), 'label': f'Bloque {nodo}', 'codigo': 'Codigo nodo: XYZ'} for nodo in grafo.nodes()],
+        'edges': [{'from': str(arista[0]), 'to': str(arista[1]),
+                   'label': f'Distancia: {grafo[arista[0]][arista[1]]["distancia"]} - Tiempo: {grafo[arista[0]][arista[1]]["tiempo"]}'}
+                  for arista in grafo.edges()]
     }
 
-    nx.draw_networkx_edge_labels(grafo, pos, edge_labels=etiquetas_combinadas, font_size=8)
+    grafo_data_json = json.dumps(grafo_data)
 
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
+    return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
+    #plot y network
+    #pos = nx.spring_layout(grafo, seed=42)
+    #plt.figure(figsize=(10, 6))
 
-    imagen_base64 = base64.b64encode(buf.read()).decode('utf-8')
+    #nx.draw(grafo, pos, with_labels=True, node_color='skyblue', node_size=2000, font_size=10, font_weight='bold')
+    #etiquetas_aristas_distancia = nx.get_edge_attributes(grafo, 'distancia')
+    #etiquetas_aristas_tiempo = nx.get_edge_attributes(grafo, 'tiempo')
 
-    return render(request, 'pantallas/grafo_admin.html', {'imagen': imagen_base64})
+    #etiquetas_combinadas = {
+    #    arista: f"Dist: {etiquetas_aristas_distancia[arista]}, Tiempo: {etiquetas_aristas_tiempo[arista]}"
+    #    for arista in grafo.edges()
+    #}
+
+    #nx.draw_networkx_edge_labels(grafo, pos, edge_labels=etiquetas_combinadas, font_size=8)
+
+    #buf = io.BytesIO()
+    #plt.savefig(buf, format='png')
+    #buf.seek(0)
+
+    #imagen_base64 = base64.b64encode(buf.read()).decode('utf-8')
+
+    # return render(request, 'pantallas/grafo_admin.html', {'imagen': imagen_base64})
+
+    #<img src="data:image/png;base64,{{ imagen }}" alt="Grafo">
+
+
+    #Wea con librería mplleaflet que no funca
+    #ax = plt.gca()
+    #ax.grid(False)
+
+    #mapa_interactivo = mplleaflet.fig_to_html(plt.gcf())
+
+    #template = loader.get_template('pantallas/grafo_admin.html')
+    #context = {
+    #    'mapa_interactivo': mapa_interactivo,
+    #}
+    #return HttpResponse(template.render(context, request))
+
 
 
 def listado_admins(request):
