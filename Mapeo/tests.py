@@ -16,16 +16,17 @@ if documento_existente:
         {'_id': 1},
         {'$set': {'conexiones': documento_existente['conexiones']}}
     )
-
+"""
 controlador_grafo = ControladorGrafo()
 controlador_grafo.crear_grafo()
-origen = 'A1'
+origen = 'A4'
 rutas = controlador_grafo.minimo_dijkstra(origen)
-coordenadas = controlador_grafo.obtener_coordenadas_por_codigo('A1')
-print(coordenadas)
+#coordenadas = controlador_grafo.obtener_coordenadas_por_codigo('A1')
+#print(coordenadas)
 print(f"\nDistancias, rutas y tiempos desde {origen}:")
 for nodo, ruta in rutas.items():
     print(f"{nodo}: {ruta}")
+
 """
 def cambio_auxiliar_bloque():
     from Mapeo.models import Bloque
@@ -36,3 +37,4 @@ def cambio_auxiliar_bloque():
         print("Valor auxiliar del bloque actualizao")
     except Bloque.DoesNotExist:
         print("No se encontró el bloque con es ID")
+"""

@@ -13,16 +13,17 @@
         <form method="post">
             {% csrf_token %}
             <div>
+                <input type="text" id="busqueda_nodo_conexion" placeholder="Ingrese el código del nodo"><br>
                 <label for="nodo">Selecciona un nodo:</label>
                 <select id="nodo" name="nodo_destino">
                     {% if nodos %}
                         {% for n in nodos %}
-                            <option value="{{ n.id }}">{{ n.codigo }}</option>
+                            <option class="opcion_conexion" value="{{ n.id }}">{{ n.codigo }}</option>
                         {% endfor %}
                     {% else %}
                         <option value="" disabled>No hay nodos disponibles para conectar.</option>
-
                     {% endif %}
+                        <option id="sin_resultados" value="" disabled style="display: none;">No hay nodos coincidentes</option>
                 </select>
                 <button type="submit" class="btn btn-dark mx-2">Agregar Conexion</button>
                 <a href="{% url 'mapeo:nodo' %}" class="btn btn-primary mx-2">Volver</a>
@@ -41,7 +42,7 @@
                     <tbody>
                     {% for ruta in rutas %}
                         <tr>
-                            <td class="text-center">{{ ruta.nodo_destino.codigo }}</td>
+                            <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=ruta.nodo_destino.id %}">{{ ruta.nodo_destino.codigo }}</a></td>
                             <td class="text-center">{{ ruta.tiempo }}</td>
                             <td class="text-center">{{ ruta.distancia }}</td>
                             <td class="d-flex justify-content-center">
@@ -55,4 +56,6 @@
             </div>
         </form>
     </div>
+
+    <script src="{% static 'scripts/busqueda_nodo_conexiones.js' %}"></script>
 {% endblock %}

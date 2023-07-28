@@ -40,6 +40,10 @@ def busqueda_rutas_user(request):
                 nodos_camino = camino_mas_corto['ruta']
                 coordenadas_nodos = []
 
+                distancia = camino_mas_corto['distancia']
+                tiempo = camino_mas_corto['tiempo']
+                tiempo_formateado = format_tiempo(tiempo)
+
                 for codigo_nodo in nodos_camino:
                     coordenadas = controlador_grafo.obtener_coordenadas_por_codigo(codigo_nodo)
                     if coordenadas:
@@ -47,7 +51,7 @@ def busqueda_rutas_user(request):
                 # Convertir la lista de coordenadas a una lista de diccionarios
                 print(coordenadas_nodos)
                 coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
-                return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos})
+                return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos, 'distancia': distancia, 'tiempo': tiempo_formateado})
             else:
                 print("El nodo no existe")
                 pass
@@ -225,13 +229,18 @@ def grafo_admin(request):
     grafo_data = {
         'nodes': [{'id': str(nodo), 'label': f'Bloque {nodo}', 'codigo': 'Codigo nodo: XYZ'} for nodo in grafo.nodes()],
         'edges': [{'from': str(arista[0]), 'to': str(arista[1]),
-                   'label': f'Distancia: {grafo[arista[0]][arista[1]]["distancia"]} - Tiempo: {grafo[arista[0]][arista[1]]["tiempo"]}'}
+                   'label': f'Distancia: {grafo[arista[0]][arista[1]]["distancia"]} mts\nTiempo: {format_tiempo(grafo[arista[0]][arista[1]]["tiempo"])}'}
                   for arista in grafo.edges()]
     }
 
     grafo_data_json = json.dumps(grafo_data)
 
     return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
+
+
+def format_tiempo(tiempo_segundos):
+    tiempo_minutos, tiempo_segundos = divmod(tiempo_segundos, 60)
+    return f"{tiempo_minutos} minutos y {tiempo_segundos} segundos"
     #plot y network
     #pos = nx.spring_layout(grafo, seed=42)
     #plt.figure(figsize=(10, 6))
