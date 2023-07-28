@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ facultad.nombre }}</h5>
                     <p class="card-text">{{ facultad.descripcion }}</p>
-                    <a href="{% url 'mapeo:modificar-facultad' facultad.id %}"
+                    <a href="{% url 'mapeo:listado-modificar-facultad' facultad.id %}"
                        class="btn btn-warning mx-2">Modificar</a>
                     <a href="{% url 'mapeo:eliminar-facultad' facultad.id %}" class="btn btn-danger mx-2">Eliminar</a>
                 </div>

@@ -1,0 +1,61 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+
+{% block titulo %}
+    Conexiones Nodo
+{% endblock %}
+
+{% block contenido %}
+    <h1 class="container">Conectar Nodo - {{ nodo.codigo }}</h1>
+
+    <div class="container mt-5">
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <input type="text" id="busqueda_nodo_conexion" placeholder="Ingrese el código del nodo" style="width: 250px;"><br>
+                <label for="nodo">Selecciona un nodo:</label>
+                <select id="nodo" name="nodo_destino">
+                    {% if nodos %}
+                        {% for n in nodos %}
+                            <option class="opcion_conexion" value="{{ n.id }}">{{ n.codigo }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="" disabled>No hay nodos disponibles para conectar.</option>
+                    {% endif %}
+                        <option id="sin_resultados" value="" disabled style="display: none;">No hay nodos coincidentes</option>
+                </select>
+                <button type="submit" class="btn btn-dark mx-2">Agregar Conexion</button>
+                <a href="{% url 'mapeo:nodo' %}" class="btn btn-primary mx-2">Volver</a>
+            </div>
+
+            <div>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="thead_conexion">
+                    <tr class="table-dark">
+                        <th class="text-center">Destino</th>
+                        <th class="text-center">Tiempo</th>
+                        <th class="text-center">Distancia</th>
+                        <th class="text-center">Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ruta in rutas %}
+                        <tr>
+                            <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=ruta.nodo_destino.id %}">{{ ruta.nodo_destino.codigo }}</a></td>
+                            <td class="text-center">{{ ruta.tiempo }}</td>
+                            <td class="text-center">{{ ruta.distancia }}</td>
+                            <td class="d-flex justify-content-center">
+                                <a href="{% url 'mapeo:eliminar-conexion' ruta.id %}" class="btn btn-danger mx-1">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'scripts/busqueda_nodo_conexiones.js' %}"></script>
+{% endblock %}

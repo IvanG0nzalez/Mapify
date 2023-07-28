@@ -13,7 +13,7 @@
         <form method="post">
             {% csrf_token %}
             <div>
-                <input type="text" id="busqueda_nodo_conexion" placeholder="Ingrese el código del nodo"><br>
+                <input type="text" id="busqueda_nodo_conexion" placeholder="Ingrese el código del nodo" style="width: 250px;"><br>
                 <label for="nodo">Selecciona un nodo:</label>
                 <select id="nodo" name="nodo_destino">
                     {% if nodos %}
@@ -26,7 +26,7 @@
                         <option id="sin_resultados" value="" disabled style="display: none;">No hay nodos coincidentes</option>
                 </select>
                 <button type="submit" class="btn btn-dark mx-2">Agregar Conexion</button>
-                <a href="{% url 'mapeo:nodo' %}" class="btn btn-primary mx-2">Volver</a>
+                <a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}" class="btn btn-primary mx-2">Volver</a>
             </div>
 
             <div>

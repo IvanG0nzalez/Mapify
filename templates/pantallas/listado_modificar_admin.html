@@ -1,0 +1,46 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+{% block titulo %}
+    Modificar Administrador
+{% endblock %}
+
+
+{% block contenido %}
+    <h1 class="container">Modificar Administrador</h1>
+
+    <div id="div_center">
+        <div class="container mt-5" id="modificarAdmin">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">Username:</label>
+                    <span class="form-value"> {{ form.username }}</span>
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.first_name.id_for_label }}" class="form-label">Nombres:</label>
+                    <span class="form-value"> {{ form.last_name }}</span>
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Apellidos:</label>
+                    <span class="form-value"> {{ form.last_name }}</span>
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.email.id_for_label }}" class="form-label">Email:</label>
+                    <span class="form-value"> {{ form.email }}</span>
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña:</label>
+                    <span class="form-value"> {{ form.password }}</span>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'mapeo:admin' %}" class="btn btn-danger mx-2">Cancelar</a>
+                    <input type="submit" value="Guardar" class="btn btn-primary">
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
