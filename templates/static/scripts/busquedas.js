@@ -65,10 +65,50 @@ function buscarAdministradores() {
     sinCoincidenciasRow.style.display = adminsCoincidentes ? 'none' : 'table-row';
 }
 
+function buscarNodoConexion(){
+    const busquedaNodoConexionInput = document.getElementById('busqueda_nodo_conexion');
+    const opcionesNodo = document.getElementsByClassName('opcion_conexion');
+    const  selecNodo = document.getElementById('nodo');
+    const sinResultadosOption = document.getElementById('sin_resultados');
+
+    busquedaNodoConexionInput.oninput = function () {
+        const busqueda = busquedaNodoConexionInput.value.toLowerCase();
+
+        let primeraOpcionVisible = null;
+        let nodosCoincidentes = false;
+
+        for (const opcion of opcionesNodo) {
+            const codigoNodo = opcion.innerText.toLowerCase();
+            opcion.style.display = codigoNodo.includes(busqueda) ? 'block' : 'none';
+
+            if (codigoNodo.includes(busqueda) && primeraOpcionVisible === null) {
+                primeraOpcionVisible = opcion;
+            }
+
+            if (codigoNodo.includes(busqueda)) {
+                nodosCoincidentes = true;
+            }
+        }
+
+        if (primeraOpcionVisible) {
+            selecNodo.value = primeraOpcionVisible.value;
+        } else {
+            selecNodo.value = '';
+        }
+
+        if (nodosCoincidentes) {
+            sinResultadosOption.style.display = 'none';
+        } else {
+            sinResultadosOption.style.display = 'block';
+            selecNodo.value = '';
+        }
+    };
+}
 document.addEventListener('DOMContentLoaded', function () {
     const busquedaBloqueInput = document.getElementById('busqueda_bloque');
     const busquedaNodoInput = document.getElementById('busqueda_nodo');
     const busquedaAdminInput = document.getElementById('busqueda_admin');
+    const busquedaNodoConexionInput = document.getElementById('busqueda_nodo_conexion');
     if(busquedaBloqueInput){
         busquedaBloqueInput.oninput = buscarBloques;
     }
@@ -77,5 +117,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if(busquedaAdminInput){
         busquedaAdminInput.oninput = buscarAdministradores;
+    }
+    if(busquedaNodoConexionInput){
+        busquedaNodoConexionInput.oninput = buscarNodoConexion;
     }
 });
