@@ -11,6 +11,9 @@
     <div class="d-flex justify-content-between">
         <h1 class="container">Nodos</h1>
     </div>
+    <div class="container mt-3">
+            <input type="text" id="busqueda_nodo" placeholder="Ingrese el código del nodo" style="width: 250px;">
+    </div>
 
     <div class="container">
         <table class="table table-striped table-hover table-bordered">
@@ -25,9 +28,9 @@
             </thead>
             <tbody>
             {% for nodo in nodos %}
-                <tr>
+                <tr class="fila-nodo">
                     <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.id }}</a></td>
-                    <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.codigo }}</a>
+                    <td class="text-center codigo"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.codigo }}</a>
                     </td>
                     <td class="text-center"><a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}">{{ nodo.latitud }}</a>
                     </td>
@@ -39,8 +42,11 @@
                     </td>
                 </tr>
             {% endfor %}
+                <tr id="sin_coincidencias_row" style="display: none;">
+                    <td colspan="5" class="text-center">Sin coincidencias</td>
+                </tr>
             </tbody>
         </table>
     </div>
-
+    <script src="{% static 'scripts/busqueda_nodo.js' %}"></script>
 {% endblock %}

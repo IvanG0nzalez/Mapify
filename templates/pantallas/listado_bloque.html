@@ -16,6 +16,9 @@
                 <button type="button" class="btn btn-dark">Añadir</button>
             </a>
         </div>
+        <div class="container mt-3">
+            <input type="text" id="busqueda_bloque" placeholder="Ingrese datos para la búsqueda" style="width: 350px;">
+        </div>
 
         <table class="table table-striped table-hover table-bordered">
             <thead class="thead_bloque">
@@ -34,7 +37,7 @@
 
             <tbody class="tbody_bloque">
             {% for bloque in bloques %}
-                <tr>
+                <tr class="fila-bloque">
                     <td class="text-center"><a
                             href="{% url 'mapeo:bloque_id' bloque_id=bloque.id %}">{{ bloque.id }}</a></td>
                     {% if bloque.numero is None %}
@@ -63,9 +66,12 @@
                     </td>
                 </tr>
             {% endfor %}
+                <tr id="sin_coincidencias_row" style="display: none;">
+                    <td colspan="8" class="text-center">Sin coincidencias</td>
+                </tr>
             </tbody>
-
         </table>
     </div>
 
+    <script src="{% static 'scripts/busqueda_bloque.js' %}"></script>
 {% endblock %}
