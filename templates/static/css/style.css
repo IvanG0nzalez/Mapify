@@ -19,7 +19,7 @@
     margin-top: 40px;
 }
 
-#mapa {
+#mapa_resultado {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,6 +28,14 @@
     border-radius: 15px;
 }
 
+#mapa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70vh;
+    border-radius: 15px;
+}
 
 .div_resultado_busqueda{
     width: 25%;
