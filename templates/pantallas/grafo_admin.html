@@ -1,4 +1,5 @@
 {% extends 'pantallas/base_admin.html' %}
+{% load static %}
 
 {% block titulo %}Grafo{% endblock %}
 
@@ -6,34 +7,7 @@
     <h1>Grafo</h1>
     <div id="grafoContainer">
         <script src="https://unpkg.com/vis-network@9.0.3/dist/vis-network.min.js"></script>
-        <script>
-            var grafoData = {{ grafo_data|safe }};
-            var grafoOptions = {
-                layout: {
-                    improvedLayout: false
-                },
-                edges: {
-                    color: "#000000"
-                },
-                nodes: {
-                    shape: "dot",
-                    size: 20,
-                    font: {
-                        size: 12
-                    }
-                },
-                physic: {
-                    minVelocity: 0.75,
-                    stabilization: true
-                },
-                interaction: {
-                    zoomView: false
-                },
-                minZoom: 0.1,
-                maxZoom: 1.0
-            };
-            var grafoContainer = document.getElementById("grafoContainer");
-            var network = new vis.Network(grafoContainer, grafoData, grafoOptions);
-        </script>
+        <script>var informacion = {{ grafo_data|safe }}</script>
+        <script src="{% static 'scripts/grafo.js' %}"></script>
     </div>
 {% endblock %}
