@@ -8,15 +8,22 @@
         {% csrf_token %}
         <div class="input-container">
             <label for="nodo_origen">Bloque de origen:</label>
-            <select name="nodo_origen" id="nodo_origen">
+            <input type="text" id="buscar_bloque_origen" placeholder="Ingrese el código del bloque" style="width: 250px; margin-right: 15px; margin-left: 15px">
+            <select name="nodo_origen" id="bloque_origen">
+            {% if nodos %}
                 {% for nodo in nodos %}
-                    <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
+                    <option id="opcion_bloque"value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
                 {% endfor %}
+            {% else %}
+                <option value="" disabled>No hay bloques</option>
+            {% endif %}
+                <option id="sin_resultados" value="" disabled style="display: none;">No hay bloques coincidentes</option>
             </select>
         </div>
 
         <div class="input-container">
             <label for="nodo_destino">Bloque de destino:</label>
+            <input type="text" id="buscar_bloque_destino" placeholder="Ingrese el código del bloque" style="width: 250px; margin-right: 15px; margin-left: 15px">
             <select name="nodo_destino" id="nodo_destino">
                 {% for nodo in nodos %}
                     <option value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>

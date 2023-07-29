@@ -451,6 +451,6 @@ body {
 
 .input-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-bottom: 10px;
 }
