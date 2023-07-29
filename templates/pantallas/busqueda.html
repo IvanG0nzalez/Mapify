@@ -35,18 +35,24 @@
     </form>
 
     <div class="mapa_y_resultado">
-        <div id="mapa">
-            <script src="{% static 'scripts/mapa.js' %}"></script>
-            <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
-        </div>
-
-        <div class="div_resultado_busqueda">
-            <div class="div_informacion_resultado">
-                <H3>Información</H3>
-                <h6>Distancia: {{ distancia }} metros</h6>
-                <h6>Tiempo: {{ tiempo }}</h6>
+        {% if distancia and tiempo %}
+            <div id="mapa_resultado">
+                <script src="{% static 'scripts/mapa.js' %}"></script>
+                <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
             </div>
-        </div>
+            <div class="div_resultado_busqueda">
+                <div class="div_informacion_resultado">
+                    <H3>Información</H3>
+                        <h6>Distancia: {{ distancia }} metros</h6>
+                        <h6>Tiempo: {{ tiempo }}</h6>
+                </div>
+            </div>
+        {% else %}
+            <div id="mapa">
+                <script src="{% static 'scripts/mapa.js' %}"></script>
+                <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}
