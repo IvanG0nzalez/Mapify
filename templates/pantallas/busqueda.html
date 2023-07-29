@@ -42,7 +42,6 @@
     <div class="mapa_y_resultado">
         {% if distancia and tiempo %}
             <div id="mapa_resultado">
-                <script src="{% static 'scripts/mapa.js' %}"></script>
                 <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
             </div>
             <div class="div_resultado_busqueda">
@@ -54,11 +53,11 @@
             </div>
         {% else %}
             <div id="mapa">
-                <script src="{% static 'scripts/mapa.js' %}"></script>
                 <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
             </div>
         {% endif %}
     </div>
+    <script src="{% static 'scripts/mapa.js' %}"></script>
     <script src="{% static 'scripts/busqueda_bloque_usuario.js' %}"></script>
 
 {% endblock %}
