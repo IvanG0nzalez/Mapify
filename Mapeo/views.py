@@ -23,11 +23,11 @@ def administracion_inicio(request):
 
 
 def busqueda_rutas_user(request):
-    nodos = Nodo.obtener_nodos_no_auxiliares()
+    nodos = Nodo.objects.exclude(codigo__startswith='N')
     if request.method == 'POST':
-        nodo_origen_codigo = request.POST.get('nodo_origen')
+        nodo_origen_codigo = request.POST.get('bloque_origen')
         print(nodo_origen_codigo)
-        nodo_destino_codigo = request.POST.get('nodo_destino')
+        nodo_destino_codigo = request.POST.get('bloque_destino')
         print(nodo_destino_codigo)
 
         controlador_grafo = ControladorGrafo()
@@ -35,6 +35,7 @@ def busqueda_rutas_user(request):
 
         try:
             rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
+            print(f"rutas: {rutas}")
             camino_mas_corto = rutas.get(nodo_destino_codigo)
             if camino_mas_corto:
                 nodos_camino = camino_mas_corto['ruta']
