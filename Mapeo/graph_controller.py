@@ -8,6 +8,7 @@ from pymongo import MongoClient
 class ControladorGrafo:
     def __init__(self):
         self.graph = None
+        self.data_db = None
 
     def calcular_distancia(self, punto1, punto2):
         R = 6371.0
@@ -34,6 +35,10 @@ class ControladorGrafo:
 
     #Accede a la base de datos y obtiene todos los registros de nodos existentes
     def obtener_nodos_db(self):
+
+        if self.data_db:
+            return self.data_db
+
         cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
         client = MongoClient(cadenaConexion)
         db = client['ProyectoIntegrador']
@@ -108,9 +113,10 @@ class ControladorGrafo:
         return self.graph
 
     def obtener_coordenadas_por_codigo(self, codigo):
-        data_db = self.obtener_nodos_db()
+        if not self.data_db:
+            self.data_db = self.obtener_nodos_db()
 
-        for nodo in data_db:
+        for nodo in self.data_db:
             codigo_nodo_db = nodo['codigo']
             if codigo_nodo_db == codigo:
                 latitud = nodo['latitud']
