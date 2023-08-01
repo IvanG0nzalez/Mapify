@@ -2,8 +2,8 @@
     color: aliceblue;
 }
 
-.imagen_fondo{
-    width:100%;
+.imagen_fondo {
+    width: 100%;
     min-height: 100%;
     background-image: url(FondoUNL.jpg);
     background-size: cover;
@@ -12,7 +12,7 @@
     justify-content: center;
 }
 
-.mapa_y_resultado{
+.mapa_y_resultado {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -37,7 +37,7 @@
     border-radius: 15px;
 }
 
-.div_resultado_busqueda{
+.div_resultado_busqueda {
     width: 25%;
     height: 70vh;
     margin: 10px;
@@ -45,7 +45,7 @@
     border-radius: 15px;
 }
 
-.div_informacion_resultado{
+.div_informacion_resultado {
     margin: 10px;
     min-width: 100%;
 }
@@ -157,7 +157,7 @@ table a {
 :root {
     --body-color: #DBE6EC;
     --sidebar-color: #FFFFFF;
-    --primary-color: rgb(18,86,128);
+    --primary-color: rgb(18, 86, 128);
     --primary-color-light: #DBE6EC;
     --text-color: black;
 
@@ -341,7 +341,7 @@ body {
     overflow: auto;
 }
 
-.container{
+.container {
 
 }
 
@@ -362,7 +362,7 @@ body {
     text-align: right;
 }
 
-#div_center{
+#div_center {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -374,10 +374,13 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
 
+}
+
+@media screen and (max-width: 768px) {
+    #detalleBloque {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
 #modificarBloque {
@@ -385,10 +388,12 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
+}
 
+@media screen and (max-width: 768px) {
+    #modificarBloque {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
 #anadirBloque {
@@ -396,10 +401,19 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
+}
 
+@media screen and (max-width: 768px) {
+    #anadirBloque {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
+}
+
+#anadirFacultad {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 #detalleFacultad {
@@ -407,7 +421,12 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
+}
 
+@media screen and (max-width: 768px) {
+    #detalleFacultad {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
 #modificarFacultad {
@@ -415,10 +434,13 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
 
+}
+
+@media screen and (max-width: 768px) {
+    #modificarFacultad {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
 #anadirAdmin {
@@ -426,10 +448,13 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
 
+}
+
+@media screen and (max-width: 768px) {
+    #anadirAdmin {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
 #detalleAdmin {
@@ -437,10 +462,13 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
 
+}
+
+@media screen and (max-width: 768px) {
+    #detalleAdmin {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
 #modificarAdmin {
@@ -448,10 +476,14 @@ body {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
 }
+
+@media screen and (max-width: 768px) {
+    #modificarAdmin {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
+}
+
 #grafoContainer {
     height: 89vh;
     border: 2px solid black;
@@ -464,31 +496,29 @@ body {
 }
 
 
-
-
-*{
+* {
     margin: 0;
     box-sizing: border-box;
     padding: 0;
 }
 
-body{
+body {
     font-family: Arial;
 }
 
-.nav{
+.nav {
     background-color: #830248;
     --img1: scale(1);
     --img2: scale(0);
 }
 
-.nav:has(.dropdown:target){
+.nav:has(.dropdown:target) {
     --img1: scale(0);
     --img2: scale(1);
     --clip: inset(0 0 0 0);
 }
 
-.nav__container{
+.nav__container {
     width: 90%;
     margin: 0 auto;
     height: 70px;
@@ -500,12 +530,12 @@ body{
     overflow: hidden;
 }
 
-.nav__title{
+.nav__title {
     color: #fff;
     grid-area: title;
 }
 
-.nav__menu{
+.nav__menu {
     grid-area: img;
     position: relative;
     z-index: 10;
@@ -513,16 +543,16 @@ body{
     left: 0;
 }
 
-.nav__menu--second{
+.nav__menu--second {
     transform: var(--img2);
 }
 
-.nav__icon{
+.nav__icon {
     width: 30px;
     display: block;
 }
 
-.dropdown{
+.dropdown {
     position: absolute;
     background-color: #000;
     width: 75%;
@@ -539,11 +569,11 @@ body{
     transition: clip-path .5s;
 }
 
-.dropdown__list{
+.dropdown__list {
     list-style: none;
 }
 
-.dropdown__link{
+.dropdown__link {
     color: rgb(184, 187, 191);
     padding: 1em .7em;
     text-decoration: none;
@@ -555,12 +585,12 @@ body{
     border-radius: 6px;
 }
 
-.dropdown__list:has(:checked){
+.dropdown__list:has(:checked) {
     --rows: 1fr;
     --bg: #28303B;
 }
 
-.dropdown__check{
+.dropdown__check {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -568,29 +598,29 @@ body{
     cursor: pointer;
 }
 
-.dropdown__arrow{
+.dropdown__arrow {
     margin-left: auto;
     /*transform: var(--rotate, 0); // Eliminamos esta línea */
     transition: .2s transform;
 }
 
-.dropdown__content{
+.dropdown__content {
     display: grid;
     grid-template-rows: var(--rows, 0fr);
     transition: .3s grid-template-rows;
 }
 
-.dropdown__sub{
+.dropdown__sub {
     overflow: hidden;
 }
 
-.dropdown__li{
+.dropdown__li {
     width: 85%;
     list-style: none;
     margin-left: auto;
 }
 
-.dropdown__anchor{
+.dropdown__anchor {
     padding: 1em 0;
     display: block;
     color: #B6BABE;

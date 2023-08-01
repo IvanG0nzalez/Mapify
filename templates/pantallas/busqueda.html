@@ -4,59 +4,76 @@
 {% block titulo %}Búsqueda{% endblock %}
 
 {% block contenido %}
-       <form method="post">
-        {% csrf_token %}
-        <div class="input-container">
-            <label for="nodo_origen">Bloque de origen:</label>
-            <input type="text" id="buscar_bloque_origen" placeholder="Ingrese el código del bloque" style="width: 250px; margin-right: 15px; margin-left: 15px">
-            <select name="bloque_origen" id="bloque_origen">
-            {% if nodos %}
-                {% for nodo in nodos %}
-                    <option class="opcion_bloque" value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
-                {% endfor %}
-            {% else %}
-                <option value="" disabled>No hay bloques</option>
-            {% endif %}
-                <option id="sin_resultados" value="" disabled style="display: none;">No hay bloques coincidentes</option>
-            </select>
-        </div>
+    <div id="div_center">
+        <div id="busquedaUsuario">
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-container">
+                    <label class="form-label" for="nodo_origen">Bloque de origen:</label>
 
-        <div class="input-container">
-            <label for="nodo_destino">Bloque de destino:</label>
-            <input type="text" id="buscar_bloque_destino" placeholder="Ingrese el código del bloque" style="width: 250px; margin-right: 15px; margin-left: 15px">
-            <select name="bloque_destino" id="bloque_destino">
-                {% if nodos %}
-                    {% for nodo in nodos %}
-                        <option class="opcion_bloque" value="{{ nodo.codigo }}">{{ nodo.codigo }} - {{ nodo.bloque.descripcion }}</option>
-                    {% endfor %}
-                {% else %}
-                    <option value="" disabled>No hay bloques</option>
-                {% endif %}
-                    <option id="sin_resultados" value="" disabled style="display: none;">No hay bloques coincidentes</option>
-            </select>
-        </div>
+                    <input type="text" id="buscar_bloque_origen" placeholder="Ingrese el código del bloque"
+                           style="width: 250px; margin-right: 15px; margin-left: 15px">
 
-        <input type="submit" value="Buscar Ruta" id="buscarRutaBtn">
-    </form>
-
-    <div class="mapa_y_resultado">
-        {% if distancia and tiempo %}
-            <div id="mapa">
-                <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
-            </div>
-            <div class="div_resultado_busqueda">
-                <div class="div_informacion_resultado">
-                    <H3>Información</H3>
-                        <h6>Distancia: {{ distancia }} metros</h6>
-                        <h6>Tiempo: {{ tiempo }}</h6>
+                    <select name="bloque_origen" id="bloque_origen">
+                        {% if nodos %}
+                            {% for nodo in nodos %}
+                                <option class="opcion_bloque" value="{{ nodo.codigo }}">{{ nodo.codigo }}
+                                    - {{ nodo.bloque.descripcion }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="" disabled>No hay bloques</option>
+                        {% endif %}
+                        <option id="sin_resultados" value="" disabled style="display: none;">No hay bloques coincidentes
+                        </option>
+                    </select>
                 </div>
+
+                <div class="input-container">
+                    <label class="form-label" for="nodo_destino">Bloque de destino:</label>
+                    <input type="text" id="buscar_bloque_destino" placeholder="Ingrese el código del bloque"
+                           style="width: 250px; margin-right: 15px; margin-left: 15px">
+                    <select name="bloque_destino" id="bloque_destino">
+                        {% if nodos %}
+                            {% for nodo in nodos %}
+                                <option class="opcion_bloque" value="{{ nodo.codigo }}">{{ nodo.codigo }}
+                                    - {{ nodo.bloque.descripcion }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="" disabled>No hay bloques</option>
+                        {% endif %}
+                        <option id="sin_resultados" value="" disabled style="display: none;">No hay bloques coincidentes
+                        </option>
+                    </select>
+                </div>
+
+                <input class="btn btn-dark" type="submit" value="Buscar Ruta" id="buscarRutaBtn">
+            </form>
+
+            <div class="mapa_y_resultado">
+                {% if distancia and tiempo %}
+                    <div id="mapa">
+                        <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
+                    </div>
+                    <div class="div_resultado_busqueda">
+                        <div class="div_informacion_resultado">
+                            <H3>Información</H3>
+                            <h6>Distancia: {{ distancia }} metros</h6>
+                            <h6>Tiempo: {{ tiempo }}</h6>
+                        </div>
+                    </div>
+                {% else %}
+                    <div id="mapa">
+                        <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
+                    </div>
+                {% endif %}
             </div>
-        {% else %}
-            <div id="mapa">
-                <script>var coordenadas_nodos = {{ ruta_coordenadas | safe }}</script>
-            </div>
-        {% endif %}
+        </div>
     </div>
+
+
+
+
+
     <script src="{% static 'scripts/mapa.js' %}"></script>
     <script src="{% static 'scripts/busqueda_bloque_usuario.js' %}"></script>
 

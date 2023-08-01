@@ -2,8 +2,8 @@
     color: aliceblue;
 }
 
-.imagen_fondo{
-    width:100%;
+.imagen_fondo {
+    width: 100%;
     min-height: 100%;
     background-image: url(FondoUNL.jpg);
     background-size: cover;
@@ -12,7 +12,7 @@
     justify-content: center;
 }
 
-.mapa_y_resultado{
+.mapa_y_resultado {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -37,7 +37,7 @@
     border-radius: 15px;
 }
 
-.div_resultado_busqueda{
+.div_resultado_busqueda {
     width: 25%;
     height: 70vh;
     margin: 10px;
@@ -45,7 +45,7 @@
     border-radius: 15px;
 }
 
-.div_informacion_resultado{
+.div_informacion_resultado {
     margin: 10px;
     min-width: 100%;
 }
@@ -157,7 +157,7 @@ table a {
 :root {
     --body-color: #DBE6EC;
     --sidebar-color: #FFFFFF;
-    --primary-color: rgb(18,86,128);
+    --primary-color: rgb(18, 86, 128);
     --primary-color-light: #DBE6EC;
     --text-color: black;
 
@@ -380,99 +380,45 @@ body {
     text-align: right;
 }
 
-#div_center{
+#div_center {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-#detalleBloque {
+#busquedaUsuario {
     display: inline-block;
     background-color: #f2f2f2;
     padding: 20px;
-    border-radius: 10px;
-    width: 35%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
-
-}
-
-#modificarBloque {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 20px;
     border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-
 }
 
-#anadirBloque {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-
+@media screen and (max-width: 768px) {
+    #busquedaUsuario {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
-#detalleFacultad {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-
-}
-
-#modificarFacultad {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#anadirAdmin {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#detalleAdmin {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-#modificarAdmin {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    width: 35%;
-    margin-left: auto;
-    margin-right: auto;
-}
 #grafoContainer {
     height: 89vh;
     border: 2px solid black;
+}
+
+.div_responsive {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .div_responsive {
+        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+    }
 }
 
 .input-container {
