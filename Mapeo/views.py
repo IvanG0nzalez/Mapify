@@ -13,6 +13,7 @@ from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, Facul
 from Mapeo.graph_controller import ControladorGrafo, NodoNoExisteException
 from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 
+controlador_grafo = ControladorGrafo()
 
 def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
@@ -26,33 +27,43 @@ def busqueda_rutas_user(request):
     nodos = Nodo.objects.exclude(codigo__startswith='N')
     if request.method == 'POST':
         nodo_origen_codigo = request.POST.get('bloque_origen')
-        print(nodo_origen_codigo)
         nodo_destino_codigo = request.POST.get('bloque_destino')
-        print(nodo_destino_codigo)
 
-        controlador_grafo = ControladorGrafo()
-        controlador_grafo.crear_grafo()
+        controlador_grafo.obtener_grafo()
 
         try:
+            # Calcular el camino mínimo a partir del origen seleccionado
             rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
-            print(f"rutas: {rutas}")
+            # Obtener el camino más corto del diccionario 'rutas' que coincida con el codigo del nodo destino
             camino_mas_corto = rutas.get(nodo_destino_codigo)
+            # Si el camino existe se extraen las coordenadas de los nodos del camino y los bloques correspondientes a los mismos
             if camino_mas_corto:
                 nodos_camino = camino_mas_corto['ruta']
+                #variable para almacenar las coordenadas del camino
                 coordenadas_nodos = []
 
                 distancia = camino_mas_corto['distancia']
                 tiempo = camino_mas_corto['tiempo']
                 tiempo_formateado = format_tiempo(tiempo)
-
+                #Variable para almacenar los bloques del camino
+                bloques_camino = []
+                # Obtener los Bloques y coordenadas de los nodos del camino recuperados del djikstra
                 for codigo_nodo in nodos_camino:
+                    #Recuperación de coords
                     coordenadas = controlador_grafo.obtener_coordenadas_por_codigo(codigo_nodo)
                     if coordenadas:
                         coordenadas_nodos.append(coordenadas)
+                    try:
+                        bloque = Nodo.objects.get(codigo=codigo_nodo)
+                        bloques_camino.append(bloque)
+                    except Nodo.DoesNotExist:
+                        print(f"El nodo con código {codigo_nodo} no existe")
+                        pass
+
                 # Convertir la lista de coordenadas a una lista de diccionarios
-                print(coordenadas_nodos)
                 coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
-                return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos, 'distancia': distancia, 'tiempo': tiempo_formateado})
+
+                return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos, 'distancia': distancia, 'tiempo': tiempo_formateado, 'bloques_camino': bloques_camino})
             else:
                 print("El nodo no existe")
                 pass
@@ -276,64 +287,28 @@ def listado_conexiones_nodo(request, nodo_id):
 
 
 def grafo_admin(request):
-    controlador_grafo = ControladorGrafo()
-    controlador_grafo.crear_grafo()
-
     grafo = controlador_grafo.obtener_grafo()
-    print(grafo)
-    grafo_data = {
-        'nodes': [{'id': str(nodo), 'label': f'Bloque {nodo}', 'codigo': 'Codigo nodo: XYZ'} for nodo in grafo.nodes()],
-        'edges': [{'from': str(arista[0]), 'to': str(arista[1]),
-                   'label': f'Distancia: {grafo[arista[0]][arista[1]]["distancia"]} mts\nTiempo: {format_tiempo(grafo[arista[0]][arista[1]]["tiempo"])}'}
-                  for arista in grafo.edges()]
-    }
 
-    grafo_data_json = json.dumps(grafo_data)
+    grafo_data_json = []
 
-    return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
+    if grafo:
+        grafo_data = {
+            'nodes': [{'id': str(nodo), 'label': f'Bloque {nodo}', 'codigo': 'Codigo nodo: XYZ'} for nodo in grafo.nodes()],
+            'edges': [{'from': str(arista[0]), 'to': str(arista[1]),
+                       'label': f'Distancia: {grafo[arista[0]][arista[1]]["distancia"]} mts\nTiempo: {format_tiempo(grafo[arista[0]][arista[1]]["tiempo"])}'}
+                      for arista in grafo.edges()]
+        }
+
+        grafo_data_json = json.dumps(grafo_data)
+
+        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
+    else:
+        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
 
 
 def format_tiempo(tiempo_segundos):
     tiempo_minutos, tiempo_segundos = divmod(tiempo_segundos, 60)
     return f"{tiempo_minutos} minutos y {tiempo_segundos} segundos"
-    #plot y network
-    #pos = nx.spring_layout(grafo, seed=42)
-    #plt.figure(figsize=(10, 6))
-
-    #nx.draw(grafo, pos, with_labels=True, node_color='skyblue', node_size=2000, font_size=10, font_weight='bold')
-    #etiquetas_aristas_distancia = nx.get_edge_attributes(grafo, 'distancia')
-    #etiquetas_aristas_tiempo = nx.get_edge_attributes(grafo, 'tiempo')
-
-    #etiquetas_combinadas = {
-    #    arista: f"Dist: {etiquetas_aristas_distancia[arista]}, Tiempo: {etiquetas_aristas_tiempo[arista]}"
-    #    for arista in grafo.edges()
-    #}
-
-    #nx.draw_networkx_edge_labels(grafo, pos, edge_labels=etiquetas_combinadas, font_size=8)
-
-    #buf = io.BytesIO()
-    #plt.savefig(buf, format='png')
-    #buf.seek(0)
-
-    #imagen_base64 = base64.b64encode(buf.read()).decode('utf-8')
-
-    # return render(request, 'pantallas/grafo_admin.html', {'imagen': imagen_base64})
-
-    #<img src="data:image/png;base64,{{ imagen }}" alt="Grafo">
-
-
-    #Wea con librería mplleaflet que no funca
-    #ax = plt.gca()
-    #ax.grid(False)
-
-    #mapa_interactivo = mplleaflet.fig_to_html(plt.gcf())
-
-    #template = loader.get_template('pantallas/grafo_admin.html')
-    #context = {
-    #    'mapa_interactivo': mapa_interactivo,
-    #}
-    #return HttpResponse(template.render(context, request))
-
 
 
 def listado_admins(request):
