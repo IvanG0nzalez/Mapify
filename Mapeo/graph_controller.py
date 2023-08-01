@@ -71,7 +71,7 @@ class ControladorGrafo:
                 #Para cada conexión crea una arista con la distancia y tiempo calculados
                 for codigo_destino in conexiones:
                     if codigo_destino in distancias:
-                        distancia, tiempo = distancia[codigo_destino]
+                        distancia, tiempo = distancias[codigo_destino]
                     else:
                         nodo_destino = next((n for n in self.data_db if n['codigo'] == codigo_destino), None)
                         if nodo_destino:
@@ -134,7 +134,6 @@ class ControladorGrafo:
             if codigo_nodo_db == codigo:
                 latitud = nodo['latitud']
                 altitud = nodo['altitud']
-                #coordenadas = {'latitud': latitud, 'altitud': altitud}
                 return latitud, altitud
         return None
 
