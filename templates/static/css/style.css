@@ -38,13 +38,32 @@
 }
 
 .div_resultado_busqueda {
+    /*Esto agregó el dba, si no funca quitenlo*/
+    border: 1px solid #ccc;
+    padding: 10px;
+    /*Solo esos 2 xd*/
     width: 25%;
     height: 70vh;
     margin: 10px;
     background-color: white;
     border-radius: 15px;
 }
+/*Estos 3 también*/
+.div_resultado_busqueda h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
 
+.div_resultado_busqueda h6 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.div_resultado_busqueda p {
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+/*hasta aquí*/
 .div_informacion_resultado {
     margin: 10px;
     min-width: 100%;
