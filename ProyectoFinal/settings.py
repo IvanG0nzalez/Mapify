@@ -91,6 +91,7 @@ if client is not None:
 else:
     print("No conectado")
 """
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -99,6 +100,17 @@ DATABASES = {
         'PASSWORD': 'OmKqqr-UCujrnJFtbSnJO64ViP-hweNE',
         'HOST': 'kesavan.db.elephantsql.com',
         'PORT': '5432',
+    }
+}
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_BLkTfdYlVy7gPGqdhqK',
+        'HOST': 'postgresql0-unl-mapify.aivencloud.com',
+        'PORT': '10520',
     }
 }
 
