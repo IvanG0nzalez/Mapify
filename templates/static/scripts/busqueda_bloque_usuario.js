@@ -35,8 +35,8 @@ function buscarBloqueOrigen(){
 
 function buscarBloqueDestino(){
     const busquedaBloqueDestinoInput = document.getElementById('buscar_bloque_destino');
-    const opcionesBloques = document.getElementsByClassName('opcion_bloque');
-    const selectBloque = document.getElementById('bloque_destino');
+    const opcionesBloques = document.getElementsByClassName('opcion_bloque2');
+    const selectBloque = document.getElementById('bloque_destino2');
     const sinResultadosOption = document.getElementById('sin_resultados');
 
     busquedaBloqueDestinoInput.oninput = function (){

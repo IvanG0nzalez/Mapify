@@ -89,8 +89,16 @@ class BloqueForm(forms.ModelForm):
         is_auxiliar = self.cleaned_data.get('is_auxiliar')
 
         if not is_auxiliar and numero is None:
-            raise forms.ValidationError("Si el bloque no es auxiliar, se requiere un número para el bloque.")
+            raise forms.ValidationError("Si el bloque no es auxiliar, se requiere ingresar un número para el bloque.")
         return numero
+
+    def clean(self):
+        cleaned_data = super().clean()
+        latitud = cleaned_data.get('latitud')
+        altitud = cleaned_data.get('altitud')
+        if Bloque.objects.filter(latitud=latitud, altitud=altitud).exists():
+            raise forms.ValidationError("Ya existe un bloque registrado con esas coordenadas.")
+        return cleaned_data
 
 
 class BloqueRuta(forms.ModelForm):
