@@ -84,6 +84,14 @@ class BloqueForm(forms.ModelForm):
         model = Bloque
         fields = '__all__'
 
+    def clean_numero(self):
+        numero = self.cleaned_data.get('numero')
+        is_auxiliar = self.cleaned_data.get('is_auxiliar')
+
+        if not is_auxiliar and numero is None:
+            raise forms.ValidationError("Si el bloque no es auxiliar, se requiere un número para el bloque.")
+        return numero
+
 
 class BloqueRuta(forms.ModelForm):
     class Meta:

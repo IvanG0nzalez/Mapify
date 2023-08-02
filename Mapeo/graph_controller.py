@@ -11,6 +11,7 @@ from Mapeo.models import Nodo
 class ControladorGrafo:
     grafo_creado = False
     ultima_actualizacion = None
+    num_nodos = 0
 
     def __init__(self):
         self.graph = None
@@ -92,8 +93,14 @@ class ControladorGrafo:
             ControladorGrafo.grafo_creado = True
             ControladorGrafo.ultima_actualizacion = time.time()
 
+    def contar_nodos_sql(self):
+        num_nodos = Nodo.objects.all()
+        return len(num_nodos)
+
     def actualizar_grafo(self):
-        if not ControladorGrafo.grafo_creado or (ControladorGrafo.ultima_actualizacion and (time.time() - ControladorGrafo.ultima_actualizacion) > 3600):
+        num_nodos_actual = self.contar_nodos_sql()
+        if not ControladorGrafo.grafo_creado or (ControladorGrafo.ultima_actualizacion and (time.time() - ControladorGrafo.ultima_actualizacion) > 3600) or num_nodos_actual != ControladorGrafo.num_nodos:
+            ControladorGrafo.num_nodos = num_nodos_actual
             self.crear_grafo()
 
     def obtener_grafo(self):
