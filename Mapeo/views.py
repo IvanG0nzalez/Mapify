@@ -293,7 +293,7 @@ def listado_conexiones_nodo(request, nodo_id):
 
 def grafo_admin(request):
     grafo = controlador_grafo.obtener_grafo()
-    print(len(grafo.nodes))
+    num_nodos = len(grafo.nodes)
     grafo_data_json = []
 
     if grafo:
@@ -306,15 +306,23 @@ def grafo_admin(request):
 
         grafo_data_json = json.dumps(grafo_data)
 
-        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
+        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos})
     else:
-        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json})
+        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos})
 
 
 def format_tiempo(tiempo_segundos):
     tiempo_minutos, tiempo_segundos = divmod(tiempo_segundos, 60)
     tiempo_segundos = round(tiempo_segundos)
-    return f"{tiempo_minutos} minutos y {tiempo_segundos} segundos"
+    if tiempo_minutos == 0:
+        return f"{tiempo_segundos} segundos"
+    elif tiempo_minutos > 0:
+        if tiempo_segundos == 0:
+            return f"{tiempo_minutos} minutos"
+        else:
+            return f"{tiempo_minutos} minutos y {tiempo_segundos} segundos"
+    else:
+        return "Tiempo no válido"
 
 
 def listado_admins(request):
