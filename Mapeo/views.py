@@ -47,6 +47,9 @@ def busqueda_rutas_user(request):
                 tiempo_formateado = format_tiempo(tiempo)
                 #Variable para almacenar los bloques del camino
                 bloques_camino = []
+
+                contador_bloques = 0
+
                 # Obtener los Bloques y coordenadas de los nodos del camino recuperados del djikstra
                 for codigo_nodo in nodos_camino:
                     #Recuperación de coords
@@ -55,7 +58,9 @@ def busqueda_rutas_user(request):
                         coordenadas_nodos.append(coordenadas)
                     try:
                         bloque = Nodo.objects.get(codigo=codigo_nodo)
-                        bloques_camino.append(bloque)
+                        if bloque.bloque.descripcion:
+                            contador_bloques += 1
+                            bloques_camino.append((contador_bloques, bloque))
                     except Nodo.DoesNotExist:
                         print(f"El nodo con código {codigo_nodo} no existe")
                         pass
@@ -288,7 +293,7 @@ def listado_conexiones_nodo(request, nodo_id):
 
 def grafo_admin(request):
     grafo = controlador_grafo.obtener_grafo()
-
+    print(len(grafo.nodes))
     grafo_data_json = []
 
     if grafo:
@@ -308,6 +313,7 @@ def grafo_admin(request):
 
 def format_tiempo(tiempo_segundos):
     tiempo_minutos, tiempo_segundos = divmod(tiempo_segundos, 60)
+    tiempo_segundos = round(tiempo_segundos)
     return f"{tiempo_minutos} minutos y {tiempo_segundos} segundos"
 
 

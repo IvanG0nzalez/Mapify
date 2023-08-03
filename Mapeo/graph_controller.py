@@ -92,6 +92,8 @@ class ControladorGrafo:
 
             ControladorGrafo.grafo_creado = True
             ControladorGrafo.ultima_actualizacion = time.time()
+            ControladorGrafo.num_nodos = len(self.graph.nodes)
+            print(f"num_ndoos_controlador: {ControladorGrafo.num_nodos}")
 
     def contar_nodos_sql(self):
         num_nodos = Nodo.objects.all()
