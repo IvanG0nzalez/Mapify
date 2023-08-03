@@ -10,7 +10,7 @@ class RegistroAdminForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese su contraseña',
+                #'placeholder': 'Ingrese la contraseña para la cuenta de administrador',
                 'id': 'password',
                 'required': 'required',
             }
@@ -21,7 +21,7 @@ class RegistroAdminForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese nuevamente su contraseña',
+                #'placeholder': 'Ingrese la contraseña nuevamente',
                 'id': 'password_confir',
                 'required': 'required',
             }
@@ -36,8 +36,19 @@ class RegistroAdminForm(forms.ModelForm):
         password = self.cleaned_data.get('password')
         password_confir = self.cleaned_data.get('password_confir')
         if password and password_confir and password != password_confir:
-            raise forms.ValidationError('las contraseñas no coinciden')
+            raise forms.ValidationError('Las contraseñas no coinciden')
         return password_confir
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Ya existe un administrador registrado con ese nombre de usuario")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Ya existe un administrador registrado con ese correo")
 
 
 class ModificarAdminForm(forms.ModelForm):
@@ -84,20 +95,19 @@ class BloqueForm(forms.ModelForm):
         model = Bloque
         fields = '__all__'
 
-    def clean_numero(self):
-        numero = self.cleaned_data.get('numero')
-        is_auxiliar = self.cleaned_data.get('is_auxiliar')
-
-        if not is_auxiliar and numero is None:
-            raise forms.ValidationError("Si el bloque no es auxiliar, se requiere ingresar un número para el bloque.")
-        return numero
-
     def clean(self):
         cleaned_data = super().clean()
+
+        numero = self.cleaned_data.get('numero')
+        is_auxiliar = self.cleaned_data.get('is_auxiliar')
+        if not is_auxiliar and numero is None:
+            raise forms.ValidationError("Si el bloque no es auxiliar, se requiere ingresar un número para el bloque.")
+
         latitud = cleaned_data.get('latitud')
         altitud = cleaned_data.get('altitud')
         if Bloque.objects.filter(latitud=latitud, altitud=altitud).exists():
             raise forms.ValidationError("Ya existe un bloque registrado con esas coordenadas.")
+
         return cleaned_data
 
 
@@ -111,3 +121,14 @@ class FacultadForm(forms.ModelForm):
     class Meta:
         model = Facultad
         fields = '__all__'
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data.get('nombre')
+        if Facultad.objects.filter(nombre=nombre).exists():
+            raise forms.ValidationError("Ya existe una facultad registrada con ese nombre.")
+
+    def clean_descripcion(self):
+        descripcion = self.cleaned_data.get('descripcion')
+
+        if Facultad.objects.filter(descripcion=descripcion):
+            raise forms.ValidationError("Ya existe una facultad registrada con esa descripción.")

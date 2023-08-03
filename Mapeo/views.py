@@ -368,7 +368,7 @@ def listado_modificar_admin(request, id):
 def eliminar_admin(request, id):
     admin = get_object_or_404(User, id=id)
     admin.delete()
-    return redirect('admin')
+    return redirect('mapeo:admin')
 
 
 class InicioSesion(LoginView):

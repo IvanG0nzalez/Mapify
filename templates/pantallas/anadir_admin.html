@@ -3,16 +3,36 @@
 {% block titulo %}Crear administrador{% endblock %}
 
 {% block contenido %}
+    <h1 class="container">Registrar administrador</h1>
     <div id="div_center">
         <div class="div_responsive mt-5">
             <div>
-                <strong>Registro de administrador</strong>
-            </div>
-            <div>
                 <form method="POST">
                     {% csrf_token %}
-                    <span> {{ form.as_p }}</span>
-
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de usuario:</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo-electrónico" class="form-label">Correo electrónico:</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombres" class="form-label">Nombres:</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidos" class="form-label">Apellidos:</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="contrasenia" class="form-label">Contraseña:</label>
+                        {{ form.password }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="contrasenia-cfr" class="form-label">Contraseña de confirmación:</label>
+                        {{ form.password_confir }}
+                    </div>
                     <div class="d-flex justify-content-end">
                         <a href="{% url 'mapeo:admin' %}" class="btn btn-danger mx-2">Cancelar</a>
                         <button class="btn btn-dark mx-2" type="submit">Agregar</button>
