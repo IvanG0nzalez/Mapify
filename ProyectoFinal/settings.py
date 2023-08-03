@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure--*!&^3mhr!hzg9oumc1z5io@9^2ln@&f4&p_4l44t(kb5l_=^%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mapify-6m9b.onrender.com']
 
 
 # Application definition
