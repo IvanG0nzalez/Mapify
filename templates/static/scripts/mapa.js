@@ -53,8 +53,8 @@ function initMap() {
     }
 }
 
-var nodoOrigenSelect = document.getElementById('nodo_origen');
-var nodoDestinoSelect = document.getElementById('nodo_destino');
+var nodoOrigenSelect = document.getElementById('bloque_origen');
+var nodoDestinoSelect = document.getElementById('bloque_destino2');
 var buscarRutaBtn = document.getElementById('buscarRutaBtn');
 
 buscarRutaBtn.addEventListener('click', function(event){

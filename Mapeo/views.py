@@ -416,6 +416,10 @@ class InicioSesion(LoginView):
         else:
             return self.form_invalid(form)
 
+    def form_invalid(self, form):
+        messages.error(self.request, 'Usuario o contraseña incorrectos. Por favor, inténtalo nuevamente.')
+        return super().form_invalid(form)
+
     def get_success_url(self):
         return reverse_lazy('mapeo:administracion-inicio')
 
