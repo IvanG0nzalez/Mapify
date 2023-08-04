@@ -52,7 +52,7 @@ class Bloque(models.Model):
     numero = models.PositiveIntegerField(null=True, blank=True, unique=True, verbose_name='Numero')
     zona = models.CharField(max_length=10, choices=ZONAS, verbose_name='Zona')
     codigo = models.CharField(null=True, blank=True, editable=False, max_length=15, verbose_name='Codigo')
-    descripcion = models.CharField(null=True, blank=True, max_length=50, verbose_name='Descripcion')
+    descripcion = models.CharField(null=True, blank=True, max_length=100, verbose_name='Descripcion')
     latitud = models.FloatField(verbose_name='Latitud')
     altitud = models.FloatField(verbose_name='Altitud')
     is_auxiliar = models.BooleanField(default=False, verbose_name='Auxiliar')
