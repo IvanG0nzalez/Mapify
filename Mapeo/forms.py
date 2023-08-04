@@ -101,12 +101,12 @@ class BloqueForm(forms.ModelForm):
         numero = self.cleaned_data.get('numero')
         is_auxiliar = self.cleaned_data.get('is_auxiliar')
         if not is_auxiliar and numero is None:
-            raise forms.ValidationError("Si el bloque no es auxiliar, se requiere ingresar un número para el bloque.")
+            self.add_error('numero',"Si el bloque no es auxiliar, se requiere ingresar un número.")
 
         latitud = cleaned_data.get('latitud')
         altitud = cleaned_data.get('altitud')
         if Bloque.objects.filter(latitud=latitud, altitud=altitud).exists():
-            raise forms.ValidationError("Ya existe un bloque registrado con esas coordenadas.")
+            self.add_error('latitud', "Ya existe un bloque registrado con esas coordenadas.")
 
         return cleaned_data
 

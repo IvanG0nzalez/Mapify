@@ -37,8 +37,8 @@
 
                 <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
 
-                {% if messages %}
-                    <div id="mensaje">
+
+                    <div id="mensaje" style="margin-top: 10px;">
                         <ul class="messages">
                             {% for message in messages %}
                                 <p{% if message.tags %} class="{{ message.tags }}"{% endif %}
@@ -46,7 +46,6 @@
                             {% endfor %}
                         </ul>
                     </div>
-                {% endif %}
 
             </form>
         </div>

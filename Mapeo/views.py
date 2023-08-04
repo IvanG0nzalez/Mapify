@@ -1,6 +1,7 @@
 import json
 import os.path
 
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
@@ -146,7 +147,10 @@ def anadir_facultad(request):
         formulario = FacultadForm(request.POST, request.FILES)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Facultad registrada correctamente.')
             return redirect('mapeo:facultad')
+        else:
+            messages.error(request, 'Por favor, corrija los errores del formulario.')
     else:
         formulario = FacultadForm()
 
@@ -211,17 +215,17 @@ def eliminar_bloque(request, id):
 
 
 def anadir_bloque(request):
-    data={
-        'form': BloqueForm()
-    }
     if request.method == 'POST':
         formulario = BloqueForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Bloque registrado correctamente')
             return redirect('mapeo:bloque')
         else:
-            data["form"] = formulario
-    return render(request, 'pantallas/anadir_bloque.html', data)
+            messages.error(request, 'Por favor, corrija los errores del formulario.')
+    else:
+        formulario = BloqueForm()
+    return render(request, 'pantallas/anadir_bloque.html', {'form': formulario})
 
 
 def listado_nodo(request):
@@ -347,7 +351,10 @@ def anadir_admin(request):
             user.set_password(password)
             user.is_staff = True
             user.save()
+            messages.success(request, 'Administrador registrado correctamente.')
             return redirect('mapeo:admin')
+        else:
+            messages.error(request, 'Por favor, corrija los errores en el formulario.')
     else:
         form = RegistroAdminForm()
     return render(request, 'pantallas/anadir_admin.html', {'form': form})
@@ -363,7 +370,11 @@ def modificar_admin(request, id):
             return redirect('mapeo:admin_id', id)
     else:
         form = ModificarAdminForm(instance=admin)
-    return render(request, 'pantallas/modificar_admin.html', {'form': form, 'admin_id': id})
+    data = {
+        'form': form,
+        'admin_id': id
+    }
+    return render(request, 'pantallas/modificar_admin.html', data)
 
 
 def listado_modificar_admin(request, id):
@@ -376,7 +387,11 @@ def listado_modificar_admin(request, id):
             return redirect('admin')
     else:
         form = ModificarAdminForm(instance=admin)
-    return render(request, 'pantallas/listado_modificar_admin.html', {'form': form, 'admin_id': id})
+    data = {
+        'form': form,
+        'admin_id': id
+    }
+    return render(request, 'pantallas/listado_modificar_admin.html', data)
 
 
 def eliminar_admin(request, id):
