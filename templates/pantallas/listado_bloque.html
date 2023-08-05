@@ -62,7 +62,7 @@
                     <td class="d-flex justify-content-center">
                         <a href="{% url 'mapeo:listado-modificar-bloque' bloque.id %}"
                            class="btn btn-warning mx-1">Modificar</a>
-                        <a href="{% url 'mapeo:eliminar-bloque' bloque.id %}" class="btn btn-danger mx-1">Eliminar</a>
+                        <a href="{% url 'mapeo:eliminar-bloque' bloque.id %}" class="btn btn-danger mx-1" onclick="confirmacionEliminarBloque(event)">Eliminar</a>
                     </td>
                 </tr>
             {% endfor %}

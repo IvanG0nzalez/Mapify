@@ -45,7 +45,7 @@
                 <div class="d-flex justify-content-between">
                     <a href="{% url 'mapeo:admin' %}" class="btn btn-primary mx-2">Volver</a>
                     <div class="d-flex justify-content-end">
-                        <a href="{% url 'mapeo:eliminar-admin' admin.id %}" class="btn btn-danger mx-2">Eliminar</a>
+                        <a href="{% url 'mapeo:eliminar-admin' admin.id %}" class="btn btn-danger mx-2" onclick="confirmacionEliminarAdmin(event)">Eliminar</a>
                         <a href="{% url 'mapeo:modificar-admin' admin.id %}" class="btn btn-warning mx-2">Modificar</a>
 
                     </div>

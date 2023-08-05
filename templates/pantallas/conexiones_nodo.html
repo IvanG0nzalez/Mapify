@@ -25,7 +25,7 @@
                     {% endif %}
                         <option id="sin_resultados" value="" disabled style="display: none;">No hay nodos coincidentes</option>
                 </select>
-                <button type="submit" class="btn btn-dark mx-2">Agregar Conexion</button>
+                <button type="submit" class="btn btn-dark mx-2" onclick="confirmacionConexionAgregada(event)">Agregar Conexion</button>
                 <a href="{% url 'mapeo:nodo_id' nodo_id=nodo.id %}" class="btn btn-primary mx-2">Volver</a>
             </div>
 
@@ -46,7 +46,7 @@
                             <td class="text-center">{{ ruta.tiempo }}</td>
                             <td class="text-center">{{ ruta.distancia }}</td>
                             <td class="d-flex justify-content-center">
-                                <a href="{% url 'mapeo:eliminar-conexion' ruta.id %}" class="btn btn-danger mx-1">Eliminar</a>
+                                <a href="{% url 'mapeo:eliminar-conexion' ruta.id %}" class="btn btn-danger mx-1" onclick="confirmacionEliminarConexion(event)">Eliminar</a>
                             </td>
                         </tr>
                     {% endfor %}

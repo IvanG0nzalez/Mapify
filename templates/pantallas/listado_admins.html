@@ -57,7 +57,7 @@
                             <td class="d-flex justify-content-center">
                                 <a href="{% url 'mapeo:listado-modificar-admin' admin.id %}" class="btn btn-warning mx-1">Modificar</a>
                                 <a href="{% url 'mapeo:eliminar-admin' admin.id %}"
-                                   class="btn btn-danger mx-1">Eliminar</a>
+                                   class="btn btn-danger mx-1" onclick="confirmacionEliminarAdmin(event)">Eliminar</a>
                             </td>
                         </tr>
                     {% endif %}
