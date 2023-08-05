@@ -1,5 +1,6 @@
 import json
 import os.path
+import time
 
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -10,11 +11,13 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
-from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm
+from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm, ModificarBloqueForm
 from Mapeo.graph_controller import ControladorGrafo, NodoNoExisteException
 from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 
 controlador_grafo = ControladorGrafo()
+bloques_cache = None
+ultima_actu_bloques = 0
 
 def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
@@ -161,8 +164,24 @@ def anadir_facultad(request):
 
 
 def listado_bloque(request):
-    bloques = Bloque.obtener_bloques()
-    context={
+    global bloques_cache
+    global ultima_actu_bloques
+
+    if bloques_cache is None or (time.time() - ultima_actu_bloques) >= 600:
+        bloques_cache = Bloque.obtener_bloques()
+        ultima_actu_bloques = time.time()
+        print("dentro del if")
+        print(f"bloques_cache: {bloques_cache}")
+        print(f"ultima_actu_bloques: {ultima_actu_bloques}")
+
+    print("fuera del if")
+    print(f"bloques_cache: {bloques_cache}")
+    print(f"ultima_actu_bloques: {ultima_actu_bloques}")
+    print(f"time.time(): {time.time()}")
+    print(f"time.time() - ultima_actu_bloques: {time.time()-ultima_actu_bloques}")
+    bloques = bloques_cache
+
+    context = {
         'bloques': bloques,
     }
     return render(request, 'pantallas/listado_bloque.html', context)
@@ -179,14 +198,20 @@ def detalle_bloque(request, bloque_id):
 def modificar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     data = {
-        'form': BloqueForm(instance=bloque),
+        'form': ModificarBloqueForm(instance=bloque),
         'bloque_id': id
     }
     if request.method == 'POST':
-        formulario = BloqueForm(data=request.POST, instance=bloque)
+        formulario = ModificarBloqueForm(data=request.POST, instance=bloque)
 
         if formulario.is_valid():
             formulario.save()
+
+            global bloques_cache
+            global ultima_actu_bloques
+            bloques_cache = Bloque.obtener_bloques()
+            ultima_actu_bloques = time.time()
+
             return redirect("mapeo:bloque_id", id)
         data["form"] = formulario
     return render(request, 'pantallas/modificar_bloque.html', data)
@@ -195,14 +220,20 @@ def modificar_bloque(request, id):
 def listado_modificar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     data = {
-        'form': BloqueForm(instance=bloque),
+        'form': ModificarBloqueForm(instance=bloque),
         'bloque_id': id
     }
     if request.method == 'POST':
-        formulario = BloqueForm(data=request.POST, instance=bloque)
+        formulario = ModificarBloqueForm(data=request.POST, instance=bloque)
 
         if formulario.is_valid():
             formulario.save()
+
+            global bloques_cache
+            global ultima_actu_bloques
+            bloques_cache = Bloque.obtener_bloques()
+            ultima_actu_bloques = time.time()
+
             return redirect("mapeo:bloque")
         data["form"] = formulario
     return render(request, 'pantallas/listado_modificar_bloque.html', data)
@@ -211,6 +242,12 @@ def listado_modificar_bloque(request, id):
 def eliminar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     bloque.delete()
+
+    global bloques_cache
+    global ultima_actu_bloques
+    bloques_cache = Bloque.obtener_bloques()
+    ultima_actu_bloques = time.time()
+
     return redirect('mapeo:bloque')
 
 
@@ -219,6 +256,13 @@ def anadir_bloque(request):
         formulario = BloqueForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
+
+            global bloques_cache
+            global ultima_actu_bloques
+            if (time.time() - ultima_actu_bloques) >= 300:
+                bloques_cache = Bloque.obtener_bloques()
+                ultima_actu_bloques = time.time()
+
             messages.success(request, 'Bloque registrado correctamente')
             return redirect('mapeo:bloque')
         else:

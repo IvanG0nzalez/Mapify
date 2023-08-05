@@ -111,6 +111,29 @@ class BloqueForm(forms.ModelForm):
         return cleaned_data
 
 
+class ModificarBloqueForm(forms.ModelForm):
+    class Meta:
+        model = Bloque
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        numero = self.cleaned_data.get('numero')
+        is_auxiliar = self.cleaned_data.get('is_auxiliar')
+        if not is_auxiliar and numero is None:
+            self.add_error('numero',"Si el bloque no es auxiliar, se requiere ingresar un número.")
+
+        bloque_actual = self.instance
+
+        latitud = cleaned_data.get('latitud')
+        altitud = cleaned_data.get('altitud')
+        if Bloque.objects.filter(latitud=latitud, altitud=altitud).exclude(id=bloque_actual.id).exists():
+            self.add_error('latitud', "Ya existe un bloque registrado con esas coordenadas.")
+
+        return cleaned_data
+
+
 class BloqueRuta(forms.ModelForm):
     class Meta:
         model = Ruta
