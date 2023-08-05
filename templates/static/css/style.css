@@ -38,16 +38,15 @@
 }
 
 .div_resultado_busqueda {
-    /*Esto agregó el dba, si no funca quitenlo*/
+    display: inline-block;
     border: 1px solid #ccc;
     padding: 10px;
-    /*Solo esos 2 xd*/
-    width: 25%;
     height: 70vh;
     margin: 10px;
     background-color: white;
     border-radius: 15px;
 }
+
 /*Estos 3 también*/
 .div_resultado_busqueda h3 {
     font-size: 18px;
@@ -63,6 +62,7 @@
     font-size: 14px;
     margin-bottom: 3px;
 }
+
 /*hasta aquí*/
 .div_informacion_resultado {
     margin: 10px;
@@ -412,14 +412,51 @@ body {
     padding: 20px;
     width: 100%;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: 0;
     border-radius: 10px;
 }
 
-@media screen and (max-width: 768px) {
-    #busquedaUsuario {
-        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
+@media screen and (min-width: 25em) and (max-width: 90em) {
+
+    .div_responsive {
+        display: inline-block;
     }
+
+    #busquedaUsuario {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 10px;
+    }
+
+    .input-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #buscar_bloque_origen {
+        height: 30px;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+
+    #bloque_origen {
+        height: 30px;
+        /*width: 250px;*/
+        display: inline-block;
+    }
+
+    #buscar_bloque_destino {
+        height: 30px;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+
+    #bloque_destino2 {
+        height: 30px;
+        display: inline-block;
+    }
+
 }
 
 #grafoContainer {
@@ -434,19 +471,27 @@ body {
     border-radius: 10px;
 }
 
-@media screen and (max-width: 768px) {
-    .div_responsive {
-        width: 100%; /* Cambia el tamaño del div al 100% cuando la pantalla es menor que 768px */
-    }
+footer {
+    color: black;
+    text-align: center;
+    padding: 1rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
+
+footer p {
+    margin: 0.5rem;
+}
+
 
 .input-container {
     display: flex;
-    flex-direction: row;
     margin-bottom: 10px;
 }
 
-#mensaje{
+#mensaje {
     margin-top: 15px;
     border-color: #ebcfd3;
     border-width: 2px;

@@ -12,9 +12,9 @@
                     <label class="form-label" for="nodo_origen">Bloque de origen:</label>
 
                     <input type="text" id="buscar_bloque_origen" placeholder="Ingrese datos de búsqueda"
-                           style="width: 250px; margin-right: 15px; margin-left: 15px">
+                           style="width: 250px; margin-right: 15px;">
 
-                    <select name="bloque_origen" id="bloque_origen">
+                    <select name="bloque_origen" id="bloque_origen" style="height: 32px">
                         {% if nodos %}
                             {% for nodo in nodos %}
                                 <option class="opcion_bloque" value="{{ nodo.codigo }}">{{ nodo.codigo }}
@@ -31,8 +31,8 @@
                 <div class="input-container">
                     <label class="form-label" for="nodo_destino">Bloque de destino:</label>
                     <input type="text" id="buscar_bloque_destino" placeholder="Ingrese datos de búsqueda"
-                           style="width: 250px; margin-right: 15px; margin-left: 15px">
-                    <select name="bloque_destino" id="bloque_destino2">
+                           style="width: 250px; margin-right: 15px;">
+                    <select name="bloque_destino" id="bloque_destino2" style="height: 32px">
                         {% if nodos %}
                             {% for nodo in nodos %}
                                 <option class="opcion_bloque2" value="{{ nodo.codigo }}">{{ nodo.codigo }}
