@@ -461,7 +461,16 @@ class InicioSesion(LoginView):
             return self.form_invalid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Usuario o contraseña incorrectos. Por favor, inténtalo nuevamente.')
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        if not username and not password:
+            messages.error(self.request, 'Ingrese un nombre de usuario y una contraseña.')
+        elif not username and password:
+            messages.error(self.request, 'Ingrese un nombre de usuario.')
+        elif username and not password:
+            messages.error(self.request, 'Ingrese una contraseña.')
+        else:
+            messages.error(self.request, 'Usuario o contraseña incorrectos. Por favor, inténtalo nuevamente.')
         return super().form_invalid(form)
 
     def get_success_url(self):

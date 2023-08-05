@@ -51,7 +51,6 @@ class ControladorGrafo:
         return data
 
     def crear_grafo(self):
-        # if not ControladorGrafo.grafo_creado:
         # Inicializa un grafo vacío
         self.graph = nx.Graph()
         distancias = {}
@@ -69,44 +68,32 @@ class ControladorGrafo:
             altitud_origen = nodo['altitud']
             # Para cada conexión crea una arista con la distancia y tiempo calculados
             for codigo_destino in conexiones:
-                if codigo_destino in distancias:
-                    distancia, tiempo = distancias[codigo_destino]
-                else:
-                    nodo_destino = next((n for n in self.data_db if n['codigo'] == codigo_destino), None)
-                    if nodo_destino:
-                        latitud_destino = nodo_destino['latitud']
-                        altitud_destino = nodo_destino['altitud']
-
-                        distancia = self.calcular_distancia((latitud_origen, altitud_origen),
-                                                            (latitud_destino, altitud_destino))
-
-                        tiempo = self.calcular_tiempo(distancia)
-
-                        distancias[codigo_destino] = (distancia, tiempo)
-
+                if not self.graph.has_edge(codigo_origen, codigo_destino) and not self.graph.has_edge(codigo_destino, codigo_origen):
+                    if codigo_destino in distancias:
+                        distancia, tiempo = distancias[codigo_destino]
                     else:
-                        print(
-                            f"Graph Controller: La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
-                        continue
-                self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
+                        nodo_destino = next((n for n in self.data_db if n['codigo'] == codigo_destino), None)
+                        if nodo_destino:
+                            latitud_destino = nodo_destino['latitud']
+                            altitud_destino = nodo_destino['altitud']
 
+                            distancia = self.calcular_distancia((latitud_origen, altitud_origen),
+                                                                (latitud_destino, altitud_destino))
+
+                            tiempo = self.calcular_tiempo(distancia)
+
+                            distancias[codigo_destino] = (distancia, tiempo)
+                        else:
+                            print(
+                                f"Graph Controller: La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
+                            continue
+                    self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
+                else:
+                    print(f"Graph Controller: Se evitó la creación de una arista duplicada {codigo_origen} -> {codigo_destino}")
         # ControladorGrafo.grafo_creado = True
         # ControladorGrafo.ultima_actualizacion = time.time()
         # ControladorGrafo.num_nodos = len(self.graph.nodes)
         # print(f"num_ndoos_controlador: {ControladorGrafo.num_nodos}")
-
-
-    """
-    def contar_nodos_sql(self):
-        num_nodos = Nodo.objects.all()
-        return len(num_nodos)
-    
-    def actualizar_grafo(self):
-        num_nodos_actual = self.contar_nodos_sql()
-        if not ControladorGrafo.grafo_creado or (ControladorGrafo.ultima_actualizacion and (time.time() - ControladorGrafo.ultima_actualizacion) > 3600) or num_nodos_actual != ControladorGrafo.num_nodos:
-            ControladorGrafo.num_nodos = num_nodos_actual
-            self.crear_grafo()
-    """
 
     def grafo_existe_actualizado(self):
         tiempo_actual = time.time()

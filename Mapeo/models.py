@@ -212,23 +212,30 @@ class Ruta(models.Model):
         self.tiempo = self.calcular_tiempo(distancia)
         super().save(*args, **kwargs)
 
-        documento_existente = db.nodos.find_one({'_id': self.nodo_inicio.id})
-        if documento_existente:
-            documento_existente['conexiones'].append(self.nodo_destino.codigo)
+        Ruta.objects.get_or_create(nodo_inicio=self.nodo_destino, nodo_destino=self.nodo_inicio)
+
+        documento_existente_inicio = db.nodos.find_one({'_id': self.nodo_inicio.id})
+        if documento_existente_inicio:
+            documento_existente_inicio['conexiones'].append(self.nodo_destino.codigo)
             db.nodos.update_one(
                 {'_id': self.nodo_inicio.id},
-                {'$set': {'conexiones': documento_existente['conexiones']}}
+                {'$set': {'conexiones': documento_existente_inicio['conexiones']}}
             )
 
     def delete(self, *args, **kwargs):
-        documento_existente = db.nodos.find_one({'_id': self.nodo_inicio.id})
-        if documento_existente:
-            documento_existente['conexiones'].remove(self.nodo_destino.codigo)
+        documento_existente_inicio = db.nodos.find_one({'_id': self.nodo_inicio.id})
+        if documento_existente_inicio:
+            documento_existente_inicio['conexiones'].remove(self.nodo_destino.codigo)
             db.nodos.update_one(
                 {'_id': self.nodo_inicio.id},
-                {'$set': {'conexiones': documento_existente['conexiones']}}
+                {'$set': {'conexiones': documento_existente_inicio['conexiones']}}
             )
         super().delete(*args, **kwargs)
+        try:
+            ruta_inversa = Ruta.objects.get(nodo_inicio=self.nodo_destino, nodo_destino=self.nodo_inicio)
+            ruta_inversa.delete()
+        except Ruta.DoesNotExist:
+            pass
 
     class Meta:
         verbose_name = 'Ruta'
