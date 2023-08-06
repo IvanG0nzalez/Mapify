@@ -32,7 +32,8 @@ urlpatterns = [
     path('administracion/nodo', login_required(views.listado_nodo, login_url='/administracion/iniciar-sesion'), name='nodo'),
     path('administracion/nodo/<int:nodo_id>', login_required(views.detalle_nodo, login_url='/administracion/iniciar-sesion'), name='nodo_id'),
     path('administracion/eliminar-conexion/<id>/', login_required(views.eliminar_conexion, login_url='/administracion/iniciar-sesion'), name='eliminar-conexion'),
-    path('administracion/conexion-nodo/<int:nodo_id>/', login_required(views.conexiones_nodo, login_url='/administracion/iniciar-sesion'), name='conexion-nodo'),
+    path('administracion/nodo/eliminar-conexion/<id>/', login_required(views.listado_eliminar_conexion, login_url='/administracion/iniciar-sesion'), name='listado-eliminar-conexion'),
+    path('administracion/conexion-nodo/<int:nodo_id>/', login_required(views.conexiones_nodo, login_url='/administracion/iniciar-sesion'), name=    'conexion-nodo'),
     path('administracion/nodo/conexion-nodo/<int:nodo_id>', login_required(views.listado_conexiones_nodo, login_url='/administracion/iniciar-sesion'), name='listado-conexion-nodo'),
     #Url para grafo
     path('administracion/grafo', login_required(views.grafo_admin, login_url='/administracion/iniciar-sesion'), name='grafo'),

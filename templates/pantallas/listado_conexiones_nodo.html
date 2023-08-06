@@ -46,7 +46,7 @@
                             <td class="text-center">{{ ruta.tiempo }}</td>
                             <td class="text-center">{{ ruta.distancia }}</td>
                             <td class="d-flex justify-content-center">
-                                <a href="{% url 'mapeo:eliminar-conexion' ruta.id %}" class="btn btn-danger mx-1">Eliminar</a>
+                                <a href="{% url 'mapeo:listado-eliminar-conexion' ruta.id %}" class="btn btn-danger mx-1">Eliminar</a>
                             </td>
                         </tr>
                     {% endfor %}

@@ -11,13 +11,13 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
-from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm, ModificarBloqueForm
+from Mapeo.forms import RegistroAdminForm, BloqueForm, ModificarAdminForm, FacultadForm, ModificarBloqueForm, \
+    ModificarFacultadForm
 from Mapeo.graph_controller import ControladorGrafo, NodoNoExisteException
 from Mapeo.models import Bloque, Ruta, Nodo, Facultad
 
 controlador_grafo = ControladorGrafo()
-bloques_cache = None
-ultima_actu_bloques = 0
+
 
 def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
@@ -104,11 +104,11 @@ def detalle_facultad(request, facultad_id):
 def modificar_facultad(request, id):
     facultad = get_object_or_404(Facultad, id=id)
     data = {
-        'form': FacultadForm(instance=facultad),
+        'form': ModificarFacultadForm(instance=facultad),
         'facultad_id': id
     }
     if request.method == 'POST':
-        formulario = FacultadForm(data=request.POST, files=request.FILES, instance=facultad)
+        formulario = ModificarFacultadForm(data=request.POST, files=request.FILES, instance=facultad)
 
         if formulario.is_valid():
             formulario.save()
@@ -120,11 +120,11 @@ def modificar_facultad(request, id):
 def listado_modificar_facultad(request, id):
     facultad = get_object_or_404(Facultad, id=id)
     data = {
-        'form': FacultadForm(instance=facultad),
+        'form': ModificarFacultadForm(instance=facultad),
         'facultad_id': id
     }
     if request.method == 'POST':
-        formulario = FacultadForm(data=request.POST, files=request.FILES, instance=facultad)
+        formulario = ModificarFacultadForm(data=request.POST, files=request.FILES, instance=facultad)
 
         if formulario.is_valid():
             formulario.save()
@@ -164,23 +164,7 @@ def anadir_facultad(request):
 
 
 def listado_bloque(request):
-    global bloques_cache
-    global ultima_actu_bloques
-
-    if bloques_cache is None or (time.time() - ultima_actu_bloques) >= 600:
-        bloques_cache = Bloque.obtener_bloques()
-        ultima_actu_bloques = time.time()
-        print("dentro del if")
-        print(f"bloques_cache: {bloques_cache}")
-        print(f"ultima_actu_bloques: {ultima_actu_bloques}")
-
-    print("fuera del if")
-    print(f"bloques_cache: {bloques_cache}")
-    print(f"ultima_actu_bloques: {ultima_actu_bloques}")
-    print(f"time.time(): {time.time()}")
-    print(f"time.time() - ultima_actu_bloques: {time.time()-ultima_actu_bloques}")
-    bloques = bloques_cache
-
+    bloques = Bloque.objects.select_related('facultad', 'nodo').all()
     context = {
         'bloques': bloques,
     }
@@ -206,12 +190,6 @@ def modificar_bloque(request, id):
 
         if formulario.is_valid():
             formulario.save()
-
-            global bloques_cache
-            global ultima_actu_bloques
-            bloques_cache = Bloque.obtener_bloques()
-            ultima_actu_bloques = time.time()
-
             return redirect("mapeo:bloque_id", id)
         data["form"] = formulario
     return render(request, 'pantallas/modificar_bloque.html', data)
@@ -228,12 +206,6 @@ def listado_modificar_bloque(request, id):
 
         if formulario.is_valid():
             formulario.save()
-
-            global bloques_cache
-            global ultima_actu_bloques
-            bloques_cache = Bloque.obtener_bloques()
-            ultima_actu_bloques = time.time()
-
             return redirect("mapeo:bloque")
         data["form"] = formulario
     return render(request, 'pantallas/listado_modificar_bloque.html', data)
@@ -242,12 +214,6 @@ def listado_modificar_bloque(request, id):
 def eliminar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     bloque.delete()
-
-    global bloques_cache
-    global ultima_actu_bloques
-    bloques_cache = Bloque.obtener_bloques()
-    ultima_actu_bloques = time.time()
-
     return redirect('mapeo:bloque')
 
 
@@ -256,13 +222,6 @@ def anadir_bloque(request):
         formulario = BloqueForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
-
-            global bloques_cache
-            global ultima_actu_bloques
-            if (time.time() - ultima_actu_bloques) >= 300:
-                bloques_cache = Bloque.obtener_bloques()
-                ultima_actu_bloques = time.time()
-
             messages.success(request, 'Bloque registrado correctamente')
             return redirect('mapeo:bloque')
         else:
@@ -293,6 +252,13 @@ def eliminar_conexion(request, id):
     nodo_id = ruta.nodo_inicio.id
     ruta.delete()
     return redirect('mapeo:conexion-nodo', nodo_id=nodo_id)
+
+
+def listado_eliminar_conexion(request, id):
+    ruta = get_object_or_404(Ruta, id=id)
+    nodo_id = ruta.nodo_inicio.id
+    ruta.delete()
+    return redirect('mapeo:listado-conexion-nodo', nodo_id=nodo_id)
 
 
 def conexiones_nodo(request, nodo_id):
@@ -428,7 +394,7 @@ def listado_modificar_admin(request, id):
         form = ModificarAdminForm(request.POST, instance=admin)
         if form.is_valid():
             form.save()
-            return redirect('admin')
+            return redirect('mapeo:admin')
     else:
         form = ModificarAdminForm(instance=admin)
     data = {

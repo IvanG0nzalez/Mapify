@@ -149,9 +149,35 @@ class FacultadForm(forms.ModelForm):
         nombre = self.cleaned_data.get('nombre')
         if Facultad.objects.filter(nombre=nombre).exists():
             raise forms.ValidationError("Ya existe una facultad registrada con ese nombre.")
+        return nombre
 
     def clean_descripcion(self):
         descripcion = self.cleaned_data.get('descripcion')
 
         if Facultad.objects.filter(descripcion=descripcion):
             raise forms.ValidationError("Ya existe una facultad registrada con esa descripción.")
+        return descripcion
+
+
+class ModificarFacultadForm(forms.ModelForm):
+    class Meta:
+        model = Facultad
+        fields = '__all__'
+
+    def clean_nombre(self):
+        facultad_actual = self.instance
+
+        nombre = self.cleaned_data.get('nombre')
+
+        if Facultad.objects.filter(nombre=nombre).exclude(id=facultad_actual.id).exists():
+            raise forms.ValidationError("Ya existe una facultad registrada con ese nombre.")
+        return nombre
+
+    def clean_descripcion(self):
+        facultad_actual = self.instance
+
+        descripcion = self.cleaned_data.get('descripcion')
+
+        if Facultad.objects.filter(descripcion=descripcion).exclude(id=facultad_actual.id).exists():
+            raise forms.ValidationError("Ya existe una facultad registrada con esa descripción.")
+        return descripcion
