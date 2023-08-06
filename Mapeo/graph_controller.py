@@ -5,8 +5,6 @@ import time
 import networkx as nx
 from pymongo import MongoClient
 
-from Mapeo.models import Nodo
-
 
 class ControladorGrafo:
     def __init__(self):
@@ -98,7 +96,7 @@ class ControladorGrafo:
     def grafo_existe_actualizado(self):
         tiempo_actual = time.time()
         cantidad_nodos = len(self.data_db)
-        if self.graph and (tiempo_actual - self.ultima_actualizacion) <= 600 and len(self.graph.nodes) == cantidad_nodos:
+        if self.graph and (tiempo_actual - self.ultima_actualizacion) <= 300 and len(self.graph.nodes) == cantidad_nodos:
             print(f"Tiempo en segundos desde la ultima actu del grafo: {tiempo_actual - self.ultima_actualizacion}")
             print(f"Grafo existe: {self.graph}")
             print(f"Cantidad de nodos del grafo: {len(self.graph.nodes)}")

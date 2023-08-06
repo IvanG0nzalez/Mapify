@@ -33,7 +33,7 @@ urlpatterns = [
     path('administracion/nodo/<int:nodo_id>', login_required(views.detalle_nodo, login_url='/administracion/iniciar-sesion'), name='nodo_id'),
     path('administracion/eliminar-conexion/<id>/', login_required(views.eliminar_conexion, login_url='/administracion/iniciar-sesion'), name='eliminar-conexion'),
     path('administracion/nodo/eliminar-conexion/<id>/', login_required(views.listado_eliminar_conexion, login_url='/administracion/iniciar-sesion'), name='listado-eliminar-conexion'),
-    path('administracion/conexion-nodo/<int:nodo_id>/', login_required(views.conexiones_nodo, login_url='/administracion/iniciar-sesion'), name=    'conexion-nodo'),
+    path('administracion/conexion-nodo/<int:nodo_id>/', login_required(views.conexiones_nodo, login_url='/administracion/iniciar-sesion'), name='conexion-nodo'),
     path('administracion/nodo/conexion-nodo/<int:nodo_id>', login_required(views.listado_conexiones_nodo, login_url='/administracion/iniciar-sesion'), name='listado-conexion-nodo'),
     #Url para grafo
     path('administracion/grafo', login_required(views.grafo_admin, login_url='/administracion/iniciar-sesion'), name='grafo'),
@@ -44,4 +44,8 @@ urlpatterns = [
     path('administracion/modificar-administrador/<id>', login_required(views.modificar_admin, login_url='/administracion/iniciar-sesion'), name='modificar-admin'),
     path('administracion/administrador/modificar-administrador/<id>', login_required(views.listado_modificar_admin, login_url='/administracion/iniciar-sesion'), name='listado-modificar-admin'),
     path('administracion/eliminar-administrador/<id>/', login_required(views.eliminar_admin, login_url='/administracion/iniciar-sesion'), name='eliminar-admin'),
+    #Urls para conexiones
+    path('administracion/conexiones', login_required(views.listado_conexiones, login_url='/administracion/iniciar-sesion'), name='conexiones'),
+    path('administracion/conexiones/eliminar-conexion/<id>/', login_required(views.conexiones_eliminar_conexion, login_url='/administracion/iniciar-sesion'), name='conexiones-eliminar-conexion'),
+
 ]

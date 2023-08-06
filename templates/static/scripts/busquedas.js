@@ -65,6 +65,7 @@ function buscarAdministradores() {
     sinCoincidenciasRow.style.display = adminsCoincidentes ? 'none' : 'table-row';
 }
 
+//Función para búsqueda de conexiones de cbx
 function buscarNodoConexion(){
     const busquedaNodoConexionInput = document.getElementById('busqueda_nodo_conexion');
     const opcionesNodo = document.getElementsByClassName('opcion_conexion');
@@ -104,11 +105,34 @@ function buscarNodoConexion(){
         }
     };
 }
+
+// Función para búsqueda de conexiones
+function buscarConexiones() {
+    const busquedaConexionInput = document.getElementById('busqueda_conexion');
+    const filasConexion = document.getElementsByClassName('fila-conexion');
+
+    const busqueda = busquedaConexionInput.value.toLowerCase();
+    let conexionesCoincidentes = false;
+
+    for (const fila of filasConexion) {
+        const contenidoOrigen = fila.querySelector('.text-center:nth-child(1)').innerText.toLowerCase();
+        fila.style.display = contenidoOrigen.includes(busqueda) ? 'table-row' : 'none';
+
+        if (contenidoOrigen.includes(busqueda)) {
+            conexionesCoincidentes = true;
+        }
+    }
+
+    const sinCoincidenciasRow = document.getElementById('sin_coincidencias_row');
+    sinCoincidenciasRow.style.display = conexionesCoincidentes ? 'none' : 'table-row';
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const busquedaBloqueInput = document.getElementById('busqueda_bloque');
     const busquedaNodoInput = document.getElementById('busqueda_nodo');
     const busquedaAdminInput = document.getElementById('busqueda_admin');
     const busquedaNodoConexionInput = document.getElementById('busqueda_nodo_conexion');
+    const busquedaConexionInput = document.getElementById('busqueda_conexion');
     if(busquedaBloqueInput){
         busquedaBloqueInput.oninput = buscarBloques;
     }
@@ -120,5 +144,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if(busquedaNodoConexionInput){
         busquedaNodoConexionInput.oninput = buscarNodoConexion;
+    }
+    if(busquedaConexionInput){
+        busquedaConexionInput.oninput = buscarConexiones;
     }
 });

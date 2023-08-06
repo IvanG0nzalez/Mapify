@@ -28,7 +28,7 @@ def administracion_inicio(request):
 
 
 def busqueda_rutas_user(request):
-    nodos = Nodo.objects.exclude(codigo__startswith='N')
+    nodos = Nodo.objects.order_by('bloque__numero').exclude(codigo__startswith='N')
     if request.method == 'POST':
         nodo_origen_codigo = request.POST.get('bloque_origen')
         nodo_destino_codigo = request.POST.get('bloque_destino')
@@ -273,7 +273,7 @@ def conexiones_nodo(request, nodo_id):
     #Obtiene los nodos ya conectados al nodo actual
     nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
     #Excluir los nodos conectados del conjunto de nodos disponibles para conectar
-    nodos = Nodo.objects.exclude(id=nodo_id).exclude(id__in=nodos_conectados)
+    nodos = Nodo.objects.order_by('bloque__numero', 'codigo').exclude(id=nodo_id).exclude(id__in=nodos_conectados)
 
     context = {
         'nodos': nodos,
@@ -295,7 +295,7 @@ def listado_conexiones_nodo(request, nodo_id):
     #Obtiene los nodos ya conectados al nodo actual
     nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
     #Excluir los nodos conectados del conjunto de nodos disponibles para conectar
-    nodos = Nodo.objects.exclude(id=nodo_id).exclude(id__in=nodos_conectados)
+    nodos = Nodo.objects.order_by('bloque__numero', 'codigo').exclude(id=nodo_id).exclude(id__in=nodos_conectados)
 
     context = {
         'nodos': nodos,
@@ -303,6 +303,20 @@ def listado_conexiones_nodo(request, nodo_id):
         'rutas': rutas,
     }
     return render(request, 'pantallas/listado_conexiones_nodo.html', context)
+
+
+def listado_conexiones(request):
+    rutas = Ruta.objects.select_related('nodo_inicio', 'nodo_destino').all()
+    context = {
+        'rutas': rutas,
+    }
+    return render(request, 'pantallas/listado_conexiones.html', context)
+
+
+def conexiones_eliminar_conexion(request, id):
+    ruta = get_object_or_404(Ruta, id=id)
+    ruta.delete()
+    return redirect('mapeo:conexiones')
 
 
 def grafo_admin(request):
