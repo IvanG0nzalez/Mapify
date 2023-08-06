@@ -29,7 +29,7 @@
                     <label for="nombre" class="form-label">Nombre:</label>
                     {{ form.nombre }}
                 </div>
-                <div class="mb-3">
+                <div class="d-flex justify-content-start mb-3">
                     <label for="descripcion" class="form-label">Descripción:</label>
                     {{ form.descripcion }}
                 </div>
@@ -40,7 +40,8 @@
 
                 <div class="d-flex justify-content-end">
                     <a href="{% url 'mapeo:facultad' %}" class="btn btn-danger mx-2">Cancelar</a>
-                    <input type="submit" value="Guardar" class="btn btn-dark mx-2" onclick="confirmacionFacultadRegistrada(event)">
+                    <input type="submit" value="Guardar" class="btn btn-dark mx-2"
+                           onclick="confirmacionFacultadRegistrada(event)">
                 </div>
             </form>
         </div>
