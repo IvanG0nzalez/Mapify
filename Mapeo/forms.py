@@ -1,3 +1,4 @@
+from PIL import Image
 from django import forms
 from django.contrib.auth.models import User
 
@@ -158,6 +159,20 @@ class FacultadForm(forms.ModelForm):
             raise forms.ValidationError("Ya existe una facultad registrada con esa descripción.")
         return descripcion
 
+    def clean_imagen(self):
+        imagen = self.cleaned_data.get('imagen')
+
+        if imagen:
+            img = Image.open(imagen)
+            ancho, largo = img.size
+
+            ancho_permitido = 600
+            largo_permitido = 600
+
+            if ancho > ancho_permitido or largo > largo_permitido:
+                raise forms.ValidationError(f"La imágen debe tener un tamaño máximo de {ancho_permitido}x{largo_permitido} píxeles.")
+        return imagen
+
 
 class ModificarFacultadForm(forms.ModelForm):
     class Meta:
@@ -181,3 +196,18 @@ class ModificarFacultadForm(forms.ModelForm):
         if Facultad.objects.filter(descripcion=descripcion).exclude(id=facultad_actual.id).exists():
             raise forms.ValidationError("Ya existe una facultad registrada con esa descripción.")
         return descripcion
+
+    def clean_imagen(self):
+        imagen = self.cleaned_data.get('imagen')
+
+        if imagen:
+            img = Image.open(imagen)
+            ancho, largo = img.size
+
+            ancho_permitido = 600
+            largo_permitido = 600
+
+            if ancho > ancho_permitido or largo > largo_permitido:
+                raise forms.ValidationError(
+                    f"La imágen debe tener un tamaño máximo de {ancho_permitido}x{largo_permitido} píxeles.")
+        return imagen

@@ -24,13 +24,11 @@
 
                 <ul class="menu-links">
 
-                    <li class="nav-link">
-                        <a>
-                            <i class="bx bx-user-circle icon"></i>
-                            <span class="text nav-text">{{ user.username }}</span>
-                        </a>
+                    <li class="nav-link" style="background-color: lightsteelblue; border-radius: 10px">
+                        <i class="bx bx-user-circle icon"></i>
+                        <span class="text nav-text">{{ user.username }}</span>
                     </li>
-
+                    <br><br>
                     <li class="nav-link">
                         <a href="{% url 'mapeo:administracion-inicio' %}" class="nav__link">
                             <i class="bx bx-home-alt icon"></i>

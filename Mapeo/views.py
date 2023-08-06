@@ -322,6 +322,7 @@ def conexiones_eliminar_conexion(request, id):
 def grafo_admin(request):
     grafo = controlador_grafo.obtener_grafo()
     num_nodos = len(grafo.nodes)
+    num_aristas = len(grafo.edges)
     grafo_data_json = []
 
     if grafo:
@@ -334,9 +335,9 @@ def grafo_admin(request):
 
         grafo_data_json = json.dumps(grafo_data)
 
-        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos})
+        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos, 'num_aristas': num_aristas})
     else:
-        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos})
+        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos, 'num_aristas': num_aristas})
 
 
 def format_tiempo(tiempo_segundos):
