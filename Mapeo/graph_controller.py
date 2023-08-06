@@ -5,13 +5,13 @@ import time
 import networkx as nx
 from pymongo import MongoClient
 
+from Mapeo.models import Nodo
+
 
 class ControladorGrafo:
     def __init__(self):
         self.graph = None
         self.data_db = self.obtener_nodos_db()
-        self.ultima_actualizacion = 0
-        self.num_nodos = 0
 
     def calcular_distancia(self, punto1, punto2):
         R = 6371.0
@@ -94,25 +94,25 @@ class ControladorGrafo:
         # print(f"num_ndoos_controlador: {ControladorGrafo.num_nodos}")
 
     def grafo_existe_actualizado(self):
-        tiempo_actual = time.time()
-        cantidad_nodos = len(self.data_db)
-        if self.graph and (tiempo_actual - self.ultima_actualizacion) <= 300 and len(self.graph.nodes) == cantidad_nodos:
-            print(f"Tiempo en segundos desde la ultima actu del grafo: {tiempo_actual - self.ultima_actualizacion}")
-            print(f"Grafo existe: {self.graph}")
-            print(f"Cantidad de nodos del grafo: {len(self.graph.nodes)}")
-            print(f"Cantidad de nodos en la DB: {cantidad_nodos}")
-            return True
-        print(f"Tiempo en segs sobrepasó los 600: {tiempo_actual - self.ultima_actualizacion}")
-        print(f"Grafo puede que no existe: {self.graph}")
-        return False
+        if self.graph:
+            cantidad_nodos = len(Nodo.objects.select_related('bloque').all())
+            if len(self.graph.nodes) == cantidad_nodos:
+                print(f"Grafo existe: {self.graph}")
+                print(f"Cantidad de nodos del grafo: {len(self.graph.nodes)}")
+                print(f"Cantidad de nodos en la DB: {cantidad_nodos}")
+                return True
+            else:
+                print(f"Grafo puede que no existe: {self.graph}")
+                print(f"Cantidad de nodos en el grafo: {len(self.graph.nodes)}")
+                print(f"Cantidad de nodos en la DB: {cantidad_nodos}")
+                return False
+        else:
+            print(f"Grafo no existe: {self.graph}")
 
     def obtener_grafo(self):
-        # self.actualizar_grafo()
         if not self.grafo_existe_actualizado():
             self.data_db = self.obtener_nodos_db()
             self.crear_grafo()
-            self.ultima_actualizacion = time.time()
-            self.num_nodos = len(self.graph.nodes)
         return self.graph
 
     def minimo_dijkstra(self, origen):

@@ -46,7 +46,7 @@ def busqueda_rutas_user(request):
                 #variable para almacenar las coordenadas del camino
                 coordenadas_nodos = []
 
-                distancia = camino_mas_corto['distancia']
+                distancia = round(camino_mas_corto['distancia'], 2)
                 tiempo = camino_mas_corto['tiempo']
                 tiempo_formateado = format_tiempo(tiempo)
                 #Variable para almacenar los bloques del camino
