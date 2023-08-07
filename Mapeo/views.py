@@ -353,6 +353,13 @@ def conexiones_eliminar_conexion(request, id):
 
 def grafo_admin(request):
     grafo = controlador_grafo.obtener_grafo()
+
+    origen = 'A2'
+    rutas = controlador_grafo.minimo_dijkstra(origen)
+    print(f"\nDistancias, rutas y tiempos desde {origen}:")
+    for nodo, ruta in rutas.items():
+        print(f"{nodo}: {ruta}")
+
     num_nodos = len(grafo.nodes)
     num_aristas = len(grafo.edges)
     grafo_data_json = []
