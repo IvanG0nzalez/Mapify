@@ -3,11 +3,21 @@ from django.test import TestCase
 # Create your tests here.
 from pymongo import MongoClient
 
-from Mapeo.graph_controller import ControladorGrafo
-
 cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
 client = MongoClient(cadenaConexion)
 db = client['ProyectoIntegrador']
+"""
+data_nodo = {
+    '_id': 18,
+    'codigo': 'N2',
+    'latitud': -4.033454,
+    'altitud': -79.202454,
+    'conexiones': list()
+}
+
+
+db.get_collection('nodos').insert_one(data_nodo)
+"""
 """
 documento_existente = db.nodos.find_one({'_id': 1})
 if documento_existente:
@@ -16,7 +26,7 @@ if documento_existente:
         {'_id': 1},
         {'$set': {'conexiones': documento_existente['conexiones']}}
     )
-"""
+
 controlador_grafo = ControladorGrafo()
 controlador_grafo.crear_grafo()
 origen = 'A4'
@@ -26,7 +36,7 @@ rutas = controlador_grafo.minimo_dijkstra(origen)
 print(f"\nDistancias, rutas y tiempos desde {origen}:")
 for nodo, ruta in rutas.items():
     print(f"{nodo}: {ruta}")
-
+"""
 """
 def cambio_auxiliar_bloque():
     from Mapeo.models import Bloque

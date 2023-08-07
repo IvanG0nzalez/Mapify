@@ -167,7 +167,7 @@ class FacultadForm(forms.ModelForm):
             ancho, largo = img.size
 
             ancho_permitido = 600
-            largo_permitido = 600
+            largo_permitido = 400
 
             if ancho > ancho_permitido or largo > largo_permitido:
                 raise forms.ValidationError(f"La imágen debe tener un tamaño máximo de {ancho_permitido}x{largo_permitido} píxeles.")
@@ -205,7 +205,7 @@ class ModificarFacultadForm(forms.ModelForm):
             ancho, largo = img.size
 
             ancho_permitido = 600
-            largo_permitido = 600
+            largo_permitido = 400
 
             if ancho > ancho_permitido or largo > largo_permitido:
                 raise forms.ValidationError(
