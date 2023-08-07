@@ -164,7 +164,8 @@ def anadir_facultad(request):
 
 
 def listado_bloque(request):
-    bloques = Bloque.objects.select_related('facultad', 'nodo').all()
+    orden = request.GET.get('orden', 'id')
+    bloques = Bloque.objects.select_related('facultad', 'nodo').order_by(orden)
     context = {
         'bloques': bloques,
     }
@@ -232,7 +233,8 @@ def anadir_bloque(request):
 
 
 def listado_nodo(request):
-    nodos = Nodo.obtener_nodos()
+    orden = request.GET.get('orden', 'id')
+    nodos = Nodo.objects.select_related('bloque').order_by(orden)
     context = {
         'nodos': nodos,
     }
@@ -245,6 +247,36 @@ def detalle_nodo(request, nodo_id):
         'nodo': nodo,
     }
     return render(request, 'pantallas/detalle_nodo.html', context)
+
+
+def nodo_detalle_bloque(request, bloque_id):
+    bloque = get_object_or_404(Bloque, pk=bloque_id)
+    context={
+        'bloque': bloque,
+    }
+    return render(request, 'pantallas/nodo_detalle_bloque.html', context)
+
+
+def nodo_eliminar_bloque(request, id):
+    bloque = get_object_or_404(Bloque, id=id)
+    bloque.delete()
+    return redirect('mapeo:nodo')
+
+
+def nodo_modificar_bloque(request, id):
+    bloque = get_object_or_404(Bloque, id=id)
+    data = {
+        'form': ModificarBloqueForm(instance=bloque),
+        'bloque_id': id
+    }
+    if request.method == 'POST':
+        formulario = ModificarBloqueForm(data=request.POST, instance=bloque)
+
+        if formulario.is_valid():
+            formulario.save()
+            return redirect("mapeo:nodo-bloque_id", id)
+        data["form"] = formulario
+    return render(request, 'pantallas/nodo_modificar_bloque.html', data)
 
 
 def eliminar_conexion(request, id):
@@ -355,7 +387,8 @@ def format_tiempo(tiempo_segundos):
 
 
 def listado_admins(request):
-    admins = User.objects.all()
+    orden = request.GET.get('orden', 'id')
+    admins = User.objects.all().order_by(orden)
     return render(request, 'pantallas/listado_admins.html', {'admins': admins})
 
 

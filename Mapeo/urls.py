@@ -35,6 +35,10 @@ urlpatterns = [
     path('administracion/nodo/eliminar-conexion/<id>/', login_required(views.listado_eliminar_conexion, login_url='/administracion/iniciar-sesion'), name='listado-eliminar-conexion'),
     path('administracion/conexion-nodo/<int:nodo_id>/', login_required(views.conexiones_nodo, login_url='/administracion/iniciar-sesion'), name='conexion-nodo'),
     path('administracion/nodo/conexion-nodo/<int:nodo_id>', login_required(views.listado_conexiones_nodo, login_url='/administracion/iniciar-sesion'), name='listado-conexion-nodo'),
+    #URls para bloques dentro de Nodos
+    path('administracion/nodo/bloque/<int:bloque_id>', login_required(views.nodo_detalle_bloque, login_url='/administracion/iniciar-sesion'), name='nodo-bloque_id'),
+    path('administracion/nodo/eliminar-bloque/<id>/', login_required(views.nodo_eliminar_bloque, login_url='/administracion/iniciar-sesion'), name='nodo-eliminar-bloque'),
+    path('administracion/nodo/modificar-bloque/<id>/', login_required(views.nodo_modificar_bloque, login_url='/administracion/iniciar-sesion'), name='nodo-modificar-bloque'),
     #Url para grafo
     path('administracion/grafo', login_required(views.grafo_admin, login_url='/administracion/iniciar-sesion'), name='grafo'),
     #Urls para usuarios del sistema (administradores)

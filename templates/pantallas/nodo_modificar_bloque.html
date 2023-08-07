@@ -1,0 +1,68 @@
+{% extends 'pantallas/base_admin.html' %}
+{% load static %}
+
+
+{% block titulo %}
+    Modificar Bloque
+{% endblock %}
+
+{% block contenido %}
+    <h1 class="container">Modificar Bloque</h1>
+
+    <div id="div_center">
+        <div class="div_responsive mt-5">
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <p>Corrija los siguientes errores:</p>
+                        <lu>
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li style="color: red;">{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </lu>
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="{{ form.numero.id_for_label }}" class="form-label">Número:</label>
+                    {{ form.numero }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.zona.id_for_label }}" class="form-label">Zona:</label>
+                    {{ form.zona }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción:</label>
+                    {{ form.descripcion }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.latitud.id_for_label }}" class="form-label">Latitud:</label>
+                    {{ form.latitud }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.altitud.id_for_label }}" class="form-label">Altitud:</label>
+                    {{ form.altitud }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.is_auxiliar.id_for_label }}" class="form-label">Is auxiliar:</label>
+                    {{ form.is_auxiliar }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.facultad.id_for_label }}" class="form-label">Facultad:</label>
+                    {{ form.facultad }}
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'mapeo:nodo-bloque_id' bloque_id=bloque_id %}" class="btn btn-danger mx-2">Cancelar</a>
+                    <input type="submit" value="Guardar" class="btn btn-primary">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
