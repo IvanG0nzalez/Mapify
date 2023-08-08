@@ -5,9 +5,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from pymongo import MongoClient
 
-cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
-client = MongoClient(cadenaConexion)
-db = client['ProyectoIntegrador']
+#cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
+#client = MongoClient(cadenaConexion)
+#db = client['ProyectoIntegrador']
 
 
 class Facultad(models.Model):
@@ -28,13 +28,13 @@ class Facultad(models.Model):
             return cls.obtener_facultades()
         else:
             return Facultad.objects.filter(nombre__icontains=nombre)
-
+    """
     def delete(self, *args, **kwargs):
         bloques = self.bloques.all()
         for bloque in bloques:
             db.get_collection('nodos').delete_one({'_id': bloque.id})
         super().delete(*args, **kwargs)
-
+    """
     class Meta:
         verbose_name = 'Facultad'
         verbose_name_plural = 'Facultades'
@@ -116,12 +116,12 @@ class Bloque(models.Model):
                 nodo.save()
             except Nodo.DoesNotExist:
                 pass
-
+    """
     def delete(self, *args, **kwargs):
         nodo = self.nodo
         db.get_collection('nodos').delete_one({'_id': nodo.id})
         super().delete(*args, **kwargs)
-
+    """
     def get_next_numero_auxiliar(self):
         last_bloque = Bloque.objects.filter(is_auxiliar=True).exclude(numero_auxiliar=None).order_by('-numero_auxiliar').first()
         if last_bloque:
@@ -213,7 +213,7 @@ class Ruta(models.Model):
         super().save(*args, **kwargs)
 
         Ruta.objects.get_or_create(nodo_inicio=self.nodo_destino, nodo_destino=self.nodo_inicio)
-
+        """
         documento_existente_inicio = db.nodos.find_one({'_id': self.nodo_inicio.id})
         if documento_existente_inicio:
             documento_existente_inicio['conexiones'].append(self.nodo_destino.codigo)
@@ -221,8 +221,10 @@ class Ruta(models.Model):
                 {'_id': self.nodo_inicio.id},
                 {'$set': {'conexiones': documento_existente_inicio['conexiones']}}
             )
+        """
 
     def delete(self, *args, **kwargs):
+        """
         documento_existente_inicio = db.nodos.find_one({'_id': self.nodo_inicio.id})
         if documento_existente_inicio:
             documento_existente_inicio['conexiones'].remove(self.nodo_destino.codigo)
@@ -230,6 +232,7 @@ class Ruta(models.Model):
                 {'_id': self.nodo_inicio.id},
                 {'$set': {'conexiones': documento_existente_inicio['conexiones']}}
             )
+        """
         super().delete(*args, **kwargs)
         try:
             ruta_inversa = Ruta.objects.get(nodo_inicio=self.nodo_destino, nodo_destino=self.nodo_inicio)
@@ -291,7 +294,7 @@ class Nodo(models.Model):
     @classmethod
     def obtener_nodos_no_auxiliares(cls):
         return cls.objects.exclude(codigo__contains='N')
-
+    """
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
@@ -311,7 +314,9 @@ class Nodo(models.Model):
                     'conexiones': list(),
                 }
             )
+    """
 
+    """
     def delete(self, *args, **kwargs):
         db.nodos.delete_one(
             {
@@ -319,7 +324,7 @@ class Nodo(models.Model):
             }
         )
         super().delete(*args, **kwargs)
-
+    """
     class Meta:
         verbose_name = 'Nodo'
         verbose_name_plural = 'Nodos'

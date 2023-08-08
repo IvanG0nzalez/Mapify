@@ -2,10 +2,11 @@ from django.test import TestCase
 
 # Create your tests here.
 from pymongo import MongoClient
-
+"""
 cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
 client = MongoClient(cadenaConexion)
 db = client['ProyectoIntegrador']
+"""
 """
 data_nodo = {
     '_id': 18,
