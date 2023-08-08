@@ -22,8 +22,10 @@
                         {% if facultad.imagen %}
                             <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}"
                                title="Click para ir al detalle de la facultad">
-                                <img src="{{ facultad.imagen.url }}" class="card-img-top tarjeta-imagen"
-                                     alt="Imágen de {{ facultad.nombre }}">
+                                <div class="text-center">
+                                    <img src="{{ facultad.imagen.url }}" class="card-img-top tarjeta-imagen"
+                                         alt="Imágen de {{ facultad.nombre }}">
+                                </div>
                             </a>
                         {% else %}
                             <a href="{% url 'mapeo:facultad_id' facultad_id=facultad.id %}"
@@ -42,8 +44,9 @@
                             </div>
                             <div class="text-center">
                                 <a href="{% url 'mapeo:listado-modificar-facultad' facultad.id %}"
-                                    class="btn btn-warning mx-2">Modificar</a>
-                                <a href="{% url 'mapeo:eliminar-facultad' facultad.id %}" class="btn btn-danger mx-2" onclick="confirmacionEliminarFacultad(event)">Eliminar</a>
+                                   class="btn btn-warning mx-2">Modificar</a>
+                                <a href="{% url 'mapeo:eliminar-facultad' facultad.id %}" class="btn btn-danger mx-2"
+                                   onclick="confirmacionEliminarFacultad(event)">Eliminar</a>
                             </div>
                         </div>
                     </div>

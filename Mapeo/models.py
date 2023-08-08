@@ -186,13 +186,13 @@ class Ruta(models.Model):
         lat1_rad = math.radians(latitud1)
         lat2_rad = math.radians(latitud2)
         delta_lat = lat2_rad - lat1_rad
+        deltan_alt = math.radians(altitud2 - altitud1)
 
-        a = math.sin(delta_lat / 2) ** 2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(0) ** 2
+        a = math.sin(delta_lat / 2) ** 2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(deltan_alt / 2) ** 2
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
         d = R * c
 
-        distancia = math.sqrt(d ** 2 + (altitud2 - altitud1) ** 2)
-        distancia *= 1000
+        distancia = d * 1000
         return round(distancia, 2)
 
     def calcular_tiempo(self, distancia):

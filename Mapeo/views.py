@@ -65,6 +65,8 @@ def busqueda_rutas_user(request):
                         if bloque.bloque.descripcion:
                             contador_bloques += 1
                             bloques_camino.append((contador_bloques, bloque))
+                        if codigo_nodo == nodo_destino_codigo:
+                            nodo_destino = bloque
                     except Nodo.DoesNotExist:
                         print(f"El nodo con código {codigo_nodo} no existe")
                         pass
@@ -72,7 +74,7 @@ def busqueda_rutas_user(request):
                 # Convertir la lista de coordenadas a una lista de diccionarios
                 coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
 
-                return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos, 'distancia': distancia, 'tiempo': tiempo_formateado, 'bloques_camino': bloques_camino})
+                return render(request, 'pantallas/busqueda.html', {'ruta_coordenadas': coordenadas_nodos_dict, 'nodos': nodos, 'distancia': distancia, 'tiempo': tiempo_formateado, 'bloques_camino': bloques_camino, 'nodo_destino': nodo_destino})
             else:
                 print("El nodo no existe")
                 pass
@@ -354,7 +356,7 @@ def conexiones_eliminar_conexion(request, id):
 def grafo_admin(request):
     grafo = controlador_grafo.obtener_grafo()
 
-    origen = 'A2'
+    origen = 'A119'
     rutas = controlador_grafo.minimo_dijkstra(origen)
     print(f"\nDistancias, rutas y tiempos desde {origen}:")
     for nodo, ruta in rutas.items():
@@ -379,8 +381,8 @@ def grafo_admin(request):
         return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos, 'num_aristas': num_aristas})
 
 
-def format_tiempo(tiempo_segundos):
-    tiempo_minutos, tiempo_segundos = divmod(tiempo_segundos, 60)
+def format_tiempo(tiempo):
+    tiempo_minutos, tiempo_segundos = divmod(tiempo, 60)
     tiempo_segundos = round(tiempo_segundos)
     if tiempo_minutos == 0:
         return f"{tiempo_segundos} segundos"

@@ -5,7 +5,7 @@ import time
 import networkx as nx
 from pymongo import MongoClient
 
-from Mapeo.models import Nodo
+from Mapeo.models import Nodo, Ruta
 
 
 class ControladorGrafo:
@@ -22,13 +22,13 @@ class ControladorGrafo:
         lat1_rad = math.radians(latitud1)
         lat2_rad = math.radians(latitud2)
         delta_lat = lat2_rad - lat1_rad
+        deltan_alt = math.radians(altitud2 - altitud1)
 
-        a = math.sin(delta_lat / 2) ** 2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(0) ** 2
+        a = math.sin(delta_lat / 2) ** 2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(deltan_alt/ 2) ** 2
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
         d = R * c
 
-        distancia = math.sqrt(d ** 2 + (altitud2 - altitud1) ** 2)
-        distancia *= 1000
+        distancia = d * 1000
         return round(distancia, 2)
 
     def calcular_tiempo(self, distancia):
@@ -36,6 +36,21 @@ class ControladorGrafo:
         tiempo = distancia / velocidad
         return round(tiempo, 2)
 
+    # Accede a la base de datos y obtiene todos los registros de nodos existentes
+    def obtener_nodos_db(self):
+        nodos_db = Nodo.objects.all()
+
+        data = [
+            {
+                'codigo': nodo.codigo,
+                'latitud': nodo.latitud,
+                'altitud': nodo.altitud,
+            }
+            for nodo in nodos_db
+        ]
+
+        return data
+    """
     # Accede a la base de datos y obtiene todos los registros de nodos existentes
     def obtener_nodos_db(self):
         cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
@@ -47,7 +62,7 @@ class ControladorGrafo:
 
         client.close()
         return data
-
+    
     def crear_grafo(self):
         # Inicializa un grafo vacío
         self.graph = nx.Graph()
@@ -66,7 +81,8 @@ class ControladorGrafo:
             altitud_origen = nodo['altitud']
             # Para cada conexión crea una arista con la distancia y tiempo calculados
             for codigo_destino in conexiones:
-                if not self.graph.has_edge(codigo_origen, codigo_destino) and not self.graph.has_edge(codigo_destino, codigo_origen):
+                if not self.graph.has_edge(codigo_origen, codigo_destino) and not self.graph.has_edge(codigo_destino,
+                                                                                                      codigo_origen):
                     if codigo_destino in distancias:
                         distancia, tiempo = distancias[codigo_destino]
                     else:
@@ -85,13 +101,30 @@ class ControladorGrafo:
                             print(
                                 f"Graph Controller: La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
                             continue
-                    self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
+                    d, t = distancias[codigo_destino]
+
+                    self.graph.add_edge(codigo_origen, codigo_destino, distancia=d, tiempo=t)
                 else:
-                    print(f"Graph Controller: Se evitó la creación de una arista duplicada {codigo_origen} -> {codigo_destino}")
-        # ControladorGrafo.grafo_creado = True
-        # ControladorGrafo.ultima_actualizacion = time.time()
-        # ControladorGrafo.num_nodos = len(self.graph.nodes)
-        # print(f"num_ndoos_controlador: {ControladorGrafo.num_nodos}")
+                    print(
+                        f"Graph Controller: Se evitó la creación de una arista duplicada {codigo_origen} -> {codigo_destino}")
+    """
+
+    def crear_grafo(self):
+        # Inicializa un grafo vacío
+        self.graph = nx.Graph()
+        # Recorre la vairbale data_db y asigna los registros a un nuevo nodo del grafo
+        for nodo in self.data_db:
+            codigo = nodo['codigo']
+            latitud = nodo['latitud']
+            altitud = nodo['altitud']
+            self.graph.add_node(codigo, latitud=latitud, altitud=altitud)
+        # Recorre las rutas almacenadas en la base de datos y crea las aristas con las distancias y tiempos almacenados
+        for ruta in Ruta.objects.select_related('nodo_destino', 'nodo_inicio').all():
+            codigo_origen = ruta.nodo_inicio.codigo
+            codigo_destino = ruta.nodo_destino.codigo
+            distancia = ruta.distancia
+            tiempo = ruta.tiempo
+            self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
 
     def grafo_existe_actualizado(self):
         if self.graph:
