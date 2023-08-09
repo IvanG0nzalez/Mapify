@@ -3,7 +3,6 @@ import math
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.exceptions import ValidationError
 from django.db import models
-from pymongo import MongoClient
 
 #cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
 #client = MongoClient(cadenaConexion)
@@ -64,7 +63,7 @@ class Bloque(models.Model):
 
     @classmethod
     def obtener_bloques(cls):
-        return cls.objects.all()
+        return cls.objects.select_related('nodo', 'facultad').all()
 
     @classmethod
     def obtener_bloques_por_descripcion(cls, descripcion=None):
@@ -147,7 +146,7 @@ class Ruta(models.Model):
 
     @classmethod
     def obtener_rutas(cls):
-        return cls.objects.all()
+        return cls.objects.select_related('nodo_inicio', '')
 
     @classmethod
     def obtener_ruta_por_codigo_inicio(cls, nodo_inicio=None):

@@ -124,8 +124,12 @@ class ControladorGrafo:
             codigo_destino = ruta.nodo_destino.codigo
             distancia = ruta.distancia
             tiempo = ruta.tiempo
-            self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
 
+            if not self.graph.has_edge(codigo_origen, codigo_destino):
+                self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
+            else:
+                print(f"Graph Controller: Se evitó la creación de una arista duplicada: {codigo_origen} -> {codigo_destino}")
+    """
     def grafo_existe_actualizado(self):
         if self.graph:
             cantidad_nodos = len(Nodo.objects.select_related('bloque').all())
@@ -141,11 +145,17 @@ class ControladorGrafo:
                 return False
         else:
             print(f"Grafo no existe: {self.graph}")
-
+    
     def obtener_grafo(self):
         if not self.grafo_existe_actualizado():
             self.data_db = self.obtener_nodos_db()
             self.crear_grafo()
+        return self.graph
+    """
+
+    def obtener_grafo(self):
+        self.data_db = self.obtener_nodos_db()
+        self.crear_grafo()
         return self.graph
 
     def minimo_dijkstra(self, origen):

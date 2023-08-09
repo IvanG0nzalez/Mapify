@@ -42,6 +42,8 @@ def busqueda_rutas_user(request):
             camino_mas_corto = rutas.get(nodo_destino_codigo)
             # Si el camino existe se extraen las coordenadas de los nodos del camino y los bloques correspondientes a los mismos
             if camino_mas_corto:
+                print(f"Camino más corto desde {nodo_origen_codigo} hasta {nodo_destino_codigo}")
+                print(f"{camino_mas_corto}")
                 nodos_camino = camino_mas_corto['ruta']
                 #variable para almacenar las coordenadas del camino
                 coordenadas_nodos = []
