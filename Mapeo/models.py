@@ -115,6 +115,17 @@ class Bloque(models.Model):
                 nodo.save()
             except Nodo.DoesNotExist:
                 pass
+
+        if not es_nuevo:
+            rutas_a_actualizar_inicio = Ruta.objects.filter(nodo_inicio=self.nodo)
+            print(rutas_a_actualizar_inicio)
+            for ruta in rutas_a_actualizar_inicio:
+                ruta.save()
+            rutas_a_actualizar_destino = Ruta.objects.filter(nodo_destino=self.nodo)
+            print(rutas_a_actualizar_destino)
+            for ruta in rutas_a_actualizar_destino:
+                ruta.save()
+
     """
     def delete(self, *args, **kwargs):
         nodo = self.nodo
