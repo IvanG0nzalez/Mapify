@@ -1,14 +1,11 @@
 import heapq
 import math
-import time
-
 import networkx as nx
-from pymongo import MongoClient
-
 from Mapeo.models import Nodo, Ruta
 
 
 class ControladorGrafo:
+    # Inicializa la clase con un grafo vacío y asigna los nodos de la base de datos a la variable data_db
     def __init__(self):
         self.graph = None
         self.data_db = self.obtener_nodos_db()
@@ -50,64 +47,6 @@ class ControladorGrafo:
         ]
 
         return data
-    """
-    # Accede a la base de datos y obtiene todos los registros de nodos existentes
-    def obtener_nodos_db(self):
-        cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
-        client = MongoClient(cadenaConexion)
-        db = client['ProyectoIntegrador']
-        coleccion = db['nodos']
-
-        data = list(coleccion.find())
-
-        client.close()
-        return data
-    
-    def crear_grafo(self):
-        # Inicializa un grafo vacío
-        self.graph = nx.Graph()
-        distancias = {}
-        # Recorre la vairbale data_db y asigna los registros a un nuevo nodo del grafo
-        for nodo in self.data_db:
-            codigo = nodo['codigo']
-            latitud = nodo['latitud']
-            altitud = nodo['altitud']
-            self.graph.add_node(codigo, latitud=latitud, altitud=altitud)
-        # Recorre la variable data_db y obtiene la lista de conexiones de cada nodo
-        for nodo in self.data_db:
-            codigo_origen = nodo['codigo']
-            conexiones = nodo['conexiones']
-            latitud_origen = nodo['latitud']
-            altitud_origen = nodo['altitud']
-            # Para cada conexión crea una arista con la distancia y tiempo calculados
-            for codigo_destino in conexiones:
-                if not self.graph.has_edge(codigo_origen, codigo_destino) and not self.graph.has_edge(codigo_destino,
-                                                                                                      codigo_origen):
-                    if codigo_destino in distancias:
-                        distancia, tiempo = distancias[codigo_destino]
-                    else:
-                        nodo_destino = next((n for n in self.data_db if n['codigo'] == codigo_destino), None)
-                        if nodo_destino:
-                            latitud_destino = nodo_destino['latitud']
-                            altitud_destino = nodo_destino['altitud']
-
-                            distancia = self.calcular_distancia((latitud_origen, altitud_origen),
-                                                                (latitud_destino, altitud_destino))
-
-                            tiempo = self.calcular_tiempo(distancia)
-
-                            distancias[codigo_destino] = (distancia, tiempo)
-                        else:
-                            print(
-                                f"Graph Controller: La conexión {codigo_origen} -> {codigo_destino} no pudo establecerse: Nodo de destino inexistente.")
-                            continue
-                    d, t = distancias[codigo_destino]
-
-                    self.graph.add_edge(codigo_origen, codigo_destino, distancia=d, tiempo=t)
-                else:
-                    print(
-                        f"Graph Controller: Se evitó la creación de una arista duplicada {codigo_origen} -> {codigo_destino}")
-    """
 
     def crear_grafo(self):
         # Inicializa un grafo vacío
@@ -124,62 +63,55 @@ class ControladorGrafo:
             codigo_destino = ruta.nodo_destino.codigo
             distancia = ruta.distancia
             tiempo = ruta.tiempo
-
+            # Verifica si existe una arista ya creada entre los nodos evaluados, si ya existe la omite
             if not self.graph.has_edge(codigo_origen, codigo_destino):
                 self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
             else:
                 print(f"Graph Controller: Se evitó la creación de una arista duplicada: {codigo_origen} -> {codigo_destino}")
-    """
-    def grafo_existe_actualizado(self):
-        if self.graph:
-            cantidad_nodos = len(Nodo.objects.select_related('bloque').all())
-            if len(self.graph.nodes) == cantidad_nodos:
-                print(f"Grafo existe: {self.graph}")
-                print(f"Cantidad de nodos del grafo: {len(self.graph.nodes)}")
-                print(f"Cantidad de nodos en la DB: {cantidad_nodos}")
-                return True
-            else:
-                print(f"Grafo puede que no existe: {self.graph}")
-                print(f"Cantidad de nodos en el grafo: {len(self.graph.nodes)}")
-                print(f"Cantidad de nodos en la DB: {cantidad_nodos}")
-                return False
-        else:
-            print(f"Grafo no existe: {self.graph}")
-    
-    def obtener_grafo(self):
-        if not self.grafo_existe_actualizado():
-            self.data_db = self.obtener_nodos_db()
-            self.crear_grafo()
-        return self.graph
-    """
 
+    # Obtiene nuevamente todos los nodos de la base de datos y llama a la función para crear el grafo
     def obtener_grafo(self):
         self.data_db = self.obtener_nodos_db()
         self.crear_grafo()
         return self.graph
 
     def minimo_dijkstra(self, origen):
+        # Si el origen enviado no se encuentra en el grafo se lanza una excepción
         if origen not in self.graph.nodes():
             raise NodoNoExisteException(f"El nodo {origen} no existe en el grafo.")
-
+        # Diccionario que contiene todas las distancias incializadas en infinito
         distancias = {nodo: float('inf') for nodo in self.graph.nodes()}
+        # Se establece la distancia desde el origen hacia sí mismo en 0
         distancias[origen] = 0
+        # Diccionario con todos los nodos, donde se inicializa en infinito, para cada nodo, la distancia y el tiempo, y la ruta como una lista vacía
         rutas = {nodo: {'distancia': float('inf'), 'ruta': [], 'tiempo': float('inf')} for nodo in self.graph.nodes()}
+        # Se establece la distancia y tiempo del origen hacia si mismo en 0 y la ruta se compondrá únicamente de sí mismo
         rutas[origen] = {'distancia': 0, 'ruta': [origen], 'tiempo': 0}
+        # Cola de prioridad con un tupla que contiene la distancia actual (inicialmente en 0) y el origen
         cola = [(0, origen)]
 
         while cola:
+            # se extrae el elemento de la cola con la distancia actual y el nodo actual
             distancia_actual, nodo_actual = heapq.heappop(cola)
+            # Verifica si la distancia actual es mayor que la distancia almacenada en el diccionario distancias para el nodo actual,
+            # de serlo, se ignora la iteración y continua a la siguiente
             if distancia_actual > distancias[nodo_actual]:
                 continue
+            # Para cada nodo vecino del nodo actual
             for vecino in self.graph[nodo_actual]:
+                # Se calcula la nueva distancia sumando la distancia desde el nodo actual al vecino y la distancia ya calculada
                 distancia = distancia_actual + self.graph[nodo_actual][vecino]['distancia']
+                # Se calcula el nuevo tiempo sumando el tiempo ya calculado para el nodo actual al tiempo desde el nodo actual al vecino
                 tiempo = rutas[nodo_actual]['tiempo'] + self.graph[nodo_actual][vecino]['tiempo']
+                # Se verifica si la distancia calculada es menor a la distancia almacenada en el diccionario
                 if distancia < distancias[vecino]:
+                    # Se actualiza la distancia en el dic 'distancias'
                     distancias[vecino] = distancia
+                    # Se actualiza la distancia, ruta y tiempo en el dic 'rutas'
                     rutas[vecino]['distancia'] = distancia
                     rutas[vecino]['ruta'] = rutas[nodo_actual]['ruta'] + [vecino]
                     rutas[vecino]['tiempo'] = tiempo
+                    # Se agrega una tupla a la cola con la nueva distancia y el nodo vecino
                     heapq.heappush(cola, (distancia, vecino))
         return rutas
 

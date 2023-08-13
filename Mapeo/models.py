@@ -4,10 +4,6 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.core.exceptions import ValidationError
 from django.db import models
 
-#cadenaConexion = 'mongodb+srv://admin:admin1234@cluster0.xataanw.mongodb.net/'
-#client = MongoClient(cadenaConexion)
-#db = client['ProyectoIntegrador']
-
 
 class Facultad(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
@@ -27,13 +23,7 @@ class Facultad(models.Model):
             return cls.obtener_facultades()
         else:
             return Facultad.objects.filter(nombre__icontains=nombre)
-    """
-    def delete(self, *args, **kwargs):
-        bloques = self.bloques.all()
-        for bloque in bloques:
-            db.get_collection('nodos').delete_one({'_id': bloque.id})
-        super().delete(*args, **kwargs)
-    """
+
     class Meta:
         verbose_name = 'Facultad'
         verbose_name_plural = 'Facultades'
@@ -84,59 +74,64 @@ class Bloque(models.Model):
         return cls.objects.filter(facultad__nombre__contains=facultad)
 
     def save(self, *args, **kwargs):
-        #numero_auxiliar_inicial = self.numero_auxiliar
+        # Verifica si existe un nodo con el mismo código del bloque que fue modificado y lo actualiza
+        try:
+            nodo = Nodo.objects.get(codigo=self.codigo)
+            nodo.latitud = self.latitud
+            nodo.altitud = self.altitud
+            nodo.codigo = self.codigo
+            nodo.save()
+        except Nodo.DoesNotExist:
+            pass
+        # Busca la llave primaria del bloque, si existe significa que el bloque no es nuevo, sino significa que el bloque acaba de ser creado
         es_nuevo = self.pk is None
+        # Se verifica si el atributo is_auxiliar es True
         if self.is_auxiliar:
+            # El atributo número es seteado en None
             self.numero = None
+            # Se valida si el bloque es nuevo, y si lo es, se llama al método get_next_numero_auxiliar para asignarle un número auxiliar al Bloque
             if es_nuevo:
                 self.numero_auxiliar = self.get_next_numero_auxiliar()
+            # Se le asigna un código al bloque concatenando la letra N junto con el número almacenado en el atributo numero_auxiliar
             self.codigo = f"N{self.numero_auxiliar}"
+        # Significa que el atributo is_auxiliar es False
         else:
+            # Si existe un numero auxiliar será seteado en None
             if self.numero_auxiliar:
                 self.numero_auxiliar = None
+            # Se obtiene el primer digito del atributo zona
             primer_digito_zona = self.zona[0]
+            # Se genera el código del bloque concatenando el primer digito obtenido de la zona junto con el numero del bloque
             self.codigo = f"{primer_digito_zona}{self.numero}"
-
         super().save(*args, **kwargs)
-
+        # se comprueba si el bloque es nuevo
         if es_nuevo:
+            # Se crea un Nodo con los mismos datos que el Bloque
             Nodo.objects.create(
                 bloque=self,
                 codigo=self.codigo,
                 latitud=self.latitud,
                 altitud=self.altitud,
             )
-        else:
-            try:
-                nodo = Nodo.objects.get(codigo=self.codigo)
-                nodo.latitud = self.latitud
-                nodo.altitud = self.altitud
-                nodo.codigo = self.codigo
-                nodo.save()
-            except Nodo.DoesNotExist:
-                pass
 
+        # Verifica que el bloque no sea nuevo, lo que significa que fue actualizado, y por consecuente el Nodo también
         if not es_nuevo:
-            rutas_a_actualizar_inicio = Ruta.objects.filter(nodo_inicio=self.nodo)
-            print(rutas_a_actualizar_inicio)
-            for ruta in rutas_a_actualizar_inicio:
-                ruta.save()
-            rutas_a_actualizar_destino = Ruta.objects.filter(nodo_destino=self.nodo)
-            print(rutas_a_actualizar_destino)
-            for ruta in rutas_a_actualizar_destino:
+            # Se selecciona todos las rutas que tengan al nodo antes modificado como nodo de inicio o destino
+            rutas_a_actualizar = Ruta.objects.select_related('nodo_inicio', 'nodo_destino').filter(models.Q(nodo_inicio=self.nodo) | models.Q(nodo_destino=self.nodo))
+            # Se recorre cada ruta y se ejecuta el método save para recalcular las distancias y tiempo
+            for ruta in rutas_a_actualizar:
                 ruta.save()
 
-    """
-    def delete(self, *args, **kwargs):
-        nodo = self.nodo
-        db.get_collection('nodos').delete_one({'_id': nodo.id})
-        super().delete(*args, **kwargs)
-    """
+    # Método para obtener el siguiente número auxiliar disponible
     def get_next_numero_auxiliar(self):
+        # Filtra los bloques para obtener únicamente aquellos que son auxiliares, los ordena de forma descendente y selecciona el primero, es decir, el último bloque auxiliar
         last_bloque = Bloque.objects.filter(is_auxiliar=True).exclude(numero_auxiliar=None).order_by('-numero_auxiliar').first()
+        # Verifica si existen resultados en la búsqueda realizada
         if last_bloque:
+            # Obtiene el número auxiliar del bloque recuperado, lo incrementa en 1 y lo retorna
             return last_bloque.numero_auxiliar + 1
         else:
+            # Retorna 1 como numero auxiliar
             return 1
 
     class Meta:
@@ -223,26 +218,8 @@ class Ruta(models.Model):
         super().save(*args, **kwargs)
 
         Ruta.objects.get_or_create(nodo_inicio=self.nodo_destino, nodo_destino=self.nodo_inicio)
-        """
-        documento_existente_inicio = db.nodos.find_one({'_id': self.nodo_inicio.id})
-        if documento_existente_inicio:
-            documento_existente_inicio['conexiones'].append(self.nodo_destino.codigo)
-            db.nodos.update_one(
-                {'_id': self.nodo_inicio.id},
-                {'$set': {'conexiones': documento_existente_inicio['conexiones']}}
-            )
-        """
 
     def delete(self, *args, **kwargs):
-        """
-        documento_existente_inicio = db.nodos.find_one({'_id': self.nodo_inicio.id})
-        if documento_existente_inicio:
-            documento_existente_inicio['conexiones'].remove(self.nodo_destino.codigo)
-            db.nodos.update_one(
-                {'_id': self.nodo_inicio.id},
-                {'$set': {'conexiones': documento_existente_inicio['conexiones']}}
-            )
-        """
         super().delete(*args, **kwargs)
         try:
             ruta_inversa = Ruta.objects.get(nodo_inicio=self.nodo_destino, nodo_destino=self.nodo_inicio)
@@ -255,22 +232,6 @@ class Ruta(models.Model):
         verbose_name_plural = 'Rutas'
         db_table = 'rutas'
         ordering = ['distancia', '-distancia']
-
-"""
-EL POST DELETE PUEDE USARSE PARA MANEJAR LA SEÑAL DE ELIMINACIÓN INCLUSO SI SE USA OTROS 
-MÉTODOS DE ELIMINADO, COMO EL DE LA INTERFAZ DE ADMIN DE DJANGO
-
-@receiver(post_delete, sender=Ruta)
-def eliminar_conexion_nodo_destino(sender, instance, **kwargs):
-    if instance.nodo_inicio:
-        documento_existente = db.nodos.find_one({'_id': instance.nodo_inicio.id})
-        if documento_existente:
-            documento_existente['conexiones'].remove(instance.nodo_destino.codigo)
-            db.nodos.update_one(
-                {'_id': instance.nodo_inicio.id},
-                {'$set': {'conexiones': documento_existente['conexiones']}}
-            )
-"""
 
 
 class Nodo(models.Model):
@@ -304,37 +265,7 @@ class Nodo(models.Model):
     @classmethod
     def obtener_nodos_no_auxiliares(cls):
         return cls.objects.exclude(codigo__contains='N')
-    """
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
 
-        documento_existente = db.nodos.find_one({'_id': self.id})
-        if documento_existente:
-            db.nodos.update_one(
-                {'_id': self.id},
-                {'$set': {'codigo': self.codigo, 'latitud': self.latitud, 'altitud': self.altitud}}
-            )
-        else:
-            db.nodos.insert_one(
-                {
-                    '_id': self.id,
-                    'codigo': self.codigo,
-                    'latitud': self.latitud,
-                    'altitud': self.altitud,
-                    'conexiones': list(),
-                }
-            )
-    """
-
-    """
-    def delete(self, *args, **kwargs):
-        db.nodos.delete_one(
-            {
-                '_id': self.id
-            }
-        )
-        super().delete(*args, **kwargs)
-    """
     class Meta:
         verbose_name = 'Nodo'
         verbose_name_plural = 'Nodos'

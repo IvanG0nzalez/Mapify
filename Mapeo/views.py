@@ -358,7 +358,7 @@ def conexiones_eliminar_conexion(request, id):
 def grafo_admin(request):
     grafo = controlador_grafo.obtener_grafo()
 
-    origen = 'A119'
+    origen = Nodo.objects.get(id=205).codigo
     rutas = controlador_grafo.minimo_dijkstra(origen)
     print(f"\nDistancias, rutas y tiempos desde {origen}:")
     for nodo, ruta in rutas.items():
