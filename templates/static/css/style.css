@@ -360,7 +360,7 @@ body {
 
 .tarjetas .card {
     flex: 0 0 18rem;
-    height: 370px;
+    height: 380px;
     display: flex;
     flex-direction: column;
 }
