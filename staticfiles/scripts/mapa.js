@@ -26,8 +26,8 @@ function initMap() {
         map: mapa,
         });
         console.log(routeCoordinates)
-         var contenidoInfoWindowInicio = 'Este es el punto de inicio';
-         var contenidoInfoWindowFin = 'Este es el punto de destino';
+         var contenidoInfoWindowInicio = 'Punto de inicio';
+         var contenidoInfoWindowFin = 'Punto de destino';
          var infoWindowInicio = new google.maps.InfoWindow({content: contenidoInfoWindowInicio});
          var infoWindowFin = new google.maps.InfoWindow({content: contenidoInfoWindowFin});
          infoWindowInicio.open(mapa, marcadorInicio);
