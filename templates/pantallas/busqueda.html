@@ -57,28 +57,23 @@
                     <div class="div_resultado_busqueda">
                         <div class="div_informacion_resultado">
                             <h3>Información</h3>
-                            <div class="d-flex justify-content-start">
-                                <i class="bx bx-walk"></i>
-                                <di class="d-flex justify-content-evenly">
-                                    <h6>Distancia aproximada</h6>
-                                    <h6>: {{ distancia }} metros</h6>
-                                </di>
+                            <h6>Distancia aproximada: {{ distancia }} metros</h6>
 
-                            </div>
+                            <h6>Tiempo aproximado: {{ tiempo }}</h6>
 
-                            <div style="display: flex;align-items: center;">
-                                <i class="bx bx-walk"></i>
-                                <h6>Tiempo aproximado</h6>
-                                <h6>: {{ tiempo }}</h6>
-                            </div>
                             <br>
                             <h3>Recorrido: </h3>
                             {% for contador, nodo in bloques_camino %}
                                 <p>{{ contador }}.- {{ nodo.descripcion }} [Bloque {{ nodo.codigo }}]</p>
                             {% endfor %}
                             <br>
-                            <h3>Facultad de Destino: </h3>
+                            <h3>Facultad: </h3>
                             <p>{{ nodo_destino.facultad }}</p>
+                            {% if nodo_destino_imagen %}
+                                <img src="{{ nodo_destino_imagen.bloque.facultad.imagen.url }}"
+                                     style="width: 92%; height: 50%"
+                                     alt="Imágen de {{ nodo_destino.facultad }}">
+                            {% endif %}
                         </div>
                     </div>
                 {% else %}
