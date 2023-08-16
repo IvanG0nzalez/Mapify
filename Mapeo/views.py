@@ -35,7 +35,7 @@ def busqueda_rutas_user(request):
         controlador_grafo.obtener_grafo()
 
         nodo_destino = None
-        nodo_destino_imagen = None
+        #nodo_destino_imagen = None
 
         try:
             # Calcular el camino mínimo a partir del origen seleccionado
@@ -89,7 +89,7 @@ def busqueda_rutas_user(request):
                                 'facultad': nodo_info['bloque__facultad__descripcion'],
                                 'imagen_facultad': nodo_info['bloque__facultad__imagen']
                             }
-                            nodo_destino_imagen = Nodo.objects.get(codigo=codigo_nodo)
+                            #nodo_destino_imagen = Nodo.objects.get(codigo=codigo_nodo)
                     else:
                         print(f"El nodo con código {codigo_nodo} no existe")
                         pass
@@ -102,8 +102,8 @@ def busqueda_rutas_user(request):
                     'distancia': distancia,
                     'tiempo': tiempo_formateado,
                     'bloques_camino': bloques_camino,
-                    'nodo_destino': nodo_destino,
-                    'nodo_destino_imagen': nodo_destino_imagen
+                    'nodo_destino': nodo_destino
+                    #'nodo_destino_imagen': nodo_destino_imagen
                 })
             else:
                 print("El nodo no existe")

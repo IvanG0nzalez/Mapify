@@ -74,13 +74,8 @@
                                 <p>{{ contador }}.- {{ nodo.descripcion }} [Bloque {{ nodo.codigo }}]</p>
                             {% endfor %}
                             <br>
-                            <h3>Facultad: </h3>
+                            <h3>Facultad de Destino: </h3>
                             <p>{{ nodo_destino.facultad }}</p>
-                            {% if nodo_destino_imagen %}
-                                <img src="{{ nodo_destino_imagen.bloque.facultad.imagen.url }}"
-                                     style="width: 92%; height: 50%"
-                                     alt="Imágen de {{ nodo_destino.facultad }}">
-                            {% endif %}
                         </div>
                     </div>
                 {% else %}
