@@ -33,18 +33,16 @@ class ControladorGrafo:
         tiempo = distancia / velocidad
         return round(tiempo, 2)
 
-    # Accede a la base de datos y obtiene todos los registros de nodos existentes
     def obtener_nodos_db(self):
         nodos_db = Nodo.objects.all()
 
-        data = [
-            {
-                'codigo': nodo.codigo,
+        data = {
+            nodo.codigo: {
                 'latitud': nodo.latitud,
                 'altitud': nodo.altitud,
             }
             for nodo in nodos_db
-        ]
+        }
 
         return data
 
@@ -52,10 +50,9 @@ class ControladorGrafo:
         # Inicializa un grafo vacío
         self.graph = nx.Graph()
         # Recorre la vairbale data_db y asigna los registros a un nuevo nodo del grafo
-        for nodo in self.data_db:
-            codigo = nodo['codigo']
-            latitud = nodo['latitud']
-            altitud = nodo['altitud']
+        for codigo, nodo_info in self.data_db.items():
+            latitud = nodo_info['latitud']
+            altitud = nodo_info['altitud']
             self.graph.add_node(codigo, latitud=latitud, altitud=altitud)
         # Recorre las rutas almacenadas en la base de datos y crea las aristas con las distancias y tiempos almacenados
         for ruta in Ruta.objects.select_related('nodo_destino', 'nodo_inicio').all():
@@ -114,18 +111,6 @@ class ControladorGrafo:
                     # Se agrega una tupla a la cola con la nueva distancia y el nodo vecino
                     heapq.heappush(cola, (distancia, vecino))
         return rutas
-
-    def obtener_coordenadas_por_codigo(self, codigo):
-        if not self.data_db:
-            self.data_db = self.obtener_nodos_db()
-
-        for nodo in self.data_db:
-            codigo_nodo_db = nodo['codigo']
-            if codigo_nodo_db == codigo:
-                latitud = nodo['latitud']
-                altitud = nodo['altitud']
-                return latitud, altitud
-        return None
 
 
 class NodoNoExisteException(Exception):
