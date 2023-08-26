@@ -197,7 +197,19 @@ def anadir_facultad(request):
 
 def listado_bloque(request):
     orden = request.GET.get('orden', 'id')
-    bloques = Bloque.objects.select_related('facultad', 'nodo').order_by(orden)
+    bloques = Bloque.objects.select_related('facultad', 'nodo').all()
+
+    if orden == 'codigo':
+        def custom_sort_codigo(bloque):
+            codigo = bloque.codigo
+            prefix = ''.join(filter(str.isalpha, codigo))
+            num_part = int(''.join(filter(str.isdigit, codigo)))
+            return (prefix, num_part)
+
+        bloques = sorted(bloques, key=custom_sort_codigo)
+    else:
+        bloques = bloques.order_by(orden)
+
     context = {
         'bloques': bloques,
     }
@@ -266,7 +278,19 @@ def anadir_bloque(request):
 
 def listado_nodo(request):
     orden = request.GET.get('orden', 'id')
-    nodos = Nodo.objects.select_related('bloque').order_by(orden)
+    nodos = Nodo.objects.select_related('bloque').all()
+
+    if orden == 'codigo':
+        def custom_sort_codigo(nodo):
+            codigo = nodo.codigo
+            prefix = ''.join(filter(str.isalpha, codigo))
+            num_part = int(''.join(filter(str.isdigit, codigo)))
+            return prefix, num_part
+
+        nodos = sorted(nodos, key=custom_sort_codigo)
+    else:
+        nodos = nodos.order_by(orden)
+
     context = {
         'nodos': nodos,
     }
