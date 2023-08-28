@@ -64,7 +64,7 @@
                             <br>
                             <h3>Recorrido: </h3>
                             {% for contador, nodo in bloques_camino %}
-                                <p>{{ contador }}.- {{ nodo.descripcion }} [Bloque {{ nodo.codigo }}]</p>
+                                <p>{{ contador }}.- {{ nodo.descripcion }}{% if nodo.codigo|slice:"0:1" != "N" %}[Bloque {{ nodo.codigo }}]  {% endif %}</p>
                             {% endfor %}
                             <br>
                             <h3>Facultad: </h3>
