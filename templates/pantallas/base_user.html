@@ -13,46 +13,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" href="{% static 'imagenes/mapa.png' %}" type="image/jpg">
 
 </head>
 
 <body>
-<div style="padding: 0; margin: 0">
-    <nav class="sidebar">
-        <div class="menu-bar">
-            <div class="menu">
+<div id="app">
+        <nav id="navbar" class="navbar">
+            <div class="menu-bar">
+                <div class="menu">
 
-                <ul class="menu-links">
+                    <ul class="menu-links">
 
-                    <li class="nav-link">
-                        <a href="{% url 'mapeo:inicio' %}" class="nav__link">
-                            <i class="bx bx-home-alt icon"></i>
-                            <span class="text nav-text">Inicio</span>
-                        </a>
-                    </li>
+                        <li class="nav-link">
+                            <a href="{% url 'mapeo:inicio' %}" class="nav__link">
+                                <i class="bx bx-home-alt icon"></i>
+                                <span class="text nav-text">Inicio</span>
+                            </a>
+                        </li>
 
-                    <li class="nav-link">
-                        <a href="{% url 'mapeo:busqueda_user' %}" class="nav__link">
-                            <i class="bx bx-search-alt icon"></i>
-                            <span class="text nav-text">Búsqueda</span>
-                        </a>
-                    </li>
-                </ul>
+                        <li class="nav-link">
+                            <a href="{% url 'mapeo:busqueda_user' %}" class="nav__link">
+                                <i class="bx bx-search-alt icon"></i>
+                                <span class="text nav-text">Búsqueda</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
-
+        </nav>
+        <div class="contenido">
+            {% block contenido %}
+            {% endblock %}
         </div>
-    </nav>
 </div>
 
 
-<section class="home">
-    <div class="div_inicio_user">
-        {% block contenido %}
-
-        {% endblock %}
-    </div>
-</section>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_lvwQByfg-IacO6-U8R_83InPhayIvjI&libraries=places&callback=initMap"></script>
 <script src="{% static "scripts/scripts.js" %}"></script>

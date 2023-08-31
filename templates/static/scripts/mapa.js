@@ -5,7 +5,15 @@ function initMap() {
         zoom: 17
     });
 
+    var marcadorPuerta1 = crearMarcador(mapa, {"lat": -4.03294, "lng": -79.20244}, 'PUERTA 1');
+    var marcadorPuerta2 = crearMarcador(mapa, {"lat": -4.03336, "lng": -79.2034}, 'PUERTA 2');
+    var marcadorPuerta3 = crearMarcador(mapa, {"lat": -4.03538, "lng": -79.20488}, 'PUERTA 3');
+    var marcadorPuerta4 = crearMarcador(mapa, {"lat": -4.036, "lng":  -79.20533}, 'PUERTA 4');
+    var marcadorPuerta5 = crearMarcador(mapa, {"lat": -4.03647, "lng": -79.20562}, 'PUERTA 5');
+    var marcadorPuerta6 = crearMarcador(mapa, {"lat": -4.03274, "lng": -79.20018}, 'PUERTA 6');
+
     var routeCoordinates = coordenadas_nodos;
+
 
     if(routeCoordinates.length > 0){
 
@@ -66,3 +74,23 @@ buscarRutaBtn.addEventListener('click', function(event){
         event.preventDefault();
     }
 });
+
+function crearMarcador(mapa, position, contenidoInfoWindow) {
+    var marcador = new google.maps.Marker({
+        position: position,
+        map: mapa,
+    });
+
+    var infoWindow = new google.maps.InfoWindow({content: contenidoInfoWindow});
+    infoWindow.open(mapa, marcador);
+
+    marcador.addListener('click', function() {
+        if (infoWindow.getMap()) {
+            infoWindow.close();
+        } else {
+            infoWindow.open(mapa, marcador);
+        }
+    });
+
+    return marcador;
+}
