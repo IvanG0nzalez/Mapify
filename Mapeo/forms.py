@@ -58,7 +58,7 @@ class ModificarAdminForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese la nueva contraseña del administrador',
+                'placeholder': 'Ingrese la nueva contraseña',
                 'id': 'password',
                 'required': 'required',
             }
@@ -71,7 +71,7 @@ class ModificarAdminForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese nuevamente su contraseña',
+                'placeholder': 'Ingrese nuevamente la contraseña',
                 'id': 'password_confir',
                 'required': 'required',
             }

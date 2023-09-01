@@ -487,6 +487,9 @@ def modificar_admin(request, id):
     if request.method == 'POST':
         form = ModificarAdminForm(request.POST, instance=admin)
         if form.is_valid():
+            password = form.cleaned_data.get('password')
+            if password:
+                admin.set_password(password)
             form.save()
             return redirect('mapeo:admin_id', id)
     else:
@@ -504,6 +507,19 @@ def listado_modificar_admin(request, id):
     if request.method == 'POST':
         form = ModificarAdminForm(request.POST, instance=admin)
         if form.is_valid():
+            password = form.cleaned_data.get('password')
+            password_confir = form.cleaned_data.get('password_confir')
+
+            if password and not password_confir:
+                messages.error(request, 'Se requiere la confirmación de la contraseña')
+                return render(request, 'pantallas/listado_modificar_admin.html', {'form': form, 'admin_id': id})
+
+            if password and password_confir:
+                if password == password_confir:
+                    admin.set_password(password)
+                else:
+                    messages.error(request, 'Las contraseñas no coinciden.')
+                    return render(request, 'pantallas/listado_modificar_admin.html', {'form': form, 'admin_id': id})
             form.save()
             return redirect('mapeo:admin')
     else:
