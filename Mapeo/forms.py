@@ -11,7 +11,6 @@ class RegistroAdminForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                #'placeholder': 'Ingrese la contraseña para la cuenta de administrador',
                 'id': 'password',
                 'required': 'required',
             }
@@ -22,7 +21,6 @@ class RegistroAdminForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                #'placeholder': 'Ingrese la contraseña nuevamente',
                 'id': 'password_confir',
                 'required': 'required',
             }
@@ -83,13 +81,6 @@ class ModificarAdminForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'first_name', 'last_name',)
 
-    def clean_password_confir(self):
-        password = self.cleaned_data.get('password')
-        password_confir = self.cleaned_data.get('password_confir')
-        if password and password_confir and password != password_confir:
-            raise forms.ValidationError('Las contraseñas no coinciden')
-        return password_confir
-
 
 class BloqueForm(forms.ModelForm):
     class Meta:
@@ -102,7 +93,7 @@ class BloqueForm(forms.ModelForm):
         numero = self.cleaned_data.get('numero')
         is_auxiliar = self.cleaned_data.get('is_auxiliar')
         if not is_auxiliar and numero is None:
-            self.add_error('numero',"Si el bloque no es auxiliar, se requiere ingresar un número.")
+            self.add_error('numero', "Si el bloque no es auxiliar, se requiere ingresar un número.")
 
         latitud = cleaned_data.get('latitud')
         altitud = cleaned_data.get('altitud')
@@ -123,7 +114,7 @@ class ModificarBloqueForm(forms.ModelForm):
         numero = self.cleaned_data.get('numero')
         is_auxiliar = self.cleaned_data.get('is_auxiliar')
         if not is_auxiliar and numero is None:
-            self.add_error('numero',"Si el bloque no es auxiliar, se requiere ingresar un número.")
+            self.add_error('numero', "Si el bloque no es auxiliar, se requiere ingresar un número.")
 
         bloque_actual = self.instance
 
@@ -170,7 +161,8 @@ class FacultadForm(forms.ModelForm):
             largo_permitido = 400
 
             if ancho > ancho_permitido or largo > largo_permitido:
-                raise forms.ValidationError(f"La imágen debe tener un tamaño máximo de {ancho_permitido}x{largo_permitido} píxeles.")
+                raise forms.ValidationError(
+                    f"La imágen debe tener un tamaño máximo de {ancho_permitido}x{largo_permitido} píxeles.")
         return imagen
 
 

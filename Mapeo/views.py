@@ -27,7 +27,8 @@ def administracion_inicio(request):
 
 
 def busqueda_rutas_user(request):
-    nodos = Nodo.objects.select_related('bloque', 'bloque__facultad').exclude(codigo__startswith='N').order_by('bloque__numero')
+    nodos = Nodo.objects.select_related('bloque', 'bloque__facultad').exclude(codigo__startswith='N').order_by(
+        'bloque__numero')
     if request.method == 'POST':
         nodo_origen_codigo = request.POST.get('bloque_origen')
         nodo_destino_codigo = request.POST.get('bloque_destino')
@@ -35,7 +36,7 @@ def busqueda_rutas_user(request):
         controlador_grafo.obtener_grafo()
 
         nodo_destino = None
-        #nodo_destino_imagen = None
+        # nodo_destino_imagen = None
 
         try:
             # Calcular el camino mínimo a partir del origen seleccionado
@@ -47,19 +48,20 @@ def busqueda_rutas_user(request):
                 print(f"Camino más corto desde {nodo_origen_codigo} hasta {nodo_destino_codigo}")
                 print(f"{camino_mas_corto}")
                 nodos_camino = camino_mas_corto['ruta']
-                #variable para almacenar las coordenadas del camino
+                # variable para almacenar las coordenadas del camino
                 coordenadas_nodos = []
 
                 distancia = round(camino_mas_corto['distancia'], 2)
                 tiempo = camino_mas_corto['tiempo']
                 tiempo_formateado = format_tiempo(tiempo)
-                #Variable para almacenar los bloques del camino
+                # Variable para almacenar los bloques del camino
                 bloques_camino = []
 
                 contador_bloques = 0
 
                 nodos_info = Nodo.objects.filter(codigo__in=nodos_camino).values(
-                    'codigo', 'latitud', 'altitud', 'bloque__descripcion', 'bloque__facultad__descripcion', 'bloque__facultad__imagen'
+                    'codigo', 'latitud', 'altitud', 'bloque__descripcion', 'bloque__facultad__descripcion',
+                    'bloque__facultad__imagen'
                 )
                 nodos_info_dict = {nodo['codigo']: nodo for nodo in nodos_info}
 
@@ -89,7 +91,7 @@ def busqueda_rutas_user(request):
                                 'facultad': nodo_info['bloque__facultad__descripcion'],
                                 'imagen_facultad': nodo_info['bloque__facultad__imagen']
                             }
-                            #nodo_destino_imagen = Nodo.objects.get(codigo=codigo_nodo)
+                            # nodo_destino_imagen = Nodo.objects.get(codigo=codigo_nodo)
                     else:
                         print(f"El nodo con código {codigo_nodo} no existe")
                         pass
@@ -103,7 +105,7 @@ def busqueda_rutas_user(request):
                     'tiempo': tiempo_formateado,
                     'bloques_camino': bloques_camino,
                     'nodo_destino': nodo_destino
-                    #'nodo_destino_imagen': nodo_destino_imagen
+                    # 'nodo_destino_imagen': nodo_destino_imagen
                 })
             else:
                 print("El nodo no existe")
@@ -117,7 +119,7 @@ def busqueda_rutas_user(request):
 
 def listado_facultad(request):
     facultades = Facultad.obtener_facultades()
-    context={
+    context = {
         'facultades': facultades,
     }
     return render(request, 'pantallas/listado_facultad.html', context)
@@ -167,10 +169,10 @@ def listado_modificar_facultad(request, id):
 
 def eliminar_facultad(request, id):
     facultad = get_object_or_404(Facultad, id=id)
-    #Obtener la ruta del archivo de la imagen
+    # Obtener la ruta del archivo de la imagen
     if facultad.imagen:
         ruta_imagen = facultad.imagen.path
-        #Eliminar la imagen del sistema de archivos
+        # Eliminar la imagen del sistema de archivos
         if os.path.exists(ruta_imagen):
             os.remove(ruta_imagen)
     facultad.delete()
@@ -218,7 +220,7 @@ def listado_bloque(request):
 
 def detalle_bloque(request, bloque_id):
     bloque = get_object_or_404(Bloque, pk=bloque_id)
-    context={
+    context = {
         'bloque': bloque,
     }
     return render(request, 'pantallas/detalle_bloque.html', context)
@@ -307,7 +309,7 @@ def detalle_nodo(request, nodo_id):
 
 def nodo_detalle_bloque(request, bloque_id):
     bloque = get_object_or_404(Bloque, pk=bloque_id)
-    context={
+    context = {
         'bloque': bloque,
     }
     return render(request, 'pantallas/nodo_detalle_bloque.html', context)
@@ -358,9 +360,9 @@ def conexiones_nodo(request, nodo_id):
         nodo_destino = get_object_or_404(Nodo, id=nodo_destino_id)
         Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
         return redirect('mapeo:conexion-nodo', nodo_id=nodo_id)
-    #Obtiene los nodos ya conectados al nodo actual
+    # Obtiene los nodos ya conectados al nodo actual
     nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
-    #Excluir los nodos conectados del conjunto de nodos disponibles para conectar
+    # Excluir los nodos conectados del conjunto de nodos disponibles para conectar
     nodos = Nodo.objects.order_by('bloque__numero', 'codigo').exclude(id=nodo_id).exclude(id__in=nodos_conectados)
 
     context = {
@@ -380,9 +382,9 @@ def listado_conexiones_nodo(request, nodo_id):
         nodo_destino = get_object_or_404(Nodo, id=nodo_destino_id)
         Ruta.objects.create(nodo_inicio=nodo, nodo_destino=nodo_destino)
         return redirect('mapeo:listado-conexion-nodo', nodo_id=nodo_id)
-    #Obtiene los nodos ya conectados al nodo actual
+    # Obtiene los nodos ya conectados al nodo actual
     nodos_conectados = Nodo.objects.filter(Rutas_Destino__nodo_inicio=nodo)
-    #Excluir los nodos conectados del conjunto de nodos disponibles para conectar
+    # Excluir los nodos conectados del conjunto de nodos disponibles para conectar
     nodos = Nodo.objects.order_by('bloque__numero', 'codigo').exclude(id=nodo_id).exclude(id__in=nodos_conectados)
 
     context = {
@@ -422,7 +424,8 @@ def grafo_admin(request):
 
     if grafo:
         grafo_data = {
-            'nodes': [{'id': str(nodo), 'label': f'Bloque {nodo}', 'codigo': 'Codigo nodo: XYZ'} for nodo in grafo.nodes()],
+            'nodes': [{'id': str(nodo), 'label': f'Bloque {nodo}', 'codigo': 'Codigo nodo: XYZ'} for nodo in
+                      grafo.nodes()],
             'edges': [{'from': str(arista[0]), 'to': str(arista[1]),
                        'label': f'Distancia: {grafo[arista[0]][arista[1]]["distancia"]} mts\nTiempo: {format_tiempo(grafo[arista[0]][arista[1]]["tiempo"])}'}
                       for arista in grafo.edges()]
@@ -430,9 +433,11 @@ def grafo_admin(request):
 
         grafo_data_json = json.dumps(grafo_data)
 
-        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos, 'num_aristas': num_aristas})
+        return render(request, 'pantallas/grafo_admin.html',
+                      {'grafo_data': grafo_data_json, 'num_nodos': num_nodos, 'num_aristas': num_aristas})
     else:
-        return render(request, 'pantallas/grafo_admin.html', {'grafo_data': grafo_data_json, 'num_nodos': num_nodos, 'num_aristas': num_aristas})
+        return render(request, 'pantallas/grafo_admin.html',
+                      {'grafo_data': grafo_data_json, 'num_nodos': num_nodos, 'num_aristas': num_aristas})
 
 
 def format_tiempo(tiempo):
@@ -457,7 +462,7 @@ def listado_admins(request):
 
 def detalle_admin(request, admin_id):
     admin = get_object_or_404(User, pk=admin_id)
-    context={
+    context = {
         'admin': admin,
     }
     return render(request, 'pantallas/detalle_admin.html', context)

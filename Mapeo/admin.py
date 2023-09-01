@@ -8,7 +8,8 @@ class FacultadAdmin(admin.ModelAdmin):
 
 
 class BloqueAmdin(admin.ModelAdmin):
-    list_display = ('id', 'numero', 'zona', 'codigo', 'latitud', 'altitud', 'is_auxiliar', 'numero_auxiliar', 'facultad')
+    list_display = (
+    'id', 'numero', 'zona', 'codigo', 'latitud', 'altitud', 'is_auxiliar', 'numero_auxiliar', 'facultad')
 
 
 class RutaAdmin(admin.ModelAdmin):

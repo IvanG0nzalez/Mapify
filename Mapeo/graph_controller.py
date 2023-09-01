@@ -21,7 +21,7 @@ class ControladorGrafo:
         delta_lat = lat2_rad - lat1_rad
         deltan_alt = math.radians(altitud2 - altitud1)
 
-        a = math.sin(delta_lat / 2) ** 2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(deltan_alt/ 2) ** 2
+        a = math.sin(delta_lat / 2) ** 2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(deltan_alt / 2) ** 2
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
         d = R * c
 
@@ -64,7 +64,8 @@ class ControladorGrafo:
             if not self.graph.has_edge(codigo_origen, codigo_destino):
                 self.graph.add_edge(codigo_origen, codigo_destino, distancia=distancia, tiempo=tiempo)
             else:
-                print(f"Graph Controller: Se evitó la creación de una arista duplicada: {codigo_origen} -> {codigo_destino}")
+                print(
+                    f"Graph Controller: Se evitó la creación de una arista duplicada: {codigo_origen} -> {codigo_destino}")
 
     # Obtiene nuevamente todos los nodos de la base de datos y llama a la función para crear el grafo
     def obtener_grafo(self):
