@@ -1,122 +1,3 @@
-function initMap() {
-
-    var mapa = new google.maps.Map(document.getElementById('mapa'), {
-        center: {lat: -4.032785, lng: -79.202424},
-        zoom: 17
-    });
-
-    var IconoPuerta1 = {
-        url: '/static/imagenes/MarcadorPuerta1.png',
-        scaledSize: new google.maps.Size(50, 50),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(25, 50)
-    };
-    var IconoPuerta2 = {
-        url: '/static/imagenes/MarcadorPuerta2.png',
-        scaledSize: new google.maps.Size(50, 50),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(25, 50)
-    };
-    var IconoPuerta3 = {
-        url: '/static/imagenes/MarcadorPuerta3.png',
-        scaledSize: new google.maps.Size(50, 50),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(25, 50)
-    };
-    var IconoPuerta4 = {
-        url: '/static/imagenes/MarcadorPuerta4.png',
-        scaledSize: new google.maps.Size(50, 50),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(25, 50)
-    };
-    var IconoPuerta5 = {
-        url: '/static/imagenes/MarcadorPuerta5.png',
-        scaledSize: new google.maps.Size(50, 50),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(25, 50)
-    };
-    var IconoPuerta6 = {
-        url: '/static/imagenes/MarcadorPuerta6.png',
-        scaledSize: new google.maps.Size(50, 50),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(25, 50)
-    };
-
-
-    var marcadorPuerta1 = new google.maps.Marker({
-        position: {"lat": -4.03294, "lng": -79.20244},
-        map: mapa,
-        icon: IconoPuerta1
-    });
-    var marcadorPuerta2 = new google.maps.Marker({
-        position: {"lat": -4.03336, "lng": -79.2034},
-        map: mapa,
-        icon: IconoPuerta2
-    });
-    var marcadorPuerta3 = new google.maps.Marker({
-        position: {"lat": -4.03538, "lng": -79.20488},
-        map: mapa,
-        icon: IconoPuerta3
-    });
-    var marcadorPuerta4 = new google.maps.Marker({
-        position: {"lat": -4.036, "lng":  -79.20533},
-        map: mapa,
-        icon: IconoPuerta4
-    });
-    var marcadorPuerta5 = new google.maps.Marker({
-        position: {"lat": -4.03647, "lng": -79.20562},
-        map: mapa,
-        icon: IconoPuerta5
-    });
-    var marcadorPuerta6 = new google.maps.Marker({
-        position: {"lat": -4.03274, "lng": -79.20018},
-        map: mapa,
-        icon: IconoPuerta6
-    });
-
-    var routeCoordinates = coordenadas_nodos;
-
-
-    if(routeCoordinates.length > 0){
-
-
-
-        var rutaPolyline = new google.maps.Polyline({
-            path: routeCoordinates,
-            geodesic: true,
-            strokeColor: '#125680',
-            strokeOpacity: 1.0,
-            strokeWeight: 10
-        });
-
-        var IconoOrigen = {
-            url: '/static/imagenes/MarcadorOrigen.png',
-            scaledSize: new google.maps.Size(70, 65),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(30, 50)
-        };
-        var marcadorInicio = new google.maps.Marker({
-            position: routeCoordinates[0],
-            map: mapa,
-            icon: IconoOrigen
-        });
-
-        var IconoDestino = {
-            url: '/static/imagenes/MarcadorDestino.png',
-            scaledSize: new google.maps.Size(80, 65),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(38, 50)
-        };
-        var marcadorInicio = new google.maps.Marker({
-            position: routeCoordinates[routeCoordinates.length - 1],
-            map: mapa,
-            icon: IconoDestino
-        });
-
-        rutaPolyline.setMap(mapa);
-    }
-}
-
 var nodoOrigenSelect = document.getElementById('bloque_origen');
 var nodoDestinoSelect = document.getElementById('bloque_destino2');
 var buscarRutaBtn = document.getElementById('buscarRutaBtn');
@@ -130,3 +11,90 @@ buscarRutaBtn.addEventListener('click', function(event){
         event.preventDefault();
     }
 });
+
+
+let mapa = L.map('mapa').setView([-4.03348,-79.20223], 17);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(mapa);
+
+
+var iconoPuerta1 = L.icon({
+    iconUrl: '/static/imagenes/MarcadorPuerta1.png',
+    iconSize: [40, 40],
+    iconAnchor: [16, 32]
+});
+
+var iconoPuerta2 = L.icon({
+    iconUrl: '/static/imagenes/MarcadorPuerta2.png',
+    iconSize: [40, 40],
+    iconAnchor: [16, 32]
+});
+
+var iconoPuerta3 = L.icon({
+    iconUrl: '/static/imagenes/MarcadorPuerta3.png',
+    iconSize: [40, 40],
+    iconAnchor: [16, 32]
+});
+
+var iconoPuerta4 = L.icon({
+    iconUrl: '/static/imagenes/MarcadorPuerta4.png',
+    iconSize: [40, 40],
+    iconAnchor: [16, 32]
+});
+
+var iconoPuerta5 = L.icon({
+    iconUrl: '/static/imagenes/MarcadorPuerta5.png',
+    iconSize: [40, 40],
+    iconAnchor: [16, 32]
+});
+
+var iconoPuerta6 = L.icon({
+    iconUrl: '/static/imagenes/MarcadorPuerta6.png',
+    iconSize: [40, 40],
+    iconAnchor: [16, 32]
+});
+
+// Crea marcadores utilizando los íconos personalizados
+var marcadorPuerta1 = L.marker([-4.03294, -79.20244], { icon: iconoPuerta1 }).addTo(mapa);
+var marcadorPuerta2 = L.marker([-4.03336, -79.2034], { icon: iconoPuerta2 }).addTo(mapa);
+var marcadorPuerta3 = L.marker([-4.03538, -79.20488], { icon: iconoPuerta3 }).addTo(mapa);
+var marcadorPuerta4 = L.marker([-4.036, -79.20533], { icon: iconoPuerta4 }).addTo(mapa);
+var marcadorPuerta5 = L.marker([-4.03647, -79.20562], { icon: iconoPuerta5 }).addTo(mapa);
+var marcadorPuerta6 = L.marker([-4.03274, -79.20018], { icon: iconoPuerta6 }).addTo(mapa);
+
+
+
+
+var routeCoordinates = coordenadas_nodos;
+
+if(routeCoordinates.length > 0){
+    L.polyline(routeCoordinates, {
+        color: '#125680',
+        weight: 7,
+        opacity: 0.7,
+        shadowBlur: 10,
+        shadowColor: 'black'
+    }).addTo(mapa);
+
+    var iconoOrigen = L.icon({
+    iconUrl: '/static/imagenes/MarcadorOrigen.png',
+    iconSize: [70, 65],
+    iconAnchor: [30, 50]
+    });
+
+    var iconoDestino = L.icon({
+        iconUrl: '/static/imagenes/MarcadorDestino.png',
+        iconSize: [80, 65],
+        iconAnchor: [38, 50]
+    });
+
+    // Crea marcadores para el origen y el destino utilizando los íconos personalizados
+    var marcadorInicio = L.marker(routeCoordinates[0], { icon: iconoOrigen }).addTo(mapa);
+    var marcadorDestino = L.marker(routeCoordinates[routeCoordinates.length - 1], { icon: iconoDestino }).addTo(mapa);
+
+
+}
+
+
