@@ -38,7 +38,7 @@ class Bloque(models.Model):
         ("M", "Motupe"),
         ("P", "Punzara"),
     ]
-    numero = models.PositiveIntegerField(null=True, blank=True, unique=True, verbose_name='Numero')
+    numero = models.PositiveIntegerField(null=True, blank=True, verbose_name='Numero')
     zona = models.CharField(max_length=10, choices=ZONAS, verbose_name='Zona')
     codigo = models.CharField(null=True, blank=True, editable=False, max_length=15, verbose_name='Codigo')
     descripcion = models.CharField(null=True, blank=True, max_length=100, verbose_name='Descripcion')

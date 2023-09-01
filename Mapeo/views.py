@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
+from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -268,9 +269,13 @@ def anadir_bloque(request):
     if request.method == 'POST':
         formulario = BloqueForm(data=request.POST)
         if formulario.is_valid():
-            formulario.save()
-            messages.success(request, 'Bloque registrado correctamente')
-            return redirect('mapeo:bloque')
+            try:
+                formulario.save()
+                messages.success(request, 'Bloque registrado correctamente')
+                return redirect('mapeo:bloque')
+            except IntegrityError:
+                print("Error")
+                messages.error(request, 'Ya existe un bloque con este código')
         else:
             messages.error(request, 'Por favor, corrija los errores del formulario.')
     else:
