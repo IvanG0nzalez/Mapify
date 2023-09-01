@@ -110,7 +110,7 @@
 }
 
 /* Estilos para el contenido principal */
-.contenido {/* Asegura que el contenido no se oculte detrás de la barra de navegación */
+.contenido { /* Asegura que el contenido no se oculte detrás de la barra de navegación */
     padding: 20px;
     width: auto;
     height: auto;
@@ -359,12 +359,14 @@ body {
     list-style: none;
     background-color: transparent;
     display: flex;
+    justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
     border-radius: 6px;
     text-decoration: none;
     transition: var(--tran-03);
+    padding-right: 20px;
 }
 
 .navbar li a:hover {
