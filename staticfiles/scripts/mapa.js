@@ -7,11 +7,13 @@ buscarRutaBtn.addEventListener('click', function(event){
     var nodoDestino = nodoDestinoSelect.value;
 
     if(nodoOrigen == nodoDestino){
-        alert("Los bloques de origen y destino deben ser diferentes");
+        alert("Los bloques de origen y destino deben ser diferentes.");
+        event.preventDefault();
+    } else if(nodoOrigen == "" || nodoDestino == ""){
+        alert("Debe seleccionar un bloque de origen y uno de destino.");
         event.preventDefault();
     }
 });
-
 
 let mapa = L.map('mapa').setView([-4.03348,-79.20223], 17);
 
