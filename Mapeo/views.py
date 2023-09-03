@@ -234,7 +234,8 @@ def modificar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     data = {
         'form': ModificarBloqueForm(instance=bloque),
-        'bloque_id': id
+        'bloque_id': id,
+        'bloque': bloque
     }
     if request.method == 'POST':
         formulario = ModificarBloqueForm(data=request.POST, instance=bloque)
@@ -250,7 +251,8 @@ def listado_modificar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     data = {
         'form': ModificarBloqueForm(instance=bloque),
-        'bloque_id': id
+        'bloque_id': id,
+        'bloque': bloque
     }
     if request.method == 'POST':
         formulario = ModificarBloqueForm(data=request.POST, instance=bloque)
@@ -333,7 +335,8 @@ def nodo_modificar_bloque(request, id):
     bloque = get_object_or_404(Bloque, id=id)
     data = {
         'form': ModificarBloqueForm(instance=bloque),
-        'bloque_id': id
+        'bloque_id': id,
+        'bloque': bloque
     }
     if request.method == 'POST':
         formulario = ModificarBloqueForm(data=request.POST, instance=bloque)

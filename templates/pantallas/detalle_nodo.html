@@ -7,13 +7,13 @@
 
 
 {% block contenido %}
-    <h1 class="container">Detalle de Nodo</h1>
+    <h1 class="container">Detalle de Nodo - {{ nodo.codigo }} ({{ nodo.bloque.descripcion }})</h1>
     <div id="div_center">
         <div class="div_responsive">
             <form>
                 <div class="mb-4">
                     <li>
-                        <label for="bloque" class="form-label"><strong>Bloque:</strong> {{ nodo.bloque }}</label>
+                        <label for="bloque_codigo" class="form-label"><strong>Código bloque:</strong> {{ nodo.bloque }}</label>
                     </li>
                 </div>
                 <div class="mb-4">
