@@ -34,6 +34,9 @@ def busqueda_rutas_user(request):
         nodo_origen_codigo = request.POST.get('bloque_origen')
         nodo_destino_codigo = request.POST.get('bloque_destino')
 
+        if not nodo_origen_codigo or not nodo_destino_codigo:
+            return render(request, 'pantallas/busqueda.html', {'nodos': nodos})
+
         controlador_grafo.obtener_grafo()
 
         nodo_destino = None
