@@ -96,7 +96,7 @@
 .navbar {
     background-color: var(--sidebar-color); /* Cambia esto al color que desees */
     color: aliceblue;
-    height: 30px;
+    height: 30vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -509,21 +509,6 @@ body {
 
 }
 
-#carouselExampleAutoplaying{
-    height: 85vh;
-}
-
-.carousel-indicators{
-    height: 100%;
-}
-
-.carousel-inner{
-    height: 100%;
-}
-
-carousel-item{
-    width: 100%;
-}
 
 #grafoContainer {
     height: 89vh;
@@ -658,12 +643,12 @@ carousel-item{
     background-color: rgba(1, 1, 1, 0.8);
     padding: 20px;
     border-radius: 10px;
+    width: 50em;
+    height: 35em;
+    position: absolute;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-height: 50%;
-    min-width: 80%;
-    width: 80%;
-    height: auto;
 }
 
 #div_info_app {
