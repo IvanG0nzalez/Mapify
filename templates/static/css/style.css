@@ -509,6 +509,22 @@ body {
 
 }
 
+#carouselExampleAutoplaying{
+    height: 85vh;
+}
+
+.carousel-indicators{
+    height: 100%;
+}
+
+.carousel-inner{
+    height: 100%;
+}
+
+carousel-item{
+    width: 100%;
+}
+
 #grafoContainer {
     height: 89vh;
     border: 2px solid black;
@@ -642,12 +658,12 @@ body {
     background-color: rgba(1, 1, 1, 0.8);
     padding: 20px;
     border-radius: 10px;
-    width: 50em;
-    height: 35em;
-    position: absolute;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    min-height: 50%;
+    min-width: 80%;
+    width: 80%;
+    height: auto;
 }
 
 #div_info_app {
