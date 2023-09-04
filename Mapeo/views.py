@@ -23,6 +23,103 @@ def inicio(request):
     return render(request, 'pantallas/inicio.html', {})
 
 
+def acercaDe(request):
+    return render(request, 'pantallas/inicio.html', {})
+
+def inicioBusqueda(request):
+    nodos = Nodo.objects.select_related('bloque', 'bloque__facultad').exclude(codigo__startswith='N').order_by(
+        'bloque__numero')
+    if request.method == 'POST':
+        nodo_origen_codigo = request.POST.get('bloque_origen')
+        nodo_destino_codigo = request.POST.get('bloque_destino')
+
+        if not nodo_origen_codigo or not nodo_destino_codigo:
+            return render(request, 'pantallas/busqueda.html', {'nodos': nodos})
+
+        controlador_grafo.obtener_grafo()
+
+        nodo_destino = None
+        # nodo_destino_imagen = None
+
+        try:
+            # Calcular el camino mínimo a partir del origen seleccionado
+            rutas = controlador_grafo.minimo_dijkstra(nodo_origen_codigo)
+            # Obtener el camino más corto del diccionario 'rutas' que coincida con el codigo del nodo destino
+            camino_mas_corto = rutas.get(nodo_destino_codigo)
+            # Si el camino existe se extraen las coordenadas de los nodos del camino y los bloques correspondientes a los mismos
+            if camino_mas_corto:
+                print(f"Camino más corto desde {nodo_origen_codigo} hasta {nodo_destino_codigo}")
+                print(f"{camino_mas_corto}")
+                nodos_camino = camino_mas_corto['ruta']
+                # variable para almacenar las coordenadas del camino
+                coordenadas_nodos = []
+
+                distancia = round(camino_mas_corto['distancia'], 2)
+                tiempo = camino_mas_corto['tiempo']
+                tiempo_formateado = format_tiempo(tiempo)
+                # Variable para almacenar los bloques del camino
+                bloques_camino = []
+
+                contador_bloques = 0
+
+                nodos_info = Nodo.objects.filter(codigo__in=nodos_camino).values(
+                    'codigo', 'latitud', 'altitud', 'bloque__descripcion', 'bloque__facultad__descripcion',
+                    'bloque__facultad__imagen'
+                )
+                nodos_info_dict = {nodo['codigo']: nodo for nodo in nodos_info}
+
+                # Obtener los Bloques y coordenadas de los nodos del camino recuperados del djikstra
+                for codigo_nodo in nodos_camino:
+                    nodo_info = nodos_info_dict.get(codigo_nodo)
+                    if nodo_info:
+                        coordenadas = (nodo_info['latitud'], nodo_info['altitud'])
+                        coordenadas_nodos.append(coordenadas)
+
+                        if nodo_info['bloque__descripcion']:
+                            contador_bloques += 1
+                            bloque = {
+                                'codigo': codigo_nodo,
+                                'latitud': nodo_info['latitud'],
+                                'altitud': nodo_info['altitud'],
+                                'descripcion': nodo_info['bloque__descripcion']
+                            }
+                            bloques_camino.append((contador_bloques, bloque))
+
+                        if codigo_nodo == nodo_destino_codigo:
+                            nodo_destino = {
+                                'codigo': codigo_nodo,
+                                'latitud': nodo_info['latitud'],
+                                'altitud': nodo_info['altitud'],
+                                'descripcion': nodo_info['bloque__descripcion'],
+                                'facultad': nodo_info['bloque__facultad__descripcion'],
+                                'imagen_facultad': nodo_info['bloque__facultad__imagen']
+                            }
+                            # nodo_destino_imagen = Nodo.objects.get(codigo=codigo_nodo)
+                    else:
+                        print(f"El nodo con código {codigo_nodo} no existe")
+                        pass
+
+                # Convertir la lista de coordenadas a una lista de diccionarios
+                coordenadas_nodos_dict = [{"lat": lat, "lng": lng} for lat, lng in coordenadas_nodos]
+                return render(request, 'pantallas/busqueda.html', {
+                    'ruta_coordenadas': coordenadas_nodos_dict,
+                    'nodos': nodos,
+                    'distancia': distancia,
+                    'tiempo': tiempo_formateado,
+                    'bloques_camino': bloques_camino,
+                    'nodo_destino': nodo_destino
+                    # 'nodo_destino_imagen': nodo_destino_imagen
+                })
+            else:
+                print("El nodo no existe")
+                pass
+        except NodoNoExisteException as e:
+            print(f"El nodo no existe: {e}")
+            pass
+    else:
+        return render(request, 'pantallas/busqueda.html', {'nodos': nodos})
+
+
 def administracion_inicio(request):
     return render(request, 'pantallas/inicio_admin.html', {})
 
