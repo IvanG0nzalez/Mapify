@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--*!&^3mhr!hzg9oumc1z5io@9^2ln@&f4&p_4l44t(kb5l_=^%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['mapify-6m9b.onrender.com', '127.0.0.1']
 
@@ -104,6 +104,7 @@ DATABASES = {
     }
 }
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -114,6 +115,19 @@ DATABASES = {
         'PORT': '10520',
     }
 }
+
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'RutasDB',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_BLkTfdYlVy7gPGqdhqK',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+"""
 
 
 # Password validation
