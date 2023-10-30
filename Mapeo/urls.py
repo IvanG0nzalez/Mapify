@@ -7,8 +7,8 @@ app_name = 'mapeo'
 
 urlpatterns = [
     #Urls para usuario
-    path('', views.inicioBusqueda, name='inicio'),
-    path('acerca_de', views.acercaDe, name='acerda_de'),
+    path('', views.acercaDe, name='acerda_de'),
+    path('inicio', views.inicioBusqueda, name='inicio'),
     #Url para login y logout
     path('administracion/iniciar-sesion', InicioSesion.as_view(), name='login'),
     path('administracion/cerrar-sesion', views.cerrar_sesion, name='cerrar_sesion'),
